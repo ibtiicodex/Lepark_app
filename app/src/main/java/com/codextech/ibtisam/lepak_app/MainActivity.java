@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d("a", "onCreate: ");
         Log.d("a", "onCreate: ");
         Log.d("a", "onCreate: ");
+        Log.d("a", "onCreate: ");
+        Log.d("a", "commit from 4540s");
 
     }
 }
