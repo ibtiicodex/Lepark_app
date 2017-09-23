@@ -8,7 +8,6 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
-
         private Button car, bike;
         private EditText numberCar;
         public static final String EXTRA="this";
