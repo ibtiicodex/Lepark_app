@@ -13,7 +13,5 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("a", "onCreate: ");
         Log.d("a", "devIbtisam branch first commit ");
-
-
     }
 }
