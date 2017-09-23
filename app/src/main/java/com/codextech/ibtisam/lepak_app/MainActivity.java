@@ -12,14 +12,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Log.d("a", "onCreate: ");
-        Log.d("a", "onCreate: ");
-        Log.d("a", "onCreate: ");
-        Log.d("a", "onCreate: ");
-        Log.d("a", "onCreate: ");
-        Log.d("a", "onCreate: ");
-        Log.d("a", "commit from 4540s");
-        Log.d("a", "commit from Touqeer");
-        Log.d("a", "commit from ibtisam-pc");
+        Log.d("a", "ibtisam branch first commit ");
+
 
     }
 }
