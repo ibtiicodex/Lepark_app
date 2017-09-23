@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Log.d("a", "onCreate: ");
-        Log.d("a", "ibtisam branch first commit ");
+        Log.d("a", "devIbtisam branch first commit ");
 
 
     }
