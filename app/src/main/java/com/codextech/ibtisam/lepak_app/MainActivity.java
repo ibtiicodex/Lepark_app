@@ -1,5 +1,6 @@
 package com.codextech.ibtisam.lepak_app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -28,11 +29,11 @@ public class MainActivity extends AppCompatActivity {
             car.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   // Intent intent=new Intent(getApplicationContext(),Car.class);
-                    String message=numberCar.getText().toString();
-
-                   // intent.putExtra(EXTRA,message);
-                   // startActivity(intent);
+//                    Intent intent=new Intent(getApplicationContext(),Car.class);
+//                    String message=numberCar.getText().toString();
+//
+//                    intent.putExtra(EXTRA,message);
+//                    startActivity(intent);
                 }
             });
 
