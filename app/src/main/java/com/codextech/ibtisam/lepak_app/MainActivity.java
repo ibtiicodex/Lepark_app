@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
                    // intent.putExtra(EXTRA,message);
                    // startActivity(intent);
-                    Log.d("a", "onClick: ");
-
                 }
             });
 
