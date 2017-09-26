@@ -1,3 +1,7 @@
-Lepak_app.iws
-.idea\workspace.xml
-\android-profile\
+*.iml
+.gradle
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
