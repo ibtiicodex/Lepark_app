@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codextech.ibtisam.lepak_app">
+
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
@@ -8,16 +9,15 @@
         android:label="Lipar_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".Ticket"></activity>
     </application>
 
 </manifest>

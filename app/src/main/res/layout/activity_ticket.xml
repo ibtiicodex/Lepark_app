@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="2"
+    tools:context="com.codextech.ibtisam.lepak_app.Ticket">
+   <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="50dp"
+        android:weightSum="4">
+
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.70"
+            android:text="Name" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.70"
+            android:text="Time" />
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.70"
+            android:text="Number" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.70"
+            android:text="Price" />
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.70"
+            android:text="Location" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="50dp"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/Dname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.70"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/Dtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.70"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/Dnumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.70"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/Dprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.70"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/Dlocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.70"
+            android:text="" />
+
+        <Button
+            android:id="@+id/gonext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.70"
+            android:text="Show All" />
+    </LinearLayout>
+
+</LinearLayout>

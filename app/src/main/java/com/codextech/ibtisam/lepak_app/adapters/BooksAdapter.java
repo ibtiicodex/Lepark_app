@@ -1,14 +1,11 @@
 package com.codextech.ibtisam.lepak_app.adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -104,56 +101,56 @@ public class BooksAdapter extends RealmRecyclerViewAdapter<Book> {
         holder.card.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View v) {
-
-                inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View content = inflater.inflate(R.layout.edit_item, null);
-                final EditText editTitle = (EditText) content.findViewById(R.id.title);
-                final EditText editAuthor = (EditText) content.findViewById(R.id.author);
-                final EditText editNumber = (EditText) content.findViewById(R.id.number);
-                final EditText editPrice = (EditText) content.findViewById(R.id.price);
-                final EditText editLocation = (EditText) content.findViewById(R.id.Locations);
-
-                //  final EditText editThumbnail = (EditText) content.findViewById(R.id.thumbnail);
-
-                editTitle.setText(book.getTitle());
-                editAuthor.setText(book.getAuthor());
-                editNumber.setText(book.getNumber());
-                editPrice.setText(book.getPrice());
-                editLocation.setText(book.getLocation());
-                // editThumbnail.setText(book.getImageUrl());
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setView(content)
-                        .setTitle("Edit Ticket")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                RealmResults<Book> results = realm.where(Book.class).findAll();
-
-                                realm.beginTransaction();
-                                results.get(position).setAuthor(editAuthor.getText().toString());
-                                results.get(position).setTitle(editTitle.getText().toString());
-                                results.get(position).setTitle(editNumber.getText().toString());
-                                results.get(position).setTitle(editPrice.getText().toString());
-                                results.get(position).setTitle(editLocation.getText().toString());
-                                // results.get(position).setImageUrl(editThumbnail.getText().toString());
-
-                                realm.commitTransaction();
-
-                                notifyDataSetChanged();
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+          public void onClick(View v) {
+//
+//                inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                View content = inflater.inflate(R.layout.edit_item, null);
+//                final EditText editTitle = (EditText) content.findViewById(R.id.title);
+//                final EditText editAuthor = (EditText) content.findViewById(R.id.author);
+//                final EditText editNumber = (EditText) content.findViewById(R.id.number);
+//                final EditText editPrice = (EditText) content.findViewById(R.id.price);
+//                final EditText editLocation = (EditText) content.findViewById(R.id.Locations);
+//
+//                //  final EditText editThumbnail = (EditText) content.findViewById(R.id.thumbnail);
+//
+//                editTitle.setText(book.getTitle());
+//                editAuthor.setText(book.getAuthor());
+//                editNumber.setText(book.getNumber());
+//                editPrice.setText(book.getPrice());
+//                editLocation.setText(book.getLocation());
+//                // editThumbnail.setText(book.getImageUrl());
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setView(content)
+//                        .setTitle("Edit Ticket")
+//                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//
+//                                RealmResults<Book> results = realm.where(Book.class).findAll();
+//
+//                                realm.beginTransaction();
+//                                results.get(position).setAuthor(editAuthor.getText().toString());
+//                                results.get(position).setTitle(editTitle.getText().toString());
+//                                results.get(position).setTitle(editNumber.getText().toString());
+//                                results.get(position).setTitle(editPrice.getText().toString());
+//                                results.get(position).setTitle(editLocation.getText().toString());
+//                                // results.get(position).setImageUrl(editThumbnail.getText().toString());
+//
+//                                realm.commitTransaction();
+//
+//                                notifyDataSetChanged();
+//                            }
+//                        })
+//                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+//
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//                AlertDialog dialog = builder.create();
+//                dialog.show();
             }
         });
     }

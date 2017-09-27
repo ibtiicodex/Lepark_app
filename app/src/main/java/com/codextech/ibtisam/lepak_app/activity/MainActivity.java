@@ -1,6 +1,7 @@
 package com.codextech.ibtisam.lepak_app.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -10,10 +11,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.codextech.ibtisam.lepak_app.R;
+import com.codextech.ibtisam.lepak_app.Ticket;
 import com.codextech.ibtisam.lepak_app.adapters.BooksAdapter;
 import com.codextech.ibtisam.lepak_app.adapters.RealmBooksAdapter;
 import com.codextech.ibtisam.lepak_app.app.Prefs;
@@ -73,35 +74,37 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                inflater = MainActivity.this.getLayoutInflater();
-                View content = inflater.inflate(R.layout.edit_item, null);
-                final EditText editTitle = (EditText) content.findViewById(R.id.title);
-                final EditText editAuthor = (EditText) content.findViewById(R.id.author);
-                final EditText editNumber = (EditText) content.findViewById(R.id.number);
-                final EditText editPrice = (EditText) content.findViewById(R.id.price);
-                final EditText editLocation = (EditText) content.findViewById(R.id.Locations);
-                //final EditText editThumbnail = (EditText) content.findViewById(R.id.thumbnail);
+               inflater = MainActivity.this.getLayoutInflater();
+               View content = inflater.inflate(R.layout.edit_item, null);
+//                final EditText editTitle = (EditText) content.findViewById(R.id.title);
+//                final EditText editAuthor = (EditText) content.findViewById(R.id.author);
+//                final EditText editNumber = (EditText) content.findViewById(R.id.number);
+//                final EditText editPrice = (EditText) content.findViewById(R.id.price);
+//                final EditText editLocation = (EditText) content.findViewById(R.id.Locations);
+
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setView(content)
-                        .setTitle("Add Ticket")
+                        .setTitle("Do you want to see")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                Intent intent = getIntent();
+                                final String mess= intent.getStringExtra(Ticket.EXTRA_MESSAGE1);
                                 Book book = new Book();
                                 //book.setId(RealmController.getInstance().getBooks().size() + 1);
                                 book.setId(RealmController.getInstance().getBooks().size() + System.currentTimeMillis());
-                                book.setTitle(editTitle.getText().toString());
+                                book.setTitle("Ali");
                                 book.setAuthor(currentDateTimeString);
-                                book.setNumber(messag);
-                                book.setPrice(editPrice.getText().toString());
-                                book.setLocation(editLocation.getText().toString());
+                                book.setNumber(mess);
+                                book.setPrice("20");
+                                book.setLocation("70");
                                 // book.setImageUrl(editThumbnail.getText().toString());
 
-                                if (editTitle.getText() == null || editTitle.getText().toString().equals("") || editTitle.getText().toString().equals(" ")) {
-                                    Toast.makeText(MainActivity.this, "Entry not saved, missing title", Toast.LENGTH_SHORT).show();
-                                } else {
+//                                if (editTitle.getText() == null || editTitle.getText().toString().equals("") || editTitle.getText().toString().equals(" ")) {
+//                                    Toast.makeText(MainActivity.this, "Entry not saved, missing title", Toast.LENGTH_SHORT).show();
+//                                } else
+{
                                     // Persist your data easily
                                     realm.beginTransaction();
                                     realm.copyToRealm(book);
