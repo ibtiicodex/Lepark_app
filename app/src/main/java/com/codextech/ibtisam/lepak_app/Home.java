@@ -58,10 +58,10 @@ String B;
 //                final EditText editLocation = (EditText)findViewById(R.id.Locations);
 //                Book book = new Book();
 
-
-
+String B;
+                B=enternumber.getText().toString();
                 Intent intent=new Intent(getApplicationContext(),MainActivity.class);
-
+                intent.putExtra(EXTRA_MESSAGE,B);
                 startActivity(intent);
 
 

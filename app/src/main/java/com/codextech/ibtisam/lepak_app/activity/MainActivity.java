@@ -1,10 +1,8 @@
 package com.codextech.ibtisam.lepak_app.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import com.codextech.ibtisam.lepak_app.Home;
 import com.codextech.ibtisam.lepak_app.R;
-import com.codextech.ibtisam.lepak_app.Ticket;
 import com.codextech.ibtisam.lepak_app.adapters.BooksAdapter;
 import com.codextech.ibtisam.lepak_app.adapters.RealmBooksAdapter;
 import com.codextech.ibtisam.lepak_app.app.Prefs;
@@ -83,14 +81,9 @@ public class MainActivity extends AppCompatActivity {
 //                final EditText editLocation = (EditText) content.findViewById(R.id.Locations);
 
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setView(content)
-                        .setTitle("Do you want to see")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+
                                 Intent intent = getIntent();
-                                final String mess= intent.getStringExtra(Ticket.EXTRA_MESSAGE1);
+                                final String mess= intent.getStringExtra(Home.EXTRA_MESSAGE);
                                 Book book = new Book();
                                 //book.setId(RealmController.getInstance().getBooks().size() + 1);
                                 book.setId(RealmController.getInstance().getBooks().size() + System.currentTimeMillis());
@@ -116,17 +109,11 @@ public class MainActivity extends AppCompatActivity {
                                     recycler.scrollToPosition(RealmController.getInstance().getBooks().size() - 1);
                                 }
                             }
-                        })
-                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
+
+
+
+
         });
 
     }

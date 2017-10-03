@@ -1,109 +1,262 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:app="http://schemas.android.com/apk/res-auto"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:weightSum="2"--><!--tools:context="com.codextech.ibtisam.lepak_app.Ticket">--><!--<LinearLayout--><!--android:layout_width="200dp"--><!--android:layout_height="500dp"--><!--android:layout_marginTop="20dp"--><!--android:layout_weight="1"--><!--android:orientation="vertical"--><!--android:padding="50dp"--><!--android:weightSum="4">--><!--<TextView--><!--android:id="@+id/name"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="Name" />-->
+
+<!--<TextView--><!--android:id="@+id/time"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="Time" />-->
+
+<!--<TextView--><!--android:id="@+id/number"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="Number" />-->
+
+<!--<TextView--><!--android:id="@+id/price"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="Price" />-->
+
+<!--<TextView--><!--android:id="@+id/location"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="Location" />-->
+
+
+<!--</LinearLayout>-->
+
+<!--<LinearLayout--><!--android:layout_width="200dp"--><!--android:layout_height="500dp"--><!--android:layout_marginTop="20dp"--><!--android:layout_weight="1"--><!--android:orientation="vertical"--><!--android:padding="50dp"--><!--android:weightSum="4">-->
+
+<!--<TextView--><!--android:id="@+id/Dname"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="" />-->
+
+<!--<TextView--><!--android:id="@+id/Dtime"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="" />-->
+
+<!--<TextView--><!--android:id="@+id/Dnumber"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="" />-->
+
+<!--<TextView--><!--android:id="@+id/Dprice"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="" />-->
+
+<!--<TextView--><!--android:id="@+id/Dlocation"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="" />-->
+
+<!--&lt;!&ndash;<Button&ndash;&gt;--><!--&lt;!&ndash;android:id="@+id/gonext"&ndash;&gt;--><!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;--><!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;--><!--&lt;!&ndash;android:layout_weight="0.70"&ndash;&gt;--><!--&lt;!&ndash;android:text="Show All" />&ndash;&gt;--><!--</LinearLayout>-->
+
+<!--</LinearLayout>-->
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="2"
+    android:layout_margin="45dp"
+    android:layout_marginBottom="30dp"
+
+    android:orientation="vertical"
     tools:context="com.codextech.ibtisam.lepak_app.Ticket">
-   <LinearLayout
-        android:layout_width="200dp"
-        android:layout_height="500dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="50dp"
-        android:weightSum="4">
-
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.70"
-            android:text="Name" />
-
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.70"
-            android:text="Time" />
-
-        <TextView
-            android:id="@+id/number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.70"
-            android:text="Number" />
-
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.70"
-            android:text="Price" />
-
-        <TextView
-            android:id="@+id/location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.70"
-            android:text="Location" />
-
-
-    </LinearLayout>
 
     <LinearLayout
-        android:layout_width="200dp"
-        android:layout_height="500dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e8e9cf"
         android:orientation="vertical"
-        android:padding="50dp"
-        android:weightSum="4">
+        android:padding="18dp"
+        android:weightSum="8">
 
         <TextView
-            android:id="@+id/Dname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.70"
-            android:text="" />
+            android:layout_gravity="center"
+            android:text="LEPAK  Lahoere parking company "
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/Dtime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.70"
-            android:text="" />
-
-        <TextView
-            android:id="@+id/Dnumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.70"
-            android:text="" />
-
-        <TextView
-            android:id="@+id/Dprice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.70"
-            android:text="" />
-
-        <TextView
-            android:id="@+id/Dlocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.70"
-            android:text="" />
-
-        <Button
-            android:id="@+id/gonext"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.70"
-            android:text="Show All" />
-    </LinearLayout>
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="PARKIING TICKET"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+
+
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Agent Name" />
+
+
+            <TextView
+                android:id="@+id/Dname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="48dp"
+                android:layout_weight="1"
+                android:text="" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+
+
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Time" />
+
+            <TextView
+                android:id="@+id/Dtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+
+
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Veh Reg No." />
+
+            <TextView
+                android:id="@+id/Dnumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="22dp"
+                android:layout_weight="1"
+                android:text="" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+
+
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Parking Fee" />
+
+            <TextView
+                android:id="@+id/Dprice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+
+
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Location" />
+
+            <TextView
+                android:id="@+id/Dlocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="22dp"
+                android:layout_weight="1"
+                android:text="" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Parking at your own risk    " />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+
+
+            android:orientation="horizontal"
+
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Parking company Ltd is not liable for any loss" />
+
+
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
+
+    <!--<TextView--><!--android:id="@+id/Dtime"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="" />-->
+
+    <!--<TextView--><!--android:id="@+id/Dnumber"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="" />-->
+
+    <!--<TextView--><!--android:id="@+id/Dprice"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="" />-->
+
+    <!--<TextView--><!--android:id="@+id/Dlocation"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="0.70"--><!--android:text="" />-->
+
+    <!--&lt;!&ndash;<Button&ndash;&gt;--><!--&lt;!&ndash;android:id="@+id/gonext"&ndash;&gt;--><!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;--><!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;--><!--&lt;!&ndash;android:layout_weight="0.70"&ndash;&gt;--><!--&lt;!&ndash;android:text="Show All" />&ndash;&gt;-->
+
+
+    <!--</LinearLayout>-->
