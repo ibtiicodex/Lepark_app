@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-               inflater = MainActivity.this.getLayoutInflater();
-               View content = inflater.inflate(R.layout.edit_item, null);
+                inflater = MainActivity.this.getLayoutInflater();
+                View content = inflater.inflate(R.layout.edit_item, null);
 //                final EditText editTitle = (EditText) content.findViewById(R.id.title);
 //                final EditText editAuthor = (EditText) content.findViewById(R.id.author);
 //                final EditText editNumber = (EditText) content.findViewById(R.id.number);
@@ -81,37 +81,33 @@ public class MainActivity extends AppCompatActivity {
 //                final EditText editLocation = (EditText) content.findViewById(R.id.Locations);
 
 
-
-                                Intent intent = getIntent();
-                                final String mess= intent.getStringExtra(Home.EXTRA_MESSAGE);
-                                Book book = new Book();
-                                //book.setId(RealmController.getInstance().getBooks().size() + 1);
-                                book.setId(RealmController.getInstance().getBooks().size() + System.currentTimeMillis());
-                                book.setTitle("Ali");
-                                book.setAuthor(currentDateTimeString);
-                                book.setNumber(mess);
-                                book.setPrice("20");
-                                book.setLocation("70");
-                                // book.setImageUrl(editThumbnail.getText().toString());
+                Intent intent = getIntent();
+                final String mess = intent.getStringExtra(Home.EXTRA_MESSAGE);
+                Book book = new Book();
+                //book.setId(RealmController.getInstance().getBooks().size() + 1);
+                book.setId(RealmController.getInstance().getBooks().size() + System.currentTimeMillis());
+                book.setTitle("Ali");
+                book.setAuthor(currentDateTimeString);
+                book.setNumber(mess);
+                book.setPrice("20");
+                book.setLocation("70");
+                // book.setImageUrl(editThumbnail.getText().toString());
 
 //                                if (editTitle.getText() == null || editTitle.getText().toString().equals("") || editTitle.getText().toString().equals(" ")) {
 //                                    Toast.makeText(MainActivity.this, "Entry not saved, missing title", Toast.LENGTH_SHORT).show();
 //                                } else
-{
-                                    // Persist your data easily
-                                    realm.beginTransaction();
-                                    realm.copyToRealm(book);
-                                    realm.commitTransaction();
+                {
+                    // Persist your data easily
+                    realm.beginTransaction();
+                    realm.copyToRealm(book);
+                    realm.commitTransaction();
 
-                                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
 
-                                    // scroll the recycler view to bottom
-                                    recycler.scrollToPosition(RealmController.getInstance().getBooks().size() - 1);
-                                }
-                            }
-
-
-
+                    // scroll the recycler view to bottom
+                    recycler.scrollToPosition(RealmController.getInstance().getBooks().size() - 1);
+                }
+            }
 
 
         });

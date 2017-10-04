@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
 import com.codextech.ibtisam.lepak_app.adapters.BooksAdapter;
 import com.codextech.ibtisam.lepak_app.model.Book;
 
@@ -22,6 +23,10 @@ public class Ticket extends AppCompatActivity {
     private Realm realm;
     private BooksAdapter adapter;
     Button Main;
+    String name = "Ali";
+    RequestQueue queue;
+    String pr = "20";
+    String Loocation = "Liberty";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,32 +49,47 @@ public class Ticket extends AppCompatActivity {
         price.setText("20");
         location.setText("Liberty Market");
 
-        // book.setId(RealmController.getInstance().getBooks().size() + System.currentTimeMillis());
-//        book.setTitle("Ali");
-//        book.setAuthor(currentDateTimeString);
-//        book.setNumber(mess);
-//        book.setPrice("20");
-//        book.setLocation("71");
-//        realm.beginTransaction();
-//        realm.copyToRealm(book);
-//        realm.commitTransaction();
-//        adapter.notifyDataSetChanged();
-//
-
-
-//        next.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//
-//                Intent GoToAll = new Intent(getApplicationContext(), MainActivity.class);
-//                GoToAll.putExtra(EXTRA_MESSAGE1, mess);
-//                startActivity(GoToAll);
-//
-//            }
-//        });
-//        Toast.makeText(this, "" + currentDateTimeString + "  " + mess, Toast.LENGTH_SHORT).show();
-
+       // TicketRequest(name, currentDateTimeString, mess, pr, Loocation);
 
     }
+
+//    void TicketRequest(final String name, final String t, final String num, final String pr, final String lo) {
+//
+//        String url = "http://httpbin.org/post";
+//        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        // response
+//                        Log.d("Response", response);
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        // error
+//                        //  Log.d("Error.Response", response);
+//                    }
+//                }
+//        ) {
+//            @Override
+//            protected Map<String, String> getParams() {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("name", name);
+//                params.put("time", t);
+//                params.put("number", num);
+//                params.put("price", pr);
+//                params.put("location", lo);
+//
+//
+//                return params;
+//            }
+//        };
+//
+//        queue.add(postRequest);
+//
+//
+//    }
+
+
 }

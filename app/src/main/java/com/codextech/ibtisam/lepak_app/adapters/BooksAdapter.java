@@ -101,7 +101,7 @@ public class BooksAdapter extends RealmRecyclerViewAdapter<Book> {
         holder.card.setOnClickListener(new View.OnClickListener() {
 
             @Override
-          public void onClick(View v) {
+            public void onClick(View v) {
 //
 //                inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //                View content = inflater.inflate(R.layout.edit_item, null);

@@ -10,9 +10,9 @@ import android.widget.EditText;
 import com.codextech.ibtisam.lepak_app.activity.MainActivity;
 
 public class Home extends AppCompatActivity {
-    public static String EXTRA_MESSAGE ="haye";
+    public static String EXTRA_MESSAGE = "haye";
 
-    private Button Ok,next;
+    private Button Ok, next;
     private EditText enternumber;
 
 
@@ -20,29 +20,17 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Ok=(Button)findViewById(R.id.carButton);
-        next=(Button)findViewById(R.id.next);
-        enternumber=(EditText)findViewById(R.id.enterNum);
-
-        //inflater = Home.this.getLayoutInflater();
-        //View content = inflater.inflate(R.layout.edit_item, null);
-
+        Ok = (Button) findViewById(R.id.carButton);
+        next = (Button) findViewById(R.id.next);
+        enternumber = (EditText) findViewById(R.id.enterNum);
         Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                final EditText editTitle = (EditText)findViewById(R.id.title);
-//                final EditText editAuthor = (EditText)findViewById(R.id.author);
-//                final EditText editNumber = (EditText)findViewById(R.id.number);
-//                final EditText editPrice = (EditText)findViewById(R.id.price);
-//                final EditText editLocation = (EditText)findViewById(R.id.Locations);
-//                Book book = new Book();
+                String B;
 
-
-String B;
-
-                B=enternumber.getText().toString();
-                Intent intent=new Intent(getApplicationContext(),Ticket.class);
-                intent.putExtra(EXTRA_MESSAGE,B);
+                B = enternumber.getText().toString();
+                Intent intent = new Intent(getApplicationContext(), Ticket.class);
+                intent.putExtra(EXTRA_MESSAGE, B);
                 startActivity(intent);
 
 
@@ -51,17 +39,10 @@ String B;
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                final EditText editTitle = (EditText)findViewById(R.id.title);
-//                final EditText editAuthor = (EditText)findViewById(R.id.author);
-//                final EditText editNumber = (EditText)findViewById(R.id.number);
-//                final EditText editPrice = (EditText)findViewById(R.id.price);
-//                final EditText editLocation = (EditText)findViewById(R.id.Locations);
-//                Book book = new Book();
-
-String B;
-                B=enternumber.getText().toString();
-                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra(EXTRA_MESSAGE,B);
+                String B;
+                B = enternumber.getText().toString();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra(EXTRA_MESSAGE, B);
                 startActivity(intent);
 
 
