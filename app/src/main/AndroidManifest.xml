@@ -1,26 +1,61 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.codextech.ibtisam.lepak_app">
-    <uses-permission android:name="android.permission.INTERNET" />
+    package="com.codextech.ibtisam.lepak_app"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
-        android:name=".app.MyApplication"
+        android:name="com.codextech.ibtisam.lepak_app.wiget.App"
+        android:icon="@drawable/pos_ico"
+        android:label="@string/app_name"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="Lipar_app"
-        android:supportsRtl="true"
+        android:screenOrientation="portrait"
+        android:resizeableActivity="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login">
+        <activity
+            android:name="com.codextech.ibtisam.lepak_app.activity.OldMainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity
+            android:name="com.codextech.ibtisam.lepak_app.activity.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" />
-        <activity
-            android:name=".Ticket"
-            android:screenOrientation="portrait" />
-        <activity android:name=".Home"></activity>
-    </application>
 
+        <activity
+            android:name="com.codextech.ibtisam.lepak_app.activity.HomeActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.codextech.ibtisam.lepak_app.activity.OldPrintActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.codextech.ibtisam.lepak_app.activity.AllTicketsActivity"
+            android:screenOrientation="portrait" />
+
+        <receiver android:name="com.codextech.ibtisam.lepak_app.receiver.StartReceiver">
+            <intent-filter android:priority="996">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.codextech.ibtisam.lepak_app.service.ScanService">
+        </service>
+
+    </application>
 </manifest>

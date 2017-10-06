@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
-import com.codextech.ibtisam.lepak_app.Home;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.adapters.BooksAdapter;
 import com.codextech.ibtisam.lepak_app.adapters.RealmBooksAdapter;
@@ -26,8 +25,8 @@ import java.util.Date;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class MainActivity extends AppCompatActivity {
-    private final static String TAG = "MainActivity";
+public class AllTicketsActivity extends AppCompatActivity {
+    private final static String TAG = "AllTicketsActivity";
     private BooksAdapter adapter;
     private Realm realm;
     private LayoutInflater inflater;
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_all_tickets);
         System.out.println(currentDateTimeString);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         recycler = (RecyclerView) findViewById(R.id.recycler);
@@ -72,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                inflater = MainActivity.this.getLayoutInflater();
+                inflater = AllTicketsActivity.this.getLayoutInflater();
                 View content = inflater.inflate(R.layout.edit_item, null);
 //                final EditText editTitle = (EditText) content.findViewById(R.id.title);
 //                final EditText editAuthor = (EditText) content.findViewById(R.id.author);
@@ -82,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 Intent intent = getIntent();
-                final String mess = intent.getStringExtra(Home.EXTRA_MESSAGE);
+                final String mess = intent.getStringExtra(HomeActivity.EXTRA_MESSAGE);
                 Book book = new Book();
                 //book.setId(RealmController.getInstance().getBooks().size() + 1);
                 book.setId(RealmController.getInstance().getBooks().size() + System.currentTimeMillis());
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 // book.setImageUrl(editThumbnail.getText().toString());
 
 //                                if (editTitle.getText() == null || editTitle.getText().toString().equals("") || editTitle.getText().toString().equals(" ")) {
-//                                    Toast.makeText(MainActivity.this, "Entry not saved, missing title", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(AllTicketsActivity.this, "Entry not saved, missing title", Toast.LENGTH_SHORT).show();
 //                                } else
                 {
                     // Persist your data easily

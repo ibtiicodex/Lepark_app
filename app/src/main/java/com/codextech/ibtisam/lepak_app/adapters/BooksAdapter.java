@@ -122,7 +122,7 @@ public class BooksAdapter extends RealmRecyclerViewAdapter<Book> {
 //
 //                AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //                builder.setView(content)
-//                        .setTitle("Edit Ticket")
+//                        .setTitle("Edit TicketActivity")
 //                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 //                            @Override
 //                            public void onClick(DialogInterface dialog, int which) {

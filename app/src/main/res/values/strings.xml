@@ -5,4 +5,214 @@
     <string name="enter_number">Enter Number</string>
     <string name="bike">Bike</string>
     <string name="show_all">Show All</string>
+
+    <string-array name="psam_slot">
+        <item>psam1</item>
+        <item>psam2</item>
+    </string-array>
+    <string-array name="serial">
+        <item>mcu serial port 2</item>
+        <item>mcu serial port 3</item>
+        <item>mcu serial port 4</item>
+        <item>mcu serial port 5</item>
+    </string-array>
+    <string-array name="baudrate">
+        <item>1200</item>
+        <item>2400</item>
+        <item>4800</item>
+        <item>9600</item>
+        <item>19200</item>
+        <item>38400</item>
+        <item>57600</item>
+        <item>76800</item>
+        <item>115200</item>
+    </string-array>
+
+
+    <string-array name="can_baudrate">
+        <item>25K</item>
+        <item>50K</item>
+        <item>100K</item>
+        <item>125K</item>
+        <item>200K</item>
+        <item>250K</item>
+        <item>500K</item>
+        <item>750K</item>
+        <item>1M</item>
+
+    </string-array>
+    <string-array name="mc_type">
+        <item>SLE4442</item>
+        <item>SLE4428</item>
+        <item>AT24C01</item>
+        <item>AT24C02</item>
+        <item>AT24C04</item>
+        <item>AT24C08</item>
+        <item>AT24C16</item>
+        <item>AT24C32</item>
+        <item>AT24C64</item>
+        <item>CPUCARD</item>
+
+    </string-array>
+    <string-array name="barcodeType">
+        <item>One-dimensional bar code</item>
+        <item>Two-dimensional bar code</item>
+    </string-array>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="sdk_version">SDK Version</string>
+    <string name="pos_reset">POS RESET</string>
+    <string name="pos_status">POS Status</string>
+    <string name="swiping_card">Swiping Card</string>
+    <string name="ic_reset">IC reset</string>
+    <string name="ic_close">IC close</string>
+    <string name="ic_cmd">IC cmd</string>
+    <string name="update">Update</string>
+    <string name="psam_reset">PSAM reset</string>
+    <string name="psam_close">PSAM close</string>
+    <string name="psam_cmd">PSAM cmd</string>
+    <string name="expand_serial">ExpandSerial</string>
+    <string name="print_text">Print</string>
+    <string name="print_image">PrintImage</string>
+    <string name="print1d2dcode">print1D2Dcode</string>
+    <string name="nfc">NFC</string>
+    <string name="code_content">Encoding content:</string>
+    <string name="please_input_content_to_generate_barcode">Please enter the generated content</string>
+    <string name="height_of_the_image">Image height:</string>
+    <string name="width_of_the_image">Image width:</string>
+    <string name="generate_barcode">Generate one-dimensional code</string>
+    <string name="generate_qrcode">Generate two-dimensional code</string>
+    <string name="select_image">Select Image</string>
+    <string name="magin_left">Left margin:</string>
+    <string name="print_density">Print density:</string>
+    <string name="print">print</string>
+    <string name="update_fonts">Update the font</string>
+    <string name="select_a_firmware_file">Update the firmware</string>
+    <string name="psam1_">" psam1:"</string>
+    <string name="psam2">" psam2:"</string>
+    <string name="ic_card">" IC card"</string>
+    <string name="magnetic_card">" Magnetic stripe cards:"</string>
+    <string name="printer">" printer:"</string>
+    <string name="pos_serial_no">"pos serial number: "</string>
+    <string name="pos_firmware_version">"pos firmware version: "</string>
+    <string name="get_pos_status_failed">Failed to get status</string>
+    <string name="card_no">card number:</string>
+    <string name="track1">Track 1:</string>
+    <string name="track2">Track 2:</string>
+    <string name="track3">Track 3:</string>
+    <string name="swiping_card_interrupt">The user canceled the credit card</string>
+    <string name="swiping_card_timeout">Credit card timeout</string>
+    <string name="swiping_card_failed">Credit card failed</string>
+    <string name="data_of_reset">Reset data:
+\n</string>
+    <string name="reset_ic_timeout">Reset IC card timeout</string>
+    <string name="ic_reset_failed">Reset IC card failed</string>
+    <string name="ic_close_success">IC closed successfully</string>
+    <string name="ic_close_failed">IC off failed</string>
+    <string name="ic_cmd_success">IC The instruction was executed successfully
+\receive a reply:</string>
+    <string name="ic_cmd_failed">IC Instruction execution failed</string>
+    <string name="psam_reset_success">psam reset successful</string>
+    <string name="psam_reset_failed">psam reset failed</string>
+    <string name="psam_close_success">psam closed successfully</string>
+    <string name="psam_close_failed">psam shutdown failed</string>
+    <string name="psam_cmd_success">The psam command was executed successfully
+\receive a reply:</string>
+    <string name="psam_cmd_failed">psam command failed to execute</string>
+    <string name="serial_cmd_success">The command was executed successfully
+\n Receive a reply:</string>
+    <string name="serial_cmd_failed">Command execution failed</string>
+    <string name="print_success">Print result: Print successful</string>
+    <string name="print_no_paper">Print Results: The printer is out of paper</string>
+    <string name="print_failed">Print Results: The printer failed</string>
+    <string name="print_voltate_low">Printed result: The battery voltage is too low</string>
+    <string name="print_voltate_high">Print result: The supply voltage is too high</string>
+    <string name="getting_pos_status">Getting status...</string>
+    <string name="version_">version:</string>
+    <string name="please_insert_ic_card">Please insert the IC card...</string>
+    <string name="please_take_out_ic_card">Please remove the IC card...</string>
+    <string name="executing_ic_cmd">Executing IC instruction...</string>
+    <string name="please_swiping_card">Please credit card...</string>
+    <string name="which_psamslot_to_close">Which PSAM slot is closed?</string>
+    <string name="closing_psam1">Closing PSAM1...</string>
+    <string name="closing_psam2">Closing PSAM2...</string>
+    <string name="which_psamslot_to_reset">Reset which PSAM?</string>
+    <string name="which_psamslot_to_operate">Which PSAM card is operated?</string>
+    <string name="resetting_psam1">Resets psam1...</string>
+    <string name="resetting_psam2">Resetting psam2...</string>
+    <string name="executing_psam1_cmd">The psam1 command is being executed...</string>
+    <string name="executing_psam2_cmd">The psam2 command is being executed...</string>
+    <string name="which_serialport_to_send">Send the data to which serial port?</string>
+    <string name="sending_to_serial1">Send data to serial port 1...</string>
+    <string name="sending_to_serial2">Send data to serial port 2...</string>
+    <string name="code_type">Barcode type:</string>
+    <string name="update_fonts_">OK to update the font?</string>
+    <string name="confirm">determine</string>
+    <string name="cancel">cancel</string>
+    <string name="upgrade_success">update completed!</string>
+    <string name="upgrade_failed">Upgrade failed!</string>
+    <string name="update_Pos_firmware">OK to update the Pos firmware?</string>
+    <string name="firmware_path">Firmware path:</string>
+    <string name="sync_baudrate">Synchronous baud rate...</string>
+    <string name="erase_memory">Erase the memory area...</string>
+    <string name="start_writing_program">Start writing the program...</string>
+    <string name="pos_firmware_update_success">POS firmware update is complete</string>
+    <string name="pos_firmware_update_failed">POS update failed!</string>
+    <string name="pos_fonts_update_success">POS font update is complete</string>
+    <string name="printing_in_progress">Is printing...</string>
+    <string name="print_count">Print the number of sheets:</string>
+    <string name="tips">prompt</string>
+    <string name="close">shut down</string>
+    <string name="state_normal">normal</string>
+    <string name="state_no_card">No card</string>
+    <string name="state_card_error">Card error</string>
+    <string name="state_fault">malfunction</string>
+    <string name="state_no_paper">Out of paper</string>
+    <string name="readoutUnprotect">Remove read and write protection</string>
+    <string name="device_power">switch</string>
+    <string name="device_power_tip">Turn the scan head power on or off</string>
+    <string name="scan_mode">Scan mode</string>
+    <string name="scan_mode_tip">Switch scan mode</string>
+    <string name="scan_sound">Beep tone</string>
+    <string name="scan_sound_tip">Play the tone when scanning</string>
+    <string name="append_enter_key">Attach the Enter key</string>
+    <string name="append_enter_key_tip">Scan to the data after the additional carriage return</string>
+    <string name="device_reset">Reset the device</string>
+    <string name="poweroff_auto_reset">Shutdown is automatically reset</string>
+    <string name="poweroff_auto_reset_tips">The device parameters are automatically restored when the machine is turned off</string>
+    <string name="reset_scan_device">Reset the scan head</string>
+
+    <string-array name="barcode_dev_list">
+        <item>H271-SD01</item>
+        <item>N3680SR-W1-TTL</item>
+        <item>NLS-EM3096</item>
+    </string-array>
+
+    <string-array name="barcode_scan_mode">
+        <item>Manual mode</item>
+        <item>Sensing mode</item>
+
+    </string-array>
+    <string-array name="barcode_light_mode">
+        <item>No lighting</item>
+        <item>ordinary</item>
+        <item>Always bright</item>
+
+    </string-array>
+
+
+    <string name="print_complete">Print complete</string>
+    <string name="barcode_scan_dev_model">Scan head model</string>
+    <string name="barcode_scan_dev_model_tips">Choose to use the scanning device</string>
+    <string name="light_mode">Lighting mode</string>
+    <string name="title_activity_pay">PayActivity</string>
+
+    <string name="reset">Device reset</string>
+    <string name="state">device status</string>
+    <string name="psam_card">psam card</string>
+
+    <string name="serial_port">Extended serial port</string>
+    <string name="bar_scan">Barcode scanning</string>
+    <string name="ex_io">ex I</string>
 </resources>

@@ -1,15 +1,15 @@
-package com.codextech.ibtisam.lepak_app;
+package com.codextech.ibtisam.lepak_app.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.codextech.ibtisam.lepak_app.activity.MainActivity;
+import com.codextech.ibtisam.lepak_app.R;
 
-public class Home extends AppCompatActivity {
+public class HomeActivity extends Activity {
     public static String EXTRA_MESSAGE = "haye";
 
     private Button Ok, next;
@@ -29,7 +29,7 @@ public class Home extends AppCompatActivity {
                 String B;
 
                 B = enternumber.getText().toString();
-                Intent intent = new Intent(getApplicationContext(), Ticket.class);
+                Intent intent = new Intent(getApplicationContext(), OldMainActivity.class);
                 intent.putExtra(EXTRA_MESSAGE, B);
                 startActivity(intent);
 
@@ -41,7 +41,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View view) {
                 String B;
                 B = enternumber.getText().toString();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AllTicketsActivity.class);
                 intent.putExtra(EXTRA_MESSAGE, B);
                 startActivity(intent);
 
