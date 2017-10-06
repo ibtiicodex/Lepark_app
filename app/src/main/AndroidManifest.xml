@@ -40,7 +40,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.codextech.ibtisam.lepak_app.activity.OldPrintActivity"
+            android:name="com.codextech.ibtisam.lepak_app.activity.TicketActivity"
             android:screenOrientation="portrait" />
 
         <activity

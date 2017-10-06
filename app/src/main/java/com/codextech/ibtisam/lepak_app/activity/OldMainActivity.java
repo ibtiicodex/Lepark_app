@@ -37,7 +37,7 @@ public class OldMainActivity extends Activity {
         btPrintActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OldMainActivity.this, OldPrintActivity.class));
+                startActivity(new Intent(OldMainActivity.this, TicketActivity.class));
             }
         });
 

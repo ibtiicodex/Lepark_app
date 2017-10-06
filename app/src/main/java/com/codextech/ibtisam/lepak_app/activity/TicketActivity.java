@@ -19,22 +19,18 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.RequestQueue;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.adapters.BooksAdapter;
-import com.codextech.ibtisam.lepak_app.model.Book;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.util.BarcodeCreater;
 import com.codextech.ibtisam.lepak_app.util.BitmapTools;
-
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.util.Date;
-
 import io.realm.Realm;
 
-public class OldPrintActivity extends Activity {
+public class TicketActivity extends Activity {
     private Button btnPrintMix;
     private Bitmap mBitmap = null;
     private PrintQueue mPrintQueue = null;
@@ -120,13 +116,13 @@ public class OldPrintActivity extends Activity {
                 isCanPrint = true;
                 switch (state) {
                     case 0:
-                        Toast.makeText(OldPrintActivity.this, "Continued with paper", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TicketActivity.this, "Continued with paper", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
-                        Toast.makeText(OldPrintActivity.this, "Out of paper", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TicketActivity.this, "Out of paper", Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
-                        Toast.makeText(OldPrintActivity.this, "Black mark is detected", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TicketActivity.this, "Black mark is detected", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
