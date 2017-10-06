@@ -19,15 +19,20 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.RequestQueue;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.adapters.BooksAdapter;
+import com.codextech.ibtisam.lepak_app.model.Book;
+import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.util.BarcodeCreater;
 import com.codextech.ibtisam.lepak_app.util.BitmapTools;
+
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.util.Date;
+
 import io.realm.Realm;
 
 public class TicketActivity extends Activity {
@@ -47,29 +52,45 @@ public class TicketActivity extends Activity {
     private Realm realm;
     private BooksAdapter adapter;
     Button Main;
-    String name = "Ali";
     RequestQueue queue;
-    String pr = "20";
-    String Loocation = "Liberty";
+
+//    String name = "Ali";
+//    String pr = "20";
+//    String Loocation = "Liberty";
+//    String num;
+//    String currentDateTimeString;
+
+    String ticket_time = "";
+    String veh_number = "";
+    String agent_name = "Ali";
+    String veh_type = "car";
+    String fee = "20";
+    String device_location = "Liberty";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket);
+        this.realm = RealmController.with(this).getRealm();
+        RealmController.with(this).refresh();
 
-        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-//        Intent intent = getIntent();
-//        String mess = intent.getStringExtra(HomeActivity.EXTRA_MESSAGE);
+        Intent intenti = getIntent();
+        veh_number = intenti.getStringExtra(OldMainActivity.EXTRA_MESSAGEy);
+        ticket_time = DateFormat.getDateTimeInstance().format(new Date());
+        Intent intent = getIntent();
+
+        String mess = intent.getStringExtra(HomeActivity.EXTRA_MESSAGE);
         agent = (TextView) findViewById(R.id.Dname);
         time = (TextView) findViewById(R.id.Dtime);
         number = (TextView) findViewById(R.id.Dnumber);
         price = (TextView) findViewById(R.id.Dprice);
         location = (TextView) findViewById(R.id.Dlocation);
         agent.setText("Ali");
-        time.setText(currentDateTimeString);
-//        number.setText(mess);
+        time.setText(ticket_time);
+        number.setText(veh_number);
         price.setText("20");
         location.setText("Liberty Market");
+        Toast.makeText(this, "  " + veh_number + " ", Toast.LENGTH_SHORT).show();
 
         btnPrintMix = (Button) this.findViewById(R.id.btnPrintMix);
         btnPrintMix.setOnClickListener(new OnClickListener() {
@@ -228,9 +249,9 @@ public class TicketActivity extends Activity {
             sb.append("Agent Name: ");
             sb.append("Ali");
             sb.append("\n");
-            sb.append("Time:  2:22:37pm");
+            sb.append("Time:  " + ticket_time);
             sb.append("\n");
-            sb.append("Veh Reg No:  1234567890");
+            sb.append("Veh Reg No:  " + veh_number);
             sb.append("\n");
             sb.append("Veh Type:  Car");
             sb.append("\n");
@@ -268,9 +289,38 @@ public class TicketActivity extends Activity {
 
             mPrintQueue.printStart();
 
+
+            //TODO if ticket is printed successfull then do this
+
+            saveTicket("Usman", "10pm", "598", "Car", "20", "Jeff Heights");
+//            saveTicket(agent_name, ticket_time, veh_number, veh_type, fee, device_location);
+
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+
+    private void saveTicket(String agent_name, String ticket_time, String veh_number, String veh_type, String fee, String device_location) {
+
+        if (agent_name != null && ticket_time != null && veh_number != null && veh_type != null && fee != null && device_location != null) {
+
+            Book book = new Book();
+//        book.setId(RealmController.getInstance().getBooks().size() + System.currentTimeMillis());
+            book.setTitle("Ali");
+            book.setAuthor(ticket_time);
+            book.setNumber(veh_number);
+//            book.setType(veh_type);
+            book.setPrice(fee);
+            book.setLocation(device_location);
+            // book.setImageUrl(editThumbnail.getText().toString());
+
+            // Persist your data easily
+            realm.beginTransaction();
+            realm.copyToRealm(book);
+            realm.commitTransaction();
+
+            Toast.makeText(TicketActivity.this, "Entry Saved", Toast.LENGTH_SHORT).show();
         }
     }
 

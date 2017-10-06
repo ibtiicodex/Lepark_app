@@ -20,16 +20,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fab"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
 
-        android:layout_marginBottom="100dp"
-        app:backgroundTint="@color/colorPrimary"
-        app:elevation="4dp"
-        app:layout_anchor="@+id/recycler"
-        app:layout_anchorGravity="bottom|right|end" />
+        <!--android:layout_marginBottom="100dp"-->
+        <!--app:backgroundTint="@color/colorPrimary"-->
+        <!--app:elevation="4dp"-->
+        <!--app:layout_anchor="@+id/recycler"-->
+        <!--app:layout_anchorGravity="bottom|right|end" />-->
 
     <include layout="@layout/content_main" />
 

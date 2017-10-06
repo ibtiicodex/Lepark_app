@@ -19,12 +19,20 @@ import com.codextech.ibtisam.lepak_app.wiget.App;
 public class OldMainActivity extends Activity {
     private PosApi mPosSDK;
     private Button btPrintActivity;
+    public static String EXTRA_MESSAGEy = "haye";
+    String mess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+        Intent intent = getIntent();
+  mess = intent.getStringExtra(HomeActivity.EXTRA_MESSAGE);
+//        Intent intenti = new Intent(getApplicationContext(), TicketActivity.class);
+//        intent.putExtra(EXTRA_MESSAGEy, mess);
+//        startActivity(intenti);
 
+        Toast.makeText(this, "  "+mess+"  ", Toast.LENGTH_SHORT).show();
         btPrintActivity = (Button) this.findViewById(R.id.btPrintActivity);
         mPosSDK = App.getInstance().getPosApi();
         mPosSDK.setOnComEventListener(mCommEventListener);
@@ -37,7 +45,10 @@ public class OldMainActivity extends Activity {
         btPrintActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OldMainActivity.this, TicketActivity.class));
+                //startActivity(new Intent(OldMainActivity.this, TicketActivity.class));
+                Intent intenti = new Intent(getApplicationContext(), TicketActivity.class);
+                intenti.putExtra(EXTRA_MESSAGEy, mess);
+                startActivity(intenti);
             }
         });
 

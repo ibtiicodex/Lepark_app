@@ -12,7 +12,7 @@ import com.codextech.ibtisam.lepak_app.R;
 public class HomeActivity extends Activity {
     public static String EXTRA_MESSAGE = "haye";
 
-    private Button Ok, next;
+    private Button Ok, btAllTickets;
     private EditText enternumber;
 
 
@@ -21,13 +21,12 @@ public class HomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Ok = (Button) findViewById(R.id.carButton);
-        next = (Button) findViewById(R.id.next);
+        btAllTickets = (Button) findViewById(R.id.btAllTickets);
         enternumber = (EditText) findViewById(R.id.enterNum);
         Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String B;
-
                 B = enternumber.getText().toString();
                 Intent intent = new Intent(getApplicationContext(), OldMainActivity.class);
                 intent.putExtra(EXTRA_MESSAGE, B);
@@ -36,13 +35,13 @@ public class HomeActivity extends Activity {
 
             }
         });
-        next.setOnClickListener(new View.OnClickListener() {
+        btAllTickets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String B;
-                B = enternumber.getText().toString();
+//                String B;
+//                B = enternumber.getText().toString();
                 Intent intent = new Intent(getApplicationContext(), AllTicketsActivity.class);
-                intent.putExtra(EXTRA_MESSAGE, B);
+//                intent.putExtra(EXTRA_MESSAGE, B);
                 startActivity(intent);
 
 

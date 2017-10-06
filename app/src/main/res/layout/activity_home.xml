@@ -54,7 +54,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/next"
+        android:id="@+id/btAllTickets"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_xml_btn_yellow"
