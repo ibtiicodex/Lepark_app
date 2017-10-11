@@ -1,10 +1,10 @@
 package com.codextech.ibtisam.lepak_app.adapters;
 
-import android.content.Context;
+        import android.content.Context;
 
-import com.codextech.ibtisam.lepak_app.model.Book;
+        import com.codextech.ibtisam.lepak_app.model.Book;
 
-import io.realm.RealmResults;
+        import io.realm.RealmResults;
 
 /**
  * Created by HP on 9/27/2017.

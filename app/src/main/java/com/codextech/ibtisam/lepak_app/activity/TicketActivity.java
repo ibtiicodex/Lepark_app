@@ -22,12 +22,9 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.codextech.ibtisam.lepak_app.R;
-import com.codextech.ibtisam.lepak_app.adapters.BooksAdapter;
 import com.codextech.ibtisam.lepak_app.model.Book;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
-import com.codextech.ibtisam.lepak_app.util.BarcodeCreater;
-import com.codextech.ibtisam.lepak_app.util.BitmapTools;
 
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
@@ -46,11 +43,11 @@ public class TicketActivity extends Activity {
     MediaPlayer player;
     boolean isCanPrint = true;
 
+
     TextView agent, time, number, price, location;
     private RecyclerView recycler;
     public static String EXTRA_MESSAGE1 = "haye";
     private Realm realm;
-    private BooksAdapter adapter;
     Button Main;
     RequestQueue queue;
 
@@ -75,7 +72,7 @@ public class TicketActivity extends Activity {
         RealmController.with(this).refresh();
 
         Intent intenti = getIntent();
-        veh_number = intenti.getStringExtra(OldMainActivity.EXTRA_MESSAGEy);
+        veh_number = intenti.getStringExtra(HomeActivity.EXTRA_MESSAGEy);
         ticket_time = DateFormat.getDateTimeInstance().format(new Date());
         Intent intent = getIntent();
 
@@ -85,11 +82,11 @@ public class TicketActivity extends Activity {
         number = (TextView) findViewById(R.id.Dnumber);
         price = (TextView) findViewById(R.id.Dprice);
         location = (TextView) findViewById(R.id.Dlocation);
-        agent.setText("Ali");
+        agent.setText(agent_name);
         time.setText(ticket_time);
         number.setText(veh_number);
-        price.setText("20");
-        location.setText("Liberty Market");
+        price.setText(fee);
+        location.setText(device_location);
         Toast.makeText(this, "  " + veh_number + " ", Toast.LENGTH_SHORT).show();
 
         btnPrintMix = (Button) this.findViewById(R.id.btnPrintMix);
@@ -104,8 +101,13 @@ public class TicketActivity extends Activity {
         mPrintQueue.setOnPrintListener(new OnPrintListener() {
             @Override
             public void onFinish() {
+
                 Toast.makeText(getApplicationContext(), getString(R.string.print_complete), Toast.LENGTH_SHORT).show();
+//                Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
+//                startActivity(intent);
                 isCanPrint = true;
+                saveTicket(agent_name, ticket_time, veh_number, veh_type, fee, device_location);
+                finish();
             }
 
             @Override
@@ -238,7 +240,6 @@ public class TicketActivity extends Activity {
     }
 
     private void printMix() {
-
         try {
             int concentration = 44;
             StringBuilder sb = new StringBuilder();
@@ -247,7 +248,7 @@ public class TicketActivity extends Activity {
             sb.append("        PARKING TICKET     ");
             sb.append("\n");
             sb.append("Agent Name: ");
-            sb.append("Ali");
+            sb.append(agent_name);
             sb.append("\n");
             sb.append("Time:  " + ticket_time);
             sb.append("\n");
@@ -257,7 +258,7 @@ public class TicketActivity extends Activity {
             sb.append("\n");
             sb.append("Parking Fee:  20");
             sb.append("\n");
-            sb.append("Location:  Liberty Market");
+            sb.append("Location:  " + device_location);
             sb.append("\n");
             sb.append("--------------------------------");
             sb.append("   Parking at your own risk");
@@ -272,27 +273,25 @@ public class TicketActivity extends Activity {
             sb.append("\n");
             text = sb.toString().getBytes("GBK");
             addPrintTextWithSize(1, concentration, text);
-
-            int mWidth = 300;
-            int mHeight = 60;
-            mBitmap = BarcodeCreater.creatBarcode(getApplicationContext(), "1234567890", mWidth, mHeight, true, 1);
-            byte[] printData = BitmapTools.bitmap2PrinterBytes(mBitmap);
-            mPrintQueue.addBmp(concentration, 30, mBitmap.getWidth(), mBitmap.getHeight(), printData);
-
-            mWidth = 150;
-            mHeight = 150;
-
-            mBitmap = BarcodeCreater.encode2dAsBitmap("1234567890", mWidth, mHeight, 2);
-            printData = BitmapTools.bitmap2PrinterBytes(mBitmap);
-            mPrintQueue.addBmp(concentration, 100, mBitmap.getWidth(), mBitmap.getHeight(), printData);
-
-
+//
+//            int mWidth = 300;
+//            int mHeight = 60;
+//            mBitmap = BarcodeCreater.creatBarcode(getApplicationContext(), "1234567890", mWidth, mHeight, true, 1);
+//            byte[] printData = BitmapTools.bitmap2PrinterBytes(mBitmap);
+//            mPrintQueue.addBmp(concentration, 30, mBitmap.getWidth(), mBitmap.getHeight(), printData);
+//
+//            mWidth = 150;
+//            mHeight = 150;
+//
+//            mBitmap = BarcodeCreater.encode2dAsBitmap("1234567890", mWidth, mHeight, 2);
+//            printData = BitmapTools.bitmap2PrinterBytes(mBitmap);
+//            mPrintQueue.addBmp(concentration, 100, mBitmap.getWidth(), mBitmap.getHeight(), printData);
+//
+//
             mPrintQueue.printStart();
-
 
             //TODO if ticket is printed successfull then do this
 
-            saveTicket("Usman", "10pm", "598", "Car", "20", "Jeff Heights");
 //            saveTicket(agent_name, ticket_time, veh_number, veh_type, fee, device_location);
 
         } catch (UnsupportedEncodingException e) {
@@ -306,8 +305,8 @@ public class TicketActivity extends Activity {
         if (agent_name != null && ticket_time != null && veh_number != null && veh_type != null && fee != null && device_location != null) {
 
             Book book = new Book();
-//        book.setId(RealmController.getInstance().getBooks().size() + System.currentTimeMillis());
-            book.setTitle("Ali");
+            book.setId(RealmController.getInstance().getBooks().size() + System.currentTimeMillis());
+            book.setTitle(agent_name);
             book.setAuthor(ticket_time);
             book.setNumber(veh_number);
 //            book.setType(veh_type);
@@ -319,6 +318,7 @@ public class TicketActivity extends Activity {
             realm.beginTransaction();
             realm.copyToRealm(book);
             realm.commitTransaction();
+            // recycler.scrollToPosition(RealmController.getInstance().getBooks().size() - 1);
 
             Toast.makeText(TicketActivity.this, "Entry Saved", Toast.LENGTH_SHORT).show();
         }

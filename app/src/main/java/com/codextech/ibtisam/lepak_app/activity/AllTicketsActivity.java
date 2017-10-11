@@ -24,11 +24,11 @@ import io.realm.RealmResults;
 
 public class AllTicketsActivity extends AppCompatActivity {
     private final static String TAG = "AllTicketsActivity";
-    private BooksAdapter adapter;
+    public BooksAdapter adapter;
     private Realm realm;
     private LayoutInflater inflater;
 //    private FloatingActionButton fab;
-    private RecyclerView recycler;
+    public RecyclerView recycler;
     String messag;
     String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
@@ -36,7 +36,6 @@ public class AllTicketsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_tickets);
-        System.out.println(currentDateTimeString);
 //        fab = (FloatingActionButton) findViewById(R.id.fab);
         recycler = (RecyclerView) findViewById(R.id.recycler);
 
@@ -126,6 +125,7 @@ public class AllTicketsActivity extends AppCompatActivity {
         // use a linear layout manager since the cards are vertically scrollable
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.setReverseLayout(true);
         recycler.setLayoutManager(layoutManager);
 
         // create an empty adapter and add it to the recycler view

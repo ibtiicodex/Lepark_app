@@ -139,7 +139,7 @@ public class BooksAdapter extends RealmRecyclerViewAdapter<Book> {
 //
 //                                realm.commitTransaction();
 //
-//                                notifyDataSetChanged();
+                                notifyDataSetChanged();
 //                            }
 //                        })
 //                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

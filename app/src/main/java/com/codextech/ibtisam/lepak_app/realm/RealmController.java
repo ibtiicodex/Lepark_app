@@ -82,7 +82,7 @@ public class RealmController {
         return realm.where(Book.class).equalTo("id", id).findFirst();
     }
 
-    //check if Book.class is empty
+    //isServiceRunning if Book.class is empty
     public boolean hasBooks() {
 
         return !realm.allObjects(Book.class).isEmpty();
@@ -95,7 +95,9 @@ public class RealmController {
                 .contains("author", "Author 0")
                 .or()
                 .contains("title", "Realm")
+             //
                 .findAll();
+
 
     }
 }
