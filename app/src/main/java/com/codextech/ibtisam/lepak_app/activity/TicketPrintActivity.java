@@ -1,5 +1,4 @@
 package com.codextech.ibtisam.lepak_app.activity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -13,56 +12,44 @@ import android.os.Bundle;
 import android.posapi.PosApi;
 import android.posapi.PrintQueue;
 import android.posapi.PrintQueue.OnPrintListener;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.RequestQueue;
 import com.codextech.ibtisam.lepak_app.R;
-import com.codextech.ibtisam.lepak_app.model.Book;
+import com.codextech.ibtisam.lepak_app.model.Ticket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
-
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
-
 import io.realm.Realm;
-
-public class TicketActivity extends Activity {
+public class TicketPrintActivity extends Activity {
+    public static final String CAR_NUMBER = "car_number";
     private Button btnPrintMix;
     private Bitmap mBitmap = null;
     private PrintQueue mPrintQueue = null;
     private byte mGpioPower = 0x1E;// PB14
     private int mCurSerialNo = 3; // usart3
     private int mBaudrate = 4; // 9600
-    private static final int REQUEST_EX = 1;
     MediaPlayer player;
     boolean isCanPrint = true;
-
-
-    TextView agent, time, number, price, location;
-    private RecyclerView recycler;
-    public static String EXTRA_MESSAGE1 = "haye";
+    TextView tvagent,
+             tvtime,
+             tvnumber,
+             tvprice,
+             tvlocation;
     private Realm realm;
-    Button Main;
-    RequestQueue queue;
-
-//    String name = "Ali";
-//    String pr = "20";
-//    String Loocation = "Liberty";
-//    String num;
-//    String currentDateTimeString;
-
     String ticket_time = "";
+    String ticket_time_Out = "";
     String veh_number = "";
     String agent_name = "Ali";
     String veh_type = "car";
     String fee = "20";
     String device_location = "Liberty";
+    private long timeNowMillis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,21 +59,21 @@ public class TicketActivity extends Activity {
         RealmController.with(this).refresh();
 
         Intent intenti = getIntent();
-        veh_number = intenti.getStringExtra(HomeActivity.EXTRA_MESSAGEy);
+        veh_number = intenti.getStringExtra(TicketPrintActivity.CAR_NUMBER);
+        timeNowMillis = Calendar.getInstance().getTimeInMillis();
+        //ticket_time = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "dd/MM/yyyy hh:mm:ss");
         ticket_time = DateFormat.getDateTimeInstance().format(new Date());
-        Intent intent = getIntent();
 
-        String mess = intent.getStringExtra(HomeActivity.EXTRA_MESSAGE);
-        agent = (TextView) findViewById(R.id.Dname);
-        time = (TextView) findViewById(R.id.Dtime);
-        number = (TextView) findViewById(R.id.Dnumber);
-        price = (TextView) findViewById(R.id.Dprice);
-        location = (TextView) findViewById(R.id.Dlocation);
-        agent.setText(agent_name);
-        time.setText(ticket_time);
-        number.setText(veh_number);
-        price.setText(fee);
-        location.setText(device_location);
+        tvagent = (TextView) findViewById(R.id.Dname);
+        tvtime = (TextView) findViewById(R.id.Dtime);
+        tvnumber = (TextView) findViewById(R.id.Dnumber);
+        tvprice = (TextView) findViewById(R.id.Dprice);
+        tvlocation = (TextView) findViewById(R.id.Dlocation);
+        tvagent.setText(agent_name);
+        tvtime.setText(ticket_time);
+        tvnumber.setText(veh_number);
+        tvprice.setText(fee);
+        tvlocation.setText(device_location);
         Toast.makeText(this, "  " + veh_number + " ", Toast.LENGTH_SHORT).show();
 
         btnPrintMix = (Button) this.findViewById(R.id.btnPrintMix);
@@ -106,7 +93,7 @@ public class TicketActivity extends Activity {
 //                Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
 //                startActivity(intent);
                 isCanPrint = true;
-                saveTicket(agent_name, ticket_time, veh_number, veh_type, fee, device_location);
+
                 finish();
             }
 
@@ -139,13 +126,13 @@ public class TicketActivity extends Activity {
                 isCanPrint = true;
                 switch (state) {
                     case 0:
-                        Toast.makeText(TicketActivity.this, "Continued with paper", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TicketPrintActivity.this, "Continued with paper", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
-                        Toast.makeText(TicketActivity.this, "Out of paper", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TicketPrintActivity.this, "Out of paper", Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
-                        Toast.makeText(TicketActivity.this, "Black mark is detected", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TicketPrintActivity.this, "Black mark is detected", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -268,59 +255,35 @@ public class TicketActivity extends Activity {
             byte[] text = null;
             text = sb.toString().getBytes("GBK");
             addPrintTextWithSize(1, concentration, text);
-
             sb = new StringBuilder();
             sb.append("\n");
             text = sb.toString().getBytes("GBK");
             addPrintTextWithSize(1, concentration, text);
-//
-//            int mWidth = 300;
-//            int mHeight = 60;
-//            mBitmap = BarcodeCreater.creatBarcode(getApplicationContext(), "1234567890", mWidth, mHeight, true, 1);
-//            byte[] printData = BitmapTools.bitmap2PrinterBytes(mBitmap);
-//            mPrintQueue.addBmp(concentration, 30, mBitmap.getWidth(), mBitmap.getHeight(), printData);
-//
-//            mWidth = 150;
-//            mHeight = 150;
-//
-//            mBitmap = BarcodeCreater.encode2dAsBitmap("1234567890", mWidth, mHeight, 2);
-//            printData = BitmapTools.bitmap2PrinterBytes(mBitmap);
-//            mPrintQueue.addBmp(concentration, 100, mBitmap.getWidth(), mBitmap.getHeight(), printData);
-//
-//
+            saveTicket(agent_name, "" + ticket_time, ticket_time_Out, veh_number, veh_type, fee, device_location);
             mPrintQueue.printStart();
-
             //TODO if ticket is printed successfull then do this
-
-//            saveTicket(agent_name, ticket_time, veh_number, veh_type, fee, device_location);
-
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    private void saveTicket(String agent_name, String ticket_time, String veh_number, String veh_type, String fee, String device_location) {
+    public void saveTicket(String agent_name, String ticket_time_in, String ticket_time_out, String veh_number, String veh_type, String fee, String device_location) {
 
-        if (agent_name != null && ticket_time != null && veh_number != null && veh_type != null && fee != null && device_location != null) {
+        if (agent_name != null && ticket_time_in != null && veh_number != null && veh_type != null && fee != null && device_location != null) {
 
-            Book book = new Book();
-            book.setId(RealmController.getInstance().getBooks().size() + System.currentTimeMillis());
-            book.setTitle(agent_name);
-            book.setAuthor(ticket_time);
-            book.setNumber(veh_number);
-//            book.setType(veh_type);
-            book.setPrice(fee);
-            book.setLocation(device_location);
-            // book.setImageUrl(editThumbnail.getText().toString());
-
-            // Persist your data easily
+            Ticket ticket = new Ticket();
+            ticket.setId(RealmController.getInstance().getBooks().size() + System.currentTimeMillis());
+            ticket.setAgentName(agent_name);
+            ticket.setTimeIn(ticket_time_in);
+            ticket.setTimeOut(ticket_time_out);
+            ticket.setNumber(veh_number);
+            ticket.setPrice(fee);
+            ticket.setLocation(device_location);
             realm.beginTransaction();
-            realm.copyToRealm(book);
+            realm.copyToRealm(ticket);
             realm.commitTransaction();
-            // recycler.scrollToPosition(RealmController.getInstance().getBooks().size() - 1);
-
-            Toast.makeText(TicketActivity.this, "Entry Saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TicketPrintActivity.this, "Entry Saved" + RealmController.getInstance().getBooks().size() + System.currentTimeMillis(), Toast.LENGTH_SHORT).show();
         }
     }
 

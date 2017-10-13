@@ -41,7 +41,7 @@
             android:name=".activity.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.TicketActivity"
+            android:name=".activity.TicketPrintActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.AllTicketsActivity"
@@ -57,7 +57,7 @@
 
         <service android:name=".service.ScanService"></service>
 
-        <activity android:name=".OutScreen"></activity>
+        <activity android:name=".activity.OutScreen"></activity>
     </application>
 
 </manifest>

@@ -20,230 +20,209 @@ import java.io.UnsupportedEncodingException;
 
 public class ScanService extends Service {
 
-	private boolean isOpen = false;
-	private int mComFd = -1;
-	private final static int SHOW_RECV_DATA = 1;
-	// public static ServiceBeepManager beepManager;
+    private boolean isOpen = false;
+    private int mComFd = -1;
+    private final static int SHOW_RECV_DATA = 1;
+    // public static ServiceBeepManager beepManager;
 
-	public static PosApi mApi = null;
+    public static PosApi mApi = null;
 
-	private static byte mGpioPower = 0x1E;// PB14
-	private static byte mGpioTrig = 0x29;// PC9
+    private static byte mGpioPower = 0x1E;// PB14
+    private static byte mGpioTrig = 0x29;// PC9
 
-	private static int mCurSerialNo = 3; // usart3
-	private static int mBaudrate = 4; // 9600
+    private static int mCurSerialNo = 3; // usart3
+    private static int mBaudrate = 4; // 9600
 
-	private ScanBroadcastReceiver scanBroadcastReceiver;
+    private ScanBroadcastReceiver scanBroadcastReceiver;
 
-	MediaPlayer player;
+    MediaPlayer player;
 
-	@Override
-	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public void onCreate() {
-		// TODO Auto-generated method stub
-		init();
+    @Override
+    public void onCreate() {
+        // TODO Auto-generated method stub
+        init();
 
-		initGPIO();
+        initGPIO();
 
-		IntentFilter mFilter = new IntentFilter();
-		mFilter.addAction(PosApi.ACTION_POS_COMM_STATUS);
-		registerReceiver(receiver_, mFilter);
+        IntentFilter mFilter = new IntentFilter();
+        mFilter.addAction(PosApi.ACTION_POS_COMM_STATUS);
+        registerReceiver(receiver_, mFilter);
 
-		scanBroadcastReceiver = new ScanBroadcastReceiver();
-		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction("ismart.intent.scandown");
-		this.registerReceiver(scanBroadcastReceiver, intentFilter);
+        scanBroadcastReceiver = new ScanBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("ismart.intent.scandown");
+        this.registerReceiver(scanBroadcastReceiver, intentFilter);
 
-		player = MediaPlayer.create(getApplicationContext(), R.raw.beep);
+        player = MediaPlayer.create(getApplicationContext(), R.raw.beep);
 
-		super.onCreate();
+        super.onCreate();
 
-	}
+    }
 
-	public static void init(){
-		mApi = App.getInstance().getPosApi();
+    public static void init() {
+        mApi = App.getInstance().getPosApi();
 
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				openDevice();
-			}
-		}, 1000);
-	}
-
-
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		// TODO Auto-generated method stub
-		return super.onStartCommand(intent, flags, startId);
-	}
-
-	BroadcastReceiver receiver_ = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
-			String action = intent.getAction();
-			if (action.equalsIgnoreCase(PosApi.ACTION_POS_COMM_STATUS)) {
-				int cmdFlag = intent.getIntExtra(PosApi.KEY_CMD_FLAG, -1);
-				byte[] buffer = intent
-						.getByteArrayExtra(PosApi.KEY_CMD_DATA_BUFFER);
-				switch (cmdFlag) {
-				case PosApi.POS_EXPAND_SERIAL_INIT:
-					break;
-				case PosApi.POS_EXPAND_SERIAL3:
-					if (buffer == null)
-						return;
-					player.start();
-					try {
-						String str = new String(buffer, "GBK");
-						Log.e("ScanStr", "-----:" + str.trim());
-						Intent intentBroadcast = new Intent();
-						Intent intentBroadcast1 = new Intent();
-						intentBroadcast.setAction("com.qs.scancode");
-						intentBroadcast1.setAction("com.zkc.scancode");
-						intentBroadcast.putExtra("code", str.trim());
-						intentBroadcast1.putExtra("code", str.trim());
-						sendBroadcast(intentBroadcast);
-						sendBroadcast(intentBroadcast1);
-						isScan = false;
-						ScanService.mApi.gpioControl(mGpioTrig, 0, 1);
-						handler.removeCallbacks(run);
-					} catch (UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					break;
-				}
-				buffer = null;
-			}
-		}
-	};
-
-	public String toGBK(String str) throws UnsupportedEncodingException {
-		return this.changeCharset(str, "GBK");
-	}
-
-	/**
-	 * Implementation of String Coding Transformation
-	 *
-	 * @param str
-	 *            The string to be converted
-	 * @param newCharset
-	 *            Target Coding Target Coding
-	 * @return
-	 * @throws UnsupportedEncodingException
-	 */
-	public String changeCharset(String str, String newCharset)
-			throws UnsupportedEncodingException {
-		if (str != null) {
-			// Decode the string with the default character encoding.
-			byte[] bs = str.getBytes(newCharset);
-			// Generate a string with a new character encoding
-			return new String(bs, newCharset);
-		}
-		return null;
-	}
-
-	static boolean isIscanScan = false;
-
-	public static void openScan() {
-		ScanService.mApi.gpioControl(mGpioTrig, 0, 0);
-		try {
-			Thread.sleep(100);
-		} catch (Exception e) {
-		}
-		ScanService.mApi.gpioControl(mGpioTrig, 0, 1);
-	}
-
-	private static void openDevice() {
-		// open power
-		mApi.gpioControl(mGpioPower, 0, 1);
-
-		mApi.extendSerialInit(mCurSerialNo, mBaudrate, 1, 1, 1, 1);
-	}
-
-	// private static void closeDevice() {
-	// // open power
-	// mApi.gpioControl(mGpioPower, 0, 0);
-	// mApi.extendSerialClose(mCurSerialNo);
-	// }
-
-	private void initGPIO() {
-		// TODO Auto-generated method stub
-
-//		openDevice();
-
-		Toast.makeText(getApplicationContext(), "The scan service is initialized", Toast.LENGTH_SHORT)
-				.show();
-
-		if (mComFd > 0) {
-			isOpen = true;
-			// readData();
-		} else {
-			isOpen = false;
-		}
-	}
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                openDevice();
+            }
+        }, 1000);
+    }
 
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        // TODO Auto-generated method stub
+        return super.onStartCommand(intent, flags, startId);
+    }
 
-	@Override
-	@Deprecated
-	public void onStart(Intent intent, int startId) {
-		// TODO Auto-generated method stub
-		super.onStart(intent, startId);
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				openDevice();
-			}
-		}, 1000);
-	}
+    BroadcastReceiver receiver_ = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            String action = intent.getAction();
+            if (action.equalsIgnoreCase(PosApi.ACTION_POS_COMM_STATUS)) {
+                int cmdFlag = intent.getIntExtra(PosApi.KEY_CMD_FLAG, -1);
+                byte[] buffer = intent
+                        .getByteArrayExtra(PosApi.KEY_CMD_DATA_BUFFER);
+                switch (cmdFlag) {
+                    case PosApi.POS_EXPAND_SERIAL_INIT:
+                        break;
+                    case PosApi.POS_EXPAND_SERIAL3:
+                        if (buffer == null)
+                            return;
+                        player.start();
+                        try {
+                            String str = new String(buffer, "GBK");
+                            Log.e("ScanStr", "-----:" + str.trim());
+                            Intent intentBroadcast = new Intent();
+                            Intent intentBroadcast1 = new Intent();
+                            intentBroadcast.setAction("com.qs.scancode");
+                            intentBroadcast1.setAction("com.zkc.scancode");
+                            intentBroadcast.putExtra("code", str.trim());
+                            intentBroadcast1.putExtra("code", str.trim());
+                            sendBroadcast(intentBroadcast);
+                            sendBroadcast(intentBroadcast1);
+                            isScan = false;
+                            ScanService.mApi.gpioControl(mGpioTrig, 0, 1);
+                            handler.removeCallbacks(run);
+                        } catch (UnsupportedEncodingException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+                buffer = null;
+            }
+        }
+    };
 
-	Vibrator vibrator;
+    public String toGBK(String str) throws UnsupportedEncodingException {
+        return this.changeCharset(str, "GBK");
+    }
 
-	@Override
-	public void onDestroy() {
-		// TODO Auto-generated method stub
-		mApi.closeDev();
-		super.onDestroy();
-	}
+    public String changeCharset(String str, String newCharset)
+            throws UnsupportedEncodingException {
+        if (str != null) {
+            // Decode the string with the default character encoding.
+            byte[] bs = str.getBytes(newCharset);
+            // Generate a string with a new character encoding
+            return new String(bs, newCharset);
+        }
+        return null;
+    }
 
-	boolean isScan = false;
+    static boolean isIscanScan = false;
 
-	class ScanBroadcastReceiver extends BroadcastReceiver {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
-			if (!isScan) {
-				ScanService.mApi.gpioControl(mGpioTrig, 0, 0);
-				isScan = true;
-				handler.removeCallbacks(run);
-				handler.postDelayed(run, 3000);
-			} else {
-				ScanService.mApi.gpioControl(mGpioTrig, 0, 1);
-				ScanService.mApi.gpioControl(mGpioTrig, 0, 0);
-				isScan = true;
-				handler.removeCallbacks(run);
-				handler.postDelayed(run, 3000);
-			}
-		}
-	}
+    public static void openScan() {
+        ScanService.mApi.gpioControl(mGpioTrig, 0, 0);
+        try {
+            Thread.sleep(100);
+        } catch (Exception e) {
+        }
+        ScanService.mApi.gpioControl(mGpioTrig, 0, 1);
+    }
 
-	Handler handler = new Handler();
-	Runnable run = new Runnable() {
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			ScanService.mApi.gpioControl(mGpioTrig, 0, 1);
-			isScan = false;
-		}
-	};
+    private static void openDevice() {
+        // open power
+        mApi.gpioControl(mGpioPower, 0, 1);
+
+        mApi.extendSerialInit(mCurSerialNo, mBaudrate, 1, 1, 1, 1);
+    }
+
+    private void initGPIO() {
+        // TODO Auto-generated method stub
+        Toast.makeText(getApplicationContext(), "The scan service is initialized", Toast.LENGTH_SHORT)
+                .show();
+
+        if (mComFd > 0) {
+            isOpen = true;
+            // readData();
+        } else {
+            isOpen = false;
+        }
+    }
+
+    @Override
+    @Deprecated
+    public void onStart(Intent intent, int startId) {
+        // TODO Auto-generated method stub
+        super.onStart(intent, startId);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                openDevice();
+            }
+        }, 1000);
+    }
+
+    Vibrator vibrator;
+
+    @Override
+    public void onDestroy() {
+        // TODO Auto-generated method stub
+        mApi.closeDev();
+        super.onDestroy();
+    }
+
+    boolean isScan = false;
+
+    class ScanBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            if (!isScan) {
+                ScanService.mApi.gpioControl(mGpioTrig, 0, 0);
+                isScan = true;
+                handler.removeCallbacks(run);
+                handler.postDelayed(run, 3000);
+            } else {
+                ScanService.mApi.gpioControl(mGpioTrig, 0, 1);
+                ScanService.mApi.gpioControl(mGpioTrig, 0, 0);
+                isScan = true;
+                handler.removeCallbacks(run);
+                handler.postDelayed(run, 3000);
+            }
+        }
+    }
+
+    Handler handler = new Handler();
+    Runnable run = new Runnable() {
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub
+            ScanService.mApi.gpioControl(mGpioTrig, 0, 1);
+            isScan = false;
+        }
+    };
 
 }

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.support.v4.app.Fragment;
 
-import com.codextech.ibtisam.lepak_app.model.Book;
+import com.codextech.ibtisam.lepak_app.model.Ticket;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -62,40 +62,40 @@ public class RealmController {
         realm.refresh();
     }
 
-    //clear all objects from Book.class
+    //clear all objects from Ticket.class
     public void clearAll() {
 
         realm.beginTransaction();
-        realm.clear(Book.class);
+        realm.clear(Ticket.class);
         realm.commitTransaction();
     }
 
-    //find all objects in the Book.class
-    public RealmResults<Book> getBooks() {
+    //find all objects in the Ticket.class
+    public RealmResults<Ticket> getBooks() {
 
-        return realm.where(Book.class).findAll();
+        return realm.where(Ticket.class).findAll();
     }
 
     //query a single item with the given id
-    public Book getBook(String id) {
+    public Ticket getBook(String id) {
 
-        return realm.where(Book.class).equalTo("id", id).findFirst();
+        return realm.where(Ticket.class).equalTo("id", id).findFirst();
     }
 
-    //isServiceRunning if Book.class is empty
+    //isServiceRunning if Ticket.class is empty
     public boolean hasBooks() {
 
-        return !realm.allObjects(Book.class).isEmpty();
+        return !realm.allObjects(Ticket.class).isEmpty();
     }
 
     //query example
-    public RealmResults<Book> queryedBooks() {
+    public RealmResults<Ticket> queryedBooks() {
 
-        return realm.where(Book.class)
+        return realm.where(Ticket.class)
                 .contains("author", "Author 0")
                 .or()
                 .contains("title", "Realm")
-             //
+                //
                 .findAll();
 
 

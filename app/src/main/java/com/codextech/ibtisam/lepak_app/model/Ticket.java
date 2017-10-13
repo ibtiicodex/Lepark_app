@@ -7,18 +7,19 @@ import io.realm.annotations.PrimaryKey;
  * Created by HP on 9/27/2017.
  */
 
-public class Book extends RealmObject {
+public class Ticket extends RealmObject {
 
     @PrimaryKey
     private long id;
 
-    private String title;
+    private String agentName;
 
     private String number;
     private String price;
     private String location;
 
-    private String author;
+    private String timeIn;
+    private String timeOut;
 
     public String getNumber() {
         return number;
@@ -54,22 +55,29 @@ public class Book extends RealmObject {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getAgentName() {
+        return agentName;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
     }
 
 
+    public String getTimeIn() {
+        return timeIn;
+    }
+
+    public void setTimeIn(String timeIn) {
+        this.timeIn = timeIn;
+    }
+
+
+    public String getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(String timeOut) {
+        this.timeOut = timeOut;
+    }
 }
