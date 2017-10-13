@@ -62,7 +62,7 @@ public class HomeActivity extends Activity {
         Exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), OutScreen.class);
+                Intent intent = new Intent(getApplicationContext(), ExitActivity.class);
                 startActivity(intent);
             }
         });

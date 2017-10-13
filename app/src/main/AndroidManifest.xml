@@ -55,9 +55,11 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".service.ScanService"></service>
+        <service android:name=".service.ScanService" />
 
-        <activity android:name=".activity.OutScreen"></activity>
+        <activity android:name=".activity.ExitActivity" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.LocationActivity"></activity>
     </application>
 
 </manifest>

@@ -19,8 +19,8 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
-public class OutScreen extends Activity {
-    private static final String TAG = "OutScreen";
+public class ExitActivity extends Activity {
+    private static final String TAG = "ExitActivity";
 
     TextView tvAgentName, tvTimeOut, tvNumber, tvPrice, tvLocation;
 
@@ -59,7 +59,7 @@ public class OutScreen extends Activity {
 
         tvTimeDifference = (TextView) findViewById(R.id.tvTimeDifference);
 
-        realm = Realm.getInstance(OutScreen.this);
+        realm = Realm.getInstance(ExitActivity.this);
 
         btnPrintMix.setOnClickListener(new View.OnClickListener() {
             @Override

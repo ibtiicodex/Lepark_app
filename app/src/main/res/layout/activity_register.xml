@@ -3,19 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#838387"
-    android:padding="10dp"
-
-    >
-
+    android:background="#4e4e54"
+    android:padding="10dp">
     <LinearLayout
         android:layout_width="match_parent"
-
         android:layout_height="match_parent"
         android:layout_margin="30dp"
-
         android:orientation="vertical">
-
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
@@ -29,21 +23,45 @@
             android:paddingLeft="0dp"
             android:textColor="#FFF"
             android:textColorHint="#fffefe" />
-
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/account"
+            android:drawablePadding="5dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="0dp"
+            android:textColor="#FFF"
+            android:textColorHint="#fffefe" />
+        <EditText
+        android:id="@+id/edpassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/lock"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:paddingLeft="0dp"
+        android:textColor="#FFF"
+        android:textColorHint="#ffffff" />
+        <EditText
+            android:id="@+id/edconfirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:drawableLeft="@drawable/lock"
             android:drawablePadding="5dp"
             android:ems="10"
-            android:hint="Password"
+            android:hint="Confirm Password"
             android:inputType="textPassword"
             android:paddingLeft="0dp"
             android:textColor="#FFF"
             android:textColorHint="#ffffff" />
-
         <Button
             android:id="@+id/btLogin"
             android:layout_width="match_parent"
@@ -52,17 +70,8 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/selector_xml_btn_yellow"
             android:onClick="checkLogin"
-            android:text="Sign In" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-            android:text="Forgot password?"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#FFF" />
+            android:text="Sign Up" />
 
     </LinearLayout>
 </LinearLayout>
+

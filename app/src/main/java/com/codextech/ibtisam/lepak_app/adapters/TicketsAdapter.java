@@ -17,13 +17,9 @@ import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-/**
- * Created by HP on 9/27/2017.
- */
-
 public class TicketsAdapter extends RealmRecyclerViewAdapter<Ticket> {
 
-    final Context context;
+    private final Context context;
     private Realm realm;
     private LayoutInflater inflater;
 
@@ -86,18 +82,18 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<Ticket> {
         return 0;
     }
 
-    public static class CardViewHolder extends RecyclerView.ViewHolder {
+    private static class CardViewHolder extends RecyclerView.ViewHolder {
 
-        public CardView card;
-        public TextView textName;
-        public TextView textTimeOut;
-        public TextView textTimeIn;
-        public TextView textNumber;
-        public TextView textPrice;
-        public TextView textLocation;
+        private CardView card;
+        private TextView textName;
+        private TextView textTimeOut;
+        private TextView textTimeIn;
+        private TextView textNumber;
+        private TextView textPrice;
+        private TextView textLocation;
 
         //  public ImageView imageBackground;
-        public CardViewHolder(View itemView) {
+        private CardViewHolder(View itemView) {
             // standard view holder pattern with Butterknife view injection
             super(itemView);
             card = (CardView) itemView.findViewById(R.id.card_books);
