@@ -57,7 +57,7 @@ public class TicketPrintActivity extends Activity {
         setContentView(R.layout.activity_ticket);
         this.realm = RealmController.with(this).getRealm();
         RealmController.with(this).refresh();
-
+Intent i;
         Intent intenti = getIntent();
         veh_number = intenti.getStringExtra(TicketPrintActivity.CAR_NUMBER);
         timeNowMillis = Calendar.getInstance().getTimeInMillis();
