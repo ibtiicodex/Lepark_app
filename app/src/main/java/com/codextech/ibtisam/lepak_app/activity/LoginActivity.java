@@ -3,7 +3,9 @@ package com.codextech.ibtisam.lepak_app.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -14,7 +16,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.codextech.ibtisam.lepak_app.MainActivity;
 import com.codextech.ibtisam.lepak_app.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,8 +29,11 @@ import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String TAG = "LoginActivity";
     private EditText emailEditText;
     private EditText passEditText;
+    Button btnNext;
+    public static String TOKEN = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,61 +41,31 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         // Address the email and password field
         emailEditText = (EditText) findViewById(R.id.username);
+        btnNext=(Button)findViewById(R.id.btnext);
+
         passEditText = (EditText) findViewById(R.id.password);
-    }
-
-    void api(final String a, final String b) {
-        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this, new HurlStack());
-        String url = "http://192.168.10.100/apiLepak/public/api/employees/authenticate";
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        Toast.makeText(LoginActivity.this, "agyaa ha", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                        //  Log.d("Error.Response", response);
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("name", a);
-                params.put("domain", b);
-
-                return params;
-            }
-        };
-        queue.add(postRequest);
     }
 
     public void checkLogin(View arg0) {
 
         final String email = emailEditText.getText().toString();
-//        if (!isValidEmail(email)) {
-//            //Set error message for email field
-//            emailEditText.setError("Invalid Email");
-//        }
+        if (!isValidEmail(email)) {
+            //Set error message for email field
+            emailEditText.setError("Invalid Email");
+        }
 
         final String pass = passEditText.getText().toString();
-//        if (!isValidPassword(pass)) {
-//            //Set error message for password field
-//            passEditText.setError("Password cannot be empty");
-//        }
-//
-//        if (isValidEmail(email) && isValidPassword(pass)) {
-        api(email, pass);
-        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-        startActivity(intent);
+        if (!isValidPassword(pass)) {
+            //Set error message for password field
+            passEditText.setError("Password cannot be empty");
+        }
 
-        // Validation Completed
-//        }
+        if (isValidEmail(email) && isValidPassword(pass)) {
+            loginRequest(email, pass);
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(intent);
+            finish();
+        }
 
     }
 
@@ -98,6 +77,8 @@ public class LoginActivity extends AppCompatActivity {
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+
+
     }
 
     // validating password
@@ -106,5 +87,57 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    void loginRequest(final String email, final String password) {
+        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this, new HurlStack());
+
+        String url = "http://34.215.56.25/apiLepak/public/api/sites/authenticate";
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            String site_id = obj.getString("site_id");
+                            String site_name = obj.getString("site_name");
+                            String token = obj.getString("token");
+                            Log.d(TAG, "onResponse: site_id  :" + site_id);
+                            Log.d(TAG, "onResponse: site_name  :" + site_name);
+                            Log.d(TAG, "onResponse: token  :" + token);
+                            TOKEN = token;
+
+                            //TODO store in session
+//                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+//                            startActivity(intent);
+                            Toast.makeText(LoginActivity.this, "User Successfully Login", Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Toast.makeText(LoginActivity.this, "Error login ", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("email", email);
+
+                params.put("password", password);
+
+                return params;
+            }
+        };
+        queue.add(postRequest);
     }
 }

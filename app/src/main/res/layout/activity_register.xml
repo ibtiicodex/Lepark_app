@@ -3,18 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#4e4e54"
+    android:background="#000"
     android:padding="10dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="30dp"
         android:orientation="vertical">
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:drawableLeft="@drawable/account"
             android:drawablePadding="5dp"
             android:ems="10"
@@ -27,7 +26,7 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:drawableLeft="@drawable/account"
             android:drawablePadding="5dp"
             android:ems="10"
@@ -40,7 +39,7 @@
         android:id="@+id/edpassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:drawableLeft="@drawable/lock"
         android:drawablePadding="5dp"
         android:ems="10"
@@ -53,7 +52,7 @@
             android:id="@+id/edconfirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:drawableLeft="@drawable/lock"
             android:drawablePadding="5dp"
             android:ems="10"
@@ -63,11 +62,11 @@
             android:textColor="#FFF"
             android:textColorHint="#ffffff" />
         <Button
-            android:id="@+id/btLogin"
+            android:id="@+id/btsignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/selector_xml_btn_yellow"
             android:onClick="checkLogin"
             android:text="Sign Up" />

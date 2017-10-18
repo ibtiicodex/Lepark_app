@@ -7,23 +7,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.model.Ticket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
-
 import java.util.Calendar;
-
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-
-public class ExitActivity extends Activity {
-    private static final String TAG = "ExitActivity";
-
+public class TicketReturn extends Activity {
+    private static final String TAG = "TicketReturn";
     TextView tvAgentName, tvTimeOut, tvNumber, tvPrice, tvLocation;
-
     private EditText etCarNumber;
     Button btnPrintMix;
     private TextView tvTimeIn;
@@ -31,7 +25,6 @@ public class ExitActivity extends Activity {
     private long timeNowMillis;
     String ticket_time_out;
     private Realm realm;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +52,7 @@ public class ExitActivity extends Activity {
 
         tvTimeDifference = (TextView) findViewById(R.id.tvTimeDifference);
 
-        realm = Realm.getInstance(ExitActivity.this);
+        realm = Realm.getInstance(TicketReturn.this);
 
         btnPrintMix.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,15 +82,6 @@ public class ExitActivity extends Activity {
 
                 manyTicket.first().setTimeOut(ticket_time_out);
                 realm.commitTransaction();
-
-                //long timeOut = Calendar.getInstance().getTimeInMillis() - Long.parseLong(manyTicket.first().getTimeIn());
-
-               // Log.d(TAG, "onClick: timeOut: " + timeOut);
-
-              //  tvTimeDifference.setText("" + timeOut / 1000);
-//                tvTimeDifference.setText(DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeOut, "dd/MM/yyyy hh:mm:ss"));
-                // TODO Store it in TICKET DB AS WELL
-               // manyTicket.first().setTimeIn(Calendar.getInstance().getTime() + "");
 
 
             }

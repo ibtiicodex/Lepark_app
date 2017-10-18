@@ -215,4 +215,7 @@
     <string name="serial_port">Extended serial port</string>
     <string name="bar_scan">Barcode scanning</string>
     <string name="ex_io">ex I</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

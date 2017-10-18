@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -9,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="30dp"
+
         android:orientation="vertical">
 
         <EditText
@@ -16,9 +18,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:gravity="center"
             android:drawablePadding="5dp"
             android:ems="10"
+            android:background="#40748284"
+            android:gravity="center"
             android:hint="Location"
             android:inputType="textEmailAddress"
             android:paddingLeft="0dp"
@@ -30,17 +33,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:gravity="center"
             android:drawablePadding="5dp"
             android:ems="10"
+            android:gravity="center"
             android:hint="Site"
+            android:background="#40748284"
             android:inputType="textEmailAddress"
             android:paddingLeft="0dp"
             android:textColor="#FFF"
             android:textColorHint="#000" />
 
         <Button
-            android:id="@+id/btLogin"
+            android:id="@+id/btnext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -48,7 +52,6 @@
             android:background="@drawable/selector_xml_btn_yellow"
             android:onClick="checkLogin"
             android:text="Next" />
-
     </LinearLayout>
 </LinearLayout>
 

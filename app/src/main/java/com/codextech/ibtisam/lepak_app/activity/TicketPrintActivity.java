@@ -1,4 +1,5 @@
 package com.codextech.ibtisam.lepak_app.activity;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -17,6 +18,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.model.Ticket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
@@ -25,7 +33,10 @@ import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import io.realm.Realm;
+
 public class TicketPrintActivity extends Activity {
     public static final String CAR_NUMBER = "car_number";
     private Button btnPrintMix;
@@ -37,10 +48,10 @@ public class TicketPrintActivity extends Activity {
     MediaPlayer player;
     boolean isCanPrint = true;
     TextView tvagent,
-             tvtime,
-             tvnumber,
-             tvprice,
-             tvlocation;
+            tvtime,
+            tvnumber,
+            tvprice,
+            tvlocation;
     private Realm realm;
     String ticket_time = "";
     String ticket_time_Out = "";
@@ -57,13 +68,11 @@ public class TicketPrintActivity extends Activity {
         setContentView(R.layout.activity_ticket);
         this.realm = RealmController.with(this).getRealm();
         RealmController.with(this).refresh();
-Intent i;
         Intent intenti = getIntent();
         veh_number = intenti.getStringExtra(TicketPrintActivity.CAR_NUMBER);
         timeNowMillis = Calendar.getInstance().getTimeInMillis();
         //ticket_time = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "dd/MM/yyyy hh:mm:ss");
         ticket_time = DateFormat.getDateTimeInstance().format(new Date());
-
         tvagent = (TextView) findViewById(R.id.Dname);
         tvtime = (TextView) findViewById(R.id.Dtime);
         tvnumber = (TextView) findViewById(R.id.Dnumber);
@@ -88,7 +97,7 @@ Intent i;
         mPrintQueue.setOnPrintListener(new OnPrintListener() {
             @Override
             public void onFinish() {
-
+                syncTicket("5", veh_number, veh_type, fee, ticket_time, LoginActivity.TOKEN);
                 Toast.makeText(getApplicationContext(), getString(R.string.print_complete), Toast.LENGTH_SHORT).show();
 //                Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
 //                startActivity(intent);
@@ -191,7 +200,6 @@ Intent i;
 
     };
 
-
     private void openDevice() {
         // open power
         ScanService.mApi.gpioControl(mGpioPower, 0, 1);
@@ -203,7 +211,6 @@ Intent i;
         ScanService.mApi.gpioControl(mGpioPower, 0, 0);
         ScanService.mApi.extendSerialClose(mCurSerialNo);
     }
-
 
     private void addPrintTextWithSize(int size, int concentration, byte[] data) {
         if (data == null)
@@ -223,7 +230,6 @@ Intent i;
             mPrintQueue.addText(concentration, mData);
 
         }
-
     }
 
     private void printMix() {
@@ -283,8 +289,53 @@ Intent i;
             realm.beginTransaction();
             realm.copyToRealm(ticket);
             realm.commitTransaction();
-            Toast.makeText(TicketPrintActivity.this, "Entry Saved" + RealmController.getInstance().getBooks().size() + System.currentTimeMillis(), Toast.LENGTH_SHORT).show();
+
+
+            // Toast.makeText(TicketPrintActivity.this, "Entry Saved" + RealmController.getInstance().getBooks().size() + System.currentTimeMillis(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void syncTicket(final String site_id, final String vehicle_no, final String vehicle_type, final String fee, final String ticket_time, final String token) {
+        RequestQueue queue = Volley.newRequestQueue(TicketPrintActivity.this, new HurlStack());
+
+        String url = "http://34.215.56.25/apiLepak/public/api/sites/ticket";
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Toast.makeText(TicketPrintActivity.this, "Ticket Sent", Toast.LENGTH_SHORT).show();
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        // error
+                        Toast.makeText(TicketPrintActivity.this, "Error Sending Ticket", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("site_id", site_id);
+                params.put("vehicle_no", vehicle_no);
+                params.put("vehicle_type", vehicle_type);
+                params.put("fee", fee);
+                params.put("ticket_time", ticket_time);
+                params.put("token", token);
+
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
     }
 
     private void showTip(String msg) {

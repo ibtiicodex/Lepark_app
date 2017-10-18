@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".wiget.App"
@@ -29,7 +30,7 @@
         <!-- </activity> -->
 
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,9 +58,13 @@
 
         <service android:name=".service.ScanService" />
 
-        <activity android:name=".activity.ExitActivity" />
-        <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.LocationActivity"></activity>
+        <activity android:name=".activity.TicketReturn" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.LocationActivity" />
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
