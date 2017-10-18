@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -33,40 +34,53 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passEditText;
     Button btnNext;
+    TextView tvsignup;
     public static String TOKEN = "";
+    private Button btLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Address the email and password field
+        btLogin = (Button) findViewById(R.id.btLogin);
         emailEditText = (EditText) findViewById(R.id.username);
-        btnNext=(Button)findViewById(R.id.btnext);
+        btnNext = (Button) findViewById(R.id.btnext);
+        tvsignup = (TextView) findViewById(R.id.tvsignup);
 
         passEditText = (EditText) findViewById(R.id.password);
-    }
 
-    public void checkLogin(View arg0) {
 
-        final String email = emailEditText.getText().toString();
-        if (!isValidEmail(email)) {
-            //Set error message for email field
-            emailEditText.setError("Invalid Email");
-        }
+        tvsignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+        btLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String email = emailEditText.getText().toString();
+                if (!isValidEmail(email)) {
+                    //Set error message for email field
+                    emailEditText.setError("Invalid Email");
+                }
 
-        final String pass = passEditText.getText().toString();
-        if (!isValidPassword(pass)) {
-            //Set error message for password field
-            passEditText.setError("Password cannot be empty");
-        }
+                final String pass = passEditText.getText().toString();
+                if (!isValidPassword(pass)) {
+                    //Set error message for password field
+                    passEditText.setError("Password cannot be empty");
+                }
 
-        if (isValidEmail(email) && isValidPassword(pass)) {
-            loginRequest(email, pass);
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-        startActivity(intent);
-            finish();
-        }
-
+                if (isValidEmail(email) && isValidPassword(pass)) {
+                    loginRequest(email, pass);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
     }
 
     // validating email id

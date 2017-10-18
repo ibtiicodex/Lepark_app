@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.posapi.PosApi;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.codextech.ibtisam.lepak_app.R;
@@ -16,6 +17,7 @@ import com.codextech.ibtisam.lepak_app.wiget.App;
 import java.io.UnsupportedEncodingException;
 
 public class ScanService extends Service {
+    public static final String TAG = "test";
 
     private boolean isOpen = false;
     private int mComFd = -1;
@@ -42,6 +44,7 @@ public class ScanService extends Service {
 
     @Override
     public void onCreate() {
+        Log.d(TAG, "onCreate: ScanService");
         // TODO Auto-generated method stub
         init();
 

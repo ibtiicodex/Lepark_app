@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.adapters.RealmTicketsAdapter;
@@ -34,11 +35,23 @@ public class AllTicketsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_all_tickets);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+        }
+
+
         recycler = (RecyclerView) findViewById(R.id.recycler);
         //get realm instance
         this.realm = RealmController.with(this).getRealm();
         //set toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
 
         setSupportActionBar(toolbar);
 
@@ -96,5 +109,15 @@ public class AllTicketsActivity extends AppCompatActivity {
 
         Prefs.with(this).setPreLoad(true);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -6,15 +6,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.codextech.ibtisam.lepak_app.activity.TicketPrintActivity">
+    tools:context="com.codextech.ibtisam.lepak_app.activity.TicketFormatActivity">
+
     <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
-        android:id="@+id/toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="Wallpapers" />
+        app:title="LePark" />
 
 
     <android.support.v4.widget.DrawerLayout

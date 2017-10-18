@@ -11,12 +11,17 @@
             <!--android:icon="@drawable/ic_menu_share"-->
 
             <item
-                android:id="@+id/nav_slideshow"
+                android:id="@+id/showallnav"
 
                 android:title="Show All" />
 
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/summarynav"
+
+                android:title="Summary" />
+
+            <item
+                android:id="@+id/logoutnav"
 
                 android:title="Log Out" />
         </group>

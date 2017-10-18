@@ -13,6 +13,7 @@ import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.wiget.App;
 
+@Deprecated
 public class HomeActivity extends Activity {
     private static final String TAG = HomeActivity.class.getSimpleName();
     private Button carButton, btAllTickets, Exit;
@@ -34,8 +35,6 @@ public class HomeActivity extends Activity {
        // btAllTickets = (Button) findViewById(R.id.btAllTickets);
 
         enternumber = (EditText) findViewById(R.id.enterNum);
-
-
 
         mPosSDK = App.getInstance().getPosApi();
 
@@ -59,9 +58,9 @@ public class HomeActivity extends Activity {
 
                 if (carNum.trim().length() >= 3 && carNum != null) {
 
-                    Intent intent = new Intent(getApplicationContext(), TicketPrintActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), TicketFormatActivity.class);
 
-                    intent.putExtra(TicketPrintActivity.CAR_NUMBER, carNum);
+                    intent.putExtra(TicketFormatActivity.CAR_NUMBER, carNum);
 
                     startActivity(intent);
 

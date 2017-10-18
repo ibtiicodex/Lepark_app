@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     android:background="#000"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="30dp"
+
         android:orientation="vertical">
 
         <EditText
@@ -47,17 +47,26 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:background="@drawable/selector_xml_btn_yellow"
-            android:onClick="checkLogin"
-            android:text="Sign In" />
+            android:text="Sign In"
+            android:textColor="#ccc626"/>
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="10dp"
             android:text="Forgot password?"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFF" />
+        <TextView
+            android:id="@+id/tvsignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+
+            android:text="Sign up?"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ccc626" />
     </LinearLayout>
 </LinearLayout>
