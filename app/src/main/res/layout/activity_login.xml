@@ -68,5 +68,10 @@
             android:text="Sign up?"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#ccc626" />
+        <!--<ProgressBar-->
+            <!--style="?android:attr/progressBarStyle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical|center_horizontal" />-->
     </LinearLayout>
 </LinearLayout>

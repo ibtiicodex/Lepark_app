@@ -37,22 +37,17 @@ public class AllTicketsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         // add back arrow to toolbar
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
         }
-
 
         recycler = (RecyclerView) findViewById(R.id.recycler);
         //get realm instance
         this.realm = RealmController.with(this).getRealm();
         //set toolbar
-
-
         setSupportActionBar(toolbar);
 
         setupRecycler();
@@ -68,8 +63,9 @@ public class AllTicketsActivity extends AppCompatActivity {
         // changes will be reflected automatically
         setRealmAdapter(RealmController.with(this).getBooks());
 
-      //  Toast.makeText(this, "Press card item for edit, long press to remove item", Toast.LENGTH_LONG).show();
+        //  Toast.makeText(this, "Press card item for edit, long press to remove item", Toast.LENGTH_LONG).show();
     }
+
     public void setRealmAdapter(RealmResults<Ticket> tickets) {
 
         RealmTicketsAdapter realmAdapter = new RealmTicketsAdapter(this.getApplicationContext(), tickets, true);
@@ -78,6 +74,7 @@ public class AllTicketsActivity extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
     }
+
     private void setupRecycler() {
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -95,6 +92,7 @@ public class AllTicketsActivity extends AppCompatActivity {
 
         recycler.setAdapter(adapter);
     }
+
     private void setRealmData() {
         ArrayList<Ticket> tickets = new ArrayList<>();
 

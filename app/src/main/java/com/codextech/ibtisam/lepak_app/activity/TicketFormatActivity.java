@@ -28,14 +28,14 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.R;
+import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.model.Ticket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
+import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,10 +67,12 @@ public class TicketFormatActivity extends Activity {
     String device_location = "Liberty";
     private long timeNowMillis;
     private PosApi mPosSDK;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sessionManager = new SessionManager(TicketFormatActivity.this);
         Log.d(TAG, "onCreate: ");
         setContentView(R.layout.activity_ticket);
         this.realm = RealmController.with(this).getRealm();
@@ -78,8 +80,8 @@ public class TicketFormatActivity extends Activity {
         Intent intenti = getIntent();
         veh_number = intenti.getStringExtra(TicketFormatActivity.CAR_NUMBER);
         timeNowMillis = Calendar.getInstance().getTimeInMillis();
-        //ticket_time = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "dd/MM/yyyy hh:mm:ss");
-        ticket_time = DateFormat.getDateTimeInstance().format(new Date());
+        ticket_time = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
+//        ticket_time = DateFormat.getDateTimeInstance().format(new Date());
         tvagent = (TextView) findViewById(R.id.Dname);
         tvtime = (TextView) findViewById(R.id.Dtime);
         tvnumber = (TextView) findViewById(R.id.Dnumber);
@@ -104,13 +106,10 @@ public class TicketFormatActivity extends Activity {
         mPrintQueue.setOnPrintListener(new OnPrintListener() {
             @Override
             public void onFinish() {
-                syncTicket("5", veh_number, veh_type, fee, ticket_time, LoginActivity.TOKEN);
-                Toast.makeText(getApplicationContext(), getString(R.string.print_complete), Toast.LENGTH_SHORT).show();
-//                Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
-//                startActivity(intent);
                 isCanPrint = true;
-
+                syncTicket(sessionManager.getKeySiteId(), veh_number, veh_type, fee, ticket_time, sessionManager.getLoginToken());
                 finish();
+                Toast.makeText(getApplicationContext(), getString(R.string.print_complete), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -176,10 +175,11 @@ public class TicketFormatActivity extends Activity {
                     case PosApi.POS_EXPAND_SERIAL_INIT:
                         if (status == PosApi.COMM_STATUS_SUCCESS) {
                             // ed_str.setText("open success\n ");
+                            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
                         } else {
                             // ed_str.setText("open fail\n");
+                            Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show();
                         }
-
                         break;
                     case PosApi.POS_EXPAND_SERIAL3:
                         if (buffer == null)
@@ -247,8 +247,8 @@ public class TicketFormatActivity extends Activity {
             sb.append("\n");
             sb.append("        PARKING TICKET     ");
             sb.append("\n");
-            sb.append("Agent Name: ");
-            sb.append(agent_name);
+            sb.append("Site Name: ");
+            sb.append(sessionManager.getKeySiteName());
             sb.append("\n");
             sb.append("Time:  " + ticket_time);
             sb.append("\n");
@@ -263,7 +263,9 @@ public class TicketFormatActivity extends Activity {
             sb.append("--------------------------------");
             sb.append("   Parking at your own risk");
             sb.append("\n");
-            sb.append("Parking company is not liable for any loss");
+            sb.append("Parking company is not liable");
+            sb.append("\n");
+            sb.append("for any loss");
             sb.append("\n");
             byte[] text = null;
             text = sb.toString().getBytes("GBK");
@@ -345,7 +347,6 @@ public class TicketFormatActivity extends Activity {
         queue.add(postRequest);
 
     }
-
     private void showTip(String msg) {
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.tips))
@@ -364,6 +365,12 @@ public class TicketFormatActivity extends Activity {
     protected void onResume() {
         super.onResume();
         openDevice();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        closeDevice();
     }
 
     @Override

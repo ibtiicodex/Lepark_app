@@ -7,14 +7,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.model.Ticket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
+
 import java.util.Calendar;
+
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+
 public class TicketReturn extends Activity {
     private static final String TAG = "TicketReturn";
     TextView tvAgentName, tvTimeOut, tvNumber, tvPrice, tvLocation;
@@ -25,6 +29,7 @@ public class TicketReturn extends Activity {
     private long timeNowMillis;
     String ticket_time_out;
     private Realm realm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

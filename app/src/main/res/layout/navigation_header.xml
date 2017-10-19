@@ -3,10 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@drawable/lepark"
-    android:gravity="bottom"
+    android:background="#e46b6a70"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -24,6 +22,7 @@
             android:elevation="12dp"
             android:innerRadius="0dp"
             android:shape="ring"
+            android:layout_marginTop="20dp"
             android:thicknessRatio="1.9"
             app:cardCornerRadius="40dp">
 
@@ -35,21 +34,6 @@
 
         </android.support.v7.widget.CardView>
 
-
-        <TextView
-            android:id="@+id/tvProfileNameNavBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:text="Touqeer"
-            android:textColor="#000" />
-
-        <TextView
-            android:id="@+id/tvProfileNumberNavBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+923228899906"
-            android:textColor="#000" />
     </LinearLayout>
 
 

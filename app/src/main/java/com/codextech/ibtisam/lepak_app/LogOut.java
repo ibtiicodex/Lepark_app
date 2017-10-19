@@ -14,8 +14,5 @@ public class LogOut extends AppCompatActivity {
         setContentView(R.layout.activity_log_out);
         Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
-
-
-
     }
 }

@@ -24,12 +24,6 @@ android {
     }
 }
 
-
-
-
-
-
-
 dependencies {
     compile files('libs/core.jar')
     compile files('libs/IdCardUartLib.jar')

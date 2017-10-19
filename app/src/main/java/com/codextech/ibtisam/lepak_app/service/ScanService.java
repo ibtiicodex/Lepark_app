@@ -38,6 +38,7 @@ public class ScanService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.d(TAG, "onBind: ");
         // TODO Auto-generated method stub
         return null;
     }

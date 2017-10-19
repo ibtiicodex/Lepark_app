@@ -20,7 +20,6 @@ public class HomeActivity extends Activity {
     private EditText enternumber;
     private PosApi mPosSDK;
     String mess;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

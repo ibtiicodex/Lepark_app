@@ -23,13 +23,13 @@ public class TabFragment extends Fragment {
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
-    public static int int_items = 2 ;
+    public static int int_items = 2;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.tab_layout,null);
+        View view = inflater.inflate(R.layout.tab_layout, null);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
 
@@ -52,11 +52,12 @@ public class TabFragment extends Fragment {
         }
 
         @Override
-        public Fragment getItem(int position)
-        {
-            switch (position){
-                case 0 : return new ReturnTicketFragment();
-                case 1 : return new PrintTicketFragment();
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return new ReturnTicketFragment();
+                case 1:
+                    return new PrintTicketFragment();
             }
             return null;
         }
@@ -68,11 +69,11 @@ public class TabFragment extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position){
-                case 0 :
+            switch (position) {
+                case 0:
                     return "Return Ticket";
-                case 1 :
-                    return "PrintTicket";
+                case 1:
+                    return "Print Ticket";
             }
             return null;
         }

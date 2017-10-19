@@ -17,26 +17,27 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.codextech.ibtisam.lepak_app.MainActivity;
 import com.codextech.ibtisam.lepak_app.R;
+import com.codextech.ibtisam.lepak_app.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
-
     private static final String TAG = "LoginActivity";
     private EditText emailEditText;
     private EditText passEditText;
     Button btnNext;
     TextView tvsignup;
-    public static String TOKEN = "";
     private Button btLogin;
+    private SessionManager sessionManager;
+    private RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +48,16 @@ public class LoginActivity extends AppCompatActivity {
         emailEditText = (EditText) findViewById(R.id.username);
         btnNext = (Button) findViewById(R.id.btnext);
         tvsignup = (TextView) findViewById(R.id.tvsignup);
-
         passEditText = (EditText) findViewById(R.id.password);
-
-
+        sessionManager = new SessionManager(LoginActivity.this);
+        queue = Volley.newRequestQueue(LoginActivity.this, new HurlStack());
+        // btnNext.setVisibility(View.VISIBLE);
         tvsignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intent);
+                //  btnNext.setVisibility(View.GONE);
             }
         });
         btLogin.setOnClickListener(new View.OnClickListener() {
@@ -66,18 +68,16 @@ public class LoginActivity extends AppCompatActivity {
                     //Set error message for email field
                     emailEditText.setError("Invalid Email");
                 }
-
                 final String pass = passEditText.getText().toString();
                 if (!isValidPassword(pass)) {
                     //Set error message for password field
                     passEditText.setError("Password cannot be empty");
                 }
-
                 if (isValidEmail(email) && isValidPassword(pass)) {
                     loginRequest(email, pass);
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    finish();
+//                    Intent intent = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
+//                    startActivity(intent);
+//                    finish();
                 }
             }
         });
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     void loginRequest(final String email, final String password) {
-        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this, new HurlStack());
+
 
         String url = "http://34.215.56.25/apiLepak/public/api/sites/authenticate";
 
@@ -115,18 +115,22 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONObject obj = new JSONObject(response);
-                            String site_id = obj.getString("site_id");
-                            String site_name = obj.getString("site_name");
-                            String token = obj.getString("token");
-                            Log.d(TAG, "onResponse: site_id  :" + site_id);
-                            Log.d(TAG, "onResponse: site_name  :" + site_name);
-                            Log.d(TAG, "onResponse: token  :" + token);
-                            TOKEN = token;
-
-                            //TODO store in session
-//                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-//                            startActivity(intent);
-                            Toast.makeText(LoginActivity.this, "User Successfully Login", Toast.LENGTH_SHORT).show();
+                            int responseCode = obj.getInt("responseCode");
+                            if (responseCode == 200) {
+                                JSONObject uniObject = obj.getJSONObject("response");
+                                String site_id = uniObject.getString("site_id");
+                                String site_name = uniObject.getString("site_name");
+                                String token = uniObject.getString("token");
+                                Log.d(TAG, "onResponse: site_id  :" + site_id);
+                                Log.d(TAG, "onResponse: site_name  :" + site_name);
+                                Log.d(TAG, "onResponse: token  :" + token);
+                                sessionManager.loginSite(site_id, site_name, token, Calendar.getInstance().getTimeInMillis());
+                                Intent intent = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
+                                startActivity(intent);
+                                finish();
+                                Toast.makeText(LoginActivity.this, "User Successfully Login ", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, sessionManager.getKeySiteId(), Toast.LENGTH_SHORT).show();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

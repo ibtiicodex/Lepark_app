@@ -30,13 +30,22 @@
         <!-- </activity> -->
 
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.NavigationDrawerActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".activity.HomeActivity"
@@ -46,6 +55,26 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.AllTicketsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TicketReturn"
+            android:screenOrientation="portrait" />
+        <!-- <activity android:name=".activity.LoginActivity" /> -->
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <!-- <activity android:name=".activity.LoginActivity" /> -->
+        <activity
+            android:name=".activity.LocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".fragments.SummaryFragment"
+            android:screenOrientation="portrait" />
+        <!-- <activity -->
+        <!-- android:name=".activity.RegisterActivity" /> -->
+        <!-- <activity android:name=".LogOut"></activity> -->
+        <activity
+            android:name=".LogOut"
             android:screenOrientation="portrait" />
 
         <receiver android:name=".receiver.StartReceiver">
@@ -57,24 +86,6 @@
         </receiver>
 
         <service android:name=".service.ScanService" />
-
-        <activity android:name=".activity.TicketReturn"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait"/>
-        <!-- <activity android:name=".activity.LoginActivity" /> -->
-        <activity android:name=".activity.RegisterActivity"
-            android:screenOrientation="portrait"/>
-        <!-- <activity android:name=".activity.LoginActivity" /> -->
-        <activity android:name=".activity.LocationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".fragments.SummaryFragment"
-            android:screenOrientation="portrait"/>
-        <!-- <activity -->
-        <!-- android:name=".activity.RegisterActivity" /> -->
-        <!-- <activity android:name=".LogOut"></activity> -->
-        <activity android:name=".LogOut"
-            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
