@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_header_height"
-    android:background="@color/mainToolColor"
+    android:layout_height="125dp"
+    android:background="#162a49"
     android:orientation="horizontal"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -22,7 +22,6 @@
             android:elevation="12dp"
             android:innerRadius="0dp"
             android:shape="ring"
-            android:layout_marginTop="20dp"
             android:thicknessRatio="1.9"
             app:cardCornerRadius="40dp">
 

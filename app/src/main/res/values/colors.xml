@@ -4,11 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#844f61</color>
     <color name="black">#000</color>
-    <color name="orange">#904a7a</color>
+    <color name="orange">#f9f7f7</color>
     <color name="white">#FFF</color>
-    <color name="gery">#494242</color>
-    <color name="textcolor">#FFF</color>
-    <color name="edback">#abb0b1</color>
+    <color name="gery">#e7e4e4</color>
+    <color name="textcolor">#737171</color>
+    <color name="edback">#d7dbdc</color>
     <color name="pageback">#FFF</color>
     <color name="mainToolColor">@color/colorPrimary</color>
 

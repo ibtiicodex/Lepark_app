@@ -1,4 +1,6 @@
 package com.codextech.ibtisam.lepak_app.activity;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,9 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,8 +20,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passEditText;
     Button btnNext;
     TextView tvsignup;
-    ProgressBar pr;
+    ProgressDialog pdLoading;
+
     private Button btLogin;
     private SessionManager sessionManager;
     private RequestQueue queue;
@@ -44,8 +49,12 @@ public class LoginActivity extends AppCompatActivity {
         emailEditText = (EditText) findViewById(R.id.username);
         btnNext = (Button) findViewById(R.id.btnext);
         tvsignup = (TextView) findViewById(R.id.tvsignup);
+        pdLoading = new ProgressDialog(this);
+        pdLoading.setTitle("Loading data");
+        pdLoading.setMessage("Please Wait...");
+
         passEditText = (EditText) findViewById(R.id.password);
-        pr = (ProgressBar) findViewById(R.id.progress);
+
         sessionManager = new SessionManager(LoginActivity.this);
         queue = Volley.newRequestQueue(LoginActivity.this, new HurlStack());
         tvsignup.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if (isValidEmail(email) && isValidPassword(pass)) {
                     loginRequest(email, pass);
+                    pdLoading.show();
 //                    Intent intent = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
 //                    startActivity(intent);
 //                    finish();
@@ -121,6 +131,9 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                                 Toast.makeText(LoginActivity.this, "User Successfully Login ", Toast.LENGTH_SHORT).show();
                                 Toast.makeText(LoginActivity.this, sessionManager.getKeySiteId(), Toast.LENGTH_SHORT).show();
+                                if (pdLoading != null && pdLoading.isShowing()) {
+                                    pdLoading.dismiss();
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -131,6 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
+                        pdLoading.show();
                         Toast.makeText(LoginActivity.this, "Error login ", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -144,5 +158,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
         queue.add(postRequest);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (pdLoading != null && pdLoading.isShowing()) {
+            pdLoading.dismiss();
+        }
     }
 }

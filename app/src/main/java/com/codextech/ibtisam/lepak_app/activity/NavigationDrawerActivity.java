@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codextech.ibtisam.lepak_app.R;
@@ -70,6 +71,14 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                     finish();
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
+
+//                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+//                    xfragmentTransaction.replace(R.id.containerView,new TabFragment()).commit();
+//                    Intent intent = new Intent(getApplicationContext(), LogOut.class);
+//                    startActivity(intent);
+                }
+                if (menuItem.getItemId() == R.id.nav_refresh) {
+                    Toast.makeText(NavigationDrawerActivity.this, " Refresh App", Toast.LENGTH_SHORT).show();
 
 //                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
 //                    xfragmentTransaction.replace(R.id.containerView,new TabFragment()).commit();

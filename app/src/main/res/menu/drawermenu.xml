@@ -12,20 +12,20 @@
 
             <item
                 android:id="@+id/showallnav"
-
                 android:title="Show All" />
 
             <item
                 android:id="@+id/summarynav"
-
                 android:title="Summary" />
 
             <item
-                android:id="@+id/logoutnav"
-
-                android:title="Log Out" />
+                android:id="@+id/nav_refresh"
+                android:title="Refresh" />
         </group>
 
+            <item
+                android:id="@+id/logoutnav"
+                android:title="Logout" />
 
 
 

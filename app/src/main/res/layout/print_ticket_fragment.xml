@@ -42,6 +42,7 @@
             android:layout_margin="5dp"
             android:background="@drawable/selector_xml_btn_yellow"
             android:text="Print Car"
+            android:textColor="#FFF"
             android:layout_weight="1" />
 
         <Button
@@ -49,6 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
+            android:textColor="#FFF"
             android:background="@drawable/selector_xml_btn_yellow"
             android:text="Print bike"
             android:layout_weight="1" />
