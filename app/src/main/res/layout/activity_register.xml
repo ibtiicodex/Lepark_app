@@ -3,33 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#000"
+    android:background="#f7f7f7"
     android:padding="10dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="50dp">
+
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:drawableLeft="@drawable/account"
             android:drawablePadding="5dp"
             android:ems="10"
+            android:background="@color/edback"
             android:hint="Username"
             android:inputType="textEmailAddress"
             android:paddingLeft="0dp"
-            android:textColor="#FFF"
-            android:textColorHint="#fffefe" />
+            android:textColor="#000"
+            android:textColorHint="@color/textcolor" />
+
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:drawableLeft="@drawable/account"
             android:drawablePadding="5dp"
+            android:layout_marginTop="5dp"
             android:ems="10"
+            android:background="@color/edback"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:paddingLeft="0dp"
@@ -39,9 +43,10 @@
         android:id="@+id/edpassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+            android:layout_marginTop="5dp"
         android:drawableLeft="@drawable/lock"
         android:drawablePadding="5dp"
+            android:background="@color/edback"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -52,11 +57,12 @@
             android:id="@+id/edconfirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:drawableLeft="@drawable/lock"
             android:drawablePadding="5dp"
+            android:layout_marginTop="5dp"
             android:ems="10"
-            android:hint="Confirm Password"
+            android:background="@color/edback"
+            android:hint="Confirm Pass"
             android:inputType="textPassword"
             android:paddingLeft="0dp"
             android:textColor="#FFF"
@@ -66,9 +72,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/selector_xml_btn_yellow"
             android:onClick="checkLogin"
+            android:textColor="#FFF"
             android:text="Sign Up" />
 
     </LinearLayout>

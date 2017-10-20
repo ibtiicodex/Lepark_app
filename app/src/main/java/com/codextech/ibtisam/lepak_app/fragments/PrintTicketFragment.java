@@ -13,7 +13,10 @@ import android.widget.EditText;
 
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.activity.TicketFormatActivity;
+import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
+
+import io.realm.Realm;
 
 /**
  * Created by HP on 10/18/2017.
@@ -23,11 +26,14 @@ public class PrintTicketFragment extends Fragment {
     public static final String TAG = "test";
     private Button bcarButton;
     private EditText edenternumber;
+    private Realm realm;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: PrintTicketFragment");
+        this.realm = RealmController.with(this).getRealm();
+        RealmController.with(this).refresh();
 //        startService();
         View view = inflater.inflate(R.layout.print_ticket_fragment, container, false);
         edenternumber = (EditText) view.findViewById(R.id.enterNum);
@@ -37,9 +43,11 @@ public class PrintTicketFragment extends Fragment {
             public void onClick(View view) {
                 String carNum = edenternumber.getText().toString();
                 if (carNum.trim().length() >= 3 && carNum != null) {
+                    // realm.beginTransaction();
                     Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
                     intent.putExtra(TicketFormatActivity.CAR_NUMBER, carNum);
                     startActivity(intent);
+
                 } else {
                     edenternumber.setError("tvNumber cannot be empty");
                 }

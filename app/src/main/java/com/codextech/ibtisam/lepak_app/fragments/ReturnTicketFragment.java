@@ -11,22 +11,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.model.Ticket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
-
 import java.util.Calendar;
-
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-
 /**
  * Created by HP on 10/18/2017.
  */
-
 public class ReturnTicketFragment extends Fragment {
     private static final String TAG = "TicketReturn";
     TextView tvAgentName, tvTimeOut, tvNumber, tvPrice, tvLocation;
@@ -37,7 +32,6 @@ public class ReturnTicketFragment extends Fragment {
     private long timeNowMillis;
     String ticket_time_out;
     private Realm realm;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

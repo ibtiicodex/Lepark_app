@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
+    android:background="@color/pageback"
     android:orientation="vertical"
     android:padding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:padding="35dp"
         android:orientation="vertical">
 
         <EditText
@@ -19,11 +19,12 @@
             android:layout_marginTop="20dp"
             android:drawableLeft="@drawable/account"
             android:drawablePadding="5dp"
+            android:background="@color/edback"
             android:ems="10"
             android:text="doctorhospital@lepark.com"
             android:inputType="textEmailAddress"
             android:paddingLeft="0dp"
-            android:textColor="#FFF"
+            android:textColor="@color/textcolor"
             android:textColorHint="#fffefe" />
 
         <EditText
@@ -34,10 +35,11 @@
             android:drawableLeft="@drawable/lock"
             android:drawablePadding="5dp"
             android:ems="10"
+            android:background="@color/edback"
             android:text="lepark1234"
             android:inputType="textPassword"
             android:paddingLeft="0dp"
-            android:textColor="#FFF"
+            android:textColor="@color/textcolor"
             android:textColorHint="#ffffff" />
 
         <Button
@@ -48,7 +50,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/selector_xml_btn_yellow"
             android:text="Sign In"
-            android:textColor="#ccc626"/>
+            android:textColor="@color/textcolor"/>
 
         <TextView
             android:id="@+id/textView3"
@@ -56,9 +58,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
+
             android:text="Forgot password?"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#FFF" />
+            android:textColor="#48578b" />
         <TextView
             android:id="@+id/tvsignup"
             android:layout_width="wrap_content"
@@ -67,11 +70,12 @@
 
             android:text="Sign up?"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#ccc626" />
-        <!--<ProgressBar-->
-            <!--style="?android:attr/progressBarStyle"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_vertical|center_horizontal" />-->
+            android:textColor="#2c2fd4" />
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress"
+            android:layout_gravity="center_vertical|center_horizontal" />
     </LinearLayout>
 </LinearLayout>

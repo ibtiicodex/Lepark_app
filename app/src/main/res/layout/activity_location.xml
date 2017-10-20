@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
+    android:background="@color/pageback"
+
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -16,32 +17,29 @@
         <EditText
             android:id="@+id/edLocation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_marginTop="20dp"
             android:drawablePadding="5dp"
             android:ems="10"
-            android:background="#40748284"
+            android:background="@color/edback"
             android:gravity="center"
             android:hint="Location"
             android:inputType="textEmailAddress"
-            android:paddingLeft="0dp"
-            android:textColor="#FFF"
-            android:textColorHint="#000" />
+            android:textColorHint="@color/textcolor"
+            />
 
         <EditText
             android:id="@+id/edSite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_marginTop="20dp"
             android:drawablePadding="5dp"
             android:ems="10"
             android:gravity="center"
             android:hint="Site"
-            android:background="#40748284"
+            android:background="@color/edback"
             android:inputType="textEmailAddress"
-            android:paddingLeft="0dp"
-            android:textColor="#FFF"
-            android:textColorHint="#000" />
+            android:textColorHint="@color/textcolor" />
 
         <Button
             android:id="@+id/btnext"
@@ -49,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
+            android:textColor="@color/textcolor"
             android:background="@drawable/selector_xml_btn_yellow"
             android:onClick="checkLogin"
             android:text="Next" />

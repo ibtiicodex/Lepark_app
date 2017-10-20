@@ -1,5 +1,4 @@
 package com.codextech.ibtisam.lepak_app.activity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,9 +6,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -19,26 +18,23 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private EditText emailEditText;
     private EditText passEditText;
     Button btnNext;
     TextView tvsignup;
+    ProgressBar pr;
     private Button btLogin;
     private SessionManager sessionManager;
     private RequestQueue queue;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +45,9 @@ public class LoginActivity extends AppCompatActivity {
         btnNext = (Button) findViewById(R.id.btnext);
         tvsignup = (TextView) findViewById(R.id.tvsignup);
         passEditText = (EditText) findViewById(R.id.password);
+        pr = (ProgressBar) findViewById(R.id.progress);
         sessionManager = new SessionManager(LoginActivity.this);
         queue = Volley.newRequestQueue(LoginActivity.this, new HurlStack());
-        // btnNext.setVisibility(View.VISIBLE);
         tvsignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,18 +79,16 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
     // validating email id
     private boolean isValidEmail(String email) {
         String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                 + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
 
-
     }
-
     // validating password
     private boolean isValidPassword(String pass) {
         if (pass != null && pass.length() >= 4) {
@@ -102,18 +96,15 @@ public class LoginActivity extends AppCompatActivity {
         }
         return false;
     }
-
     void loginRequest(final String email, final String password) {
-
-
         String url = "http://34.215.56.25/apiLepak/public/api/sites/authenticate";
-
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
+
+
                             JSONObject obj = new JSONObject(response);
                             int responseCode = obj.getInt("responseCode");
                             if (responseCode == 200) {
@@ -146,13 +137,9 @@ public class LoginActivity extends AppCompatActivity {
         ) {
             @Override
             protected Map<String, String> getParams() {
-
                 Map<String, String> params = new HashMap<String, String>();
-
                 params.put("email", email);
-
                 params.put("password", password);
-
                 return params;
             }
         };
