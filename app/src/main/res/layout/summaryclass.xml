@@ -26,10 +26,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="80dp"
+                android:layout_gravity="center"
                 android:text="Total Ticket"
                 android:textColor="#000"
-                android:textSize="20dp" />
+                android:textSize="14dp" />
         <TextView
             android:id="@+id/tvTicketCount"
             android:layout_width="match_parent"
@@ -49,11 +50,13 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="80dp"
+                android:layout_gravity="center"
+
                 android:text="Total Amount"
                 android:layout_weight="1"
                 android:textColor="#000"
-                android:textSize="20dp" />
+                android:textSize="14dp" />
   =
             <TextView
                 android:id="@+id/tvTicketTotal"
@@ -69,16 +72,17 @@
         android:orientation="horizontal"
         android:layout_weight="1"
         android:weightSum="2">
-    <Button
-        android:id="@+id/bPrintSummaryp"
-        android:layout_width="130dp"
-        android:background="@drawable/selector_xml_btn_yellow"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#FFF"
-        android:layout_marginLeft="95dp"
 
-        android:text="Print Summary" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/bPrintSummaryp"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="70dp"
+            android:background="@drawable/selector_xml_btn_yellow"
+            android:text="Print Summary"
+            android:textColor="#FFF"
+            android:textSize="14dp" />
+    </LinearLayout>
 </LinearLayout>
 </RelativeLayout>
