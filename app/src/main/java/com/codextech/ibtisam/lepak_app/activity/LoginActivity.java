@@ -20,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
+import com.codextech.ibtisam.lepak_app.sync.MyUrls;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private EditText emailEditText;
@@ -40,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btLogin;
     private SessionManager sessionManager;
     private RequestQueue queue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         return matcher.matches();
 
     }
+
     // validating password
     private boolean isValidPassword(String pass) {
         if (pass != null && pass.length() >= 4) {
@@ -106,15 +110,13 @@ public class LoginActivity extends AppCompatActivity {
         }
         return false;
     }
+
     void loginRequest(final String email, final String password) {
-        String url = "http://34.215.56.25/apiLepak/public/api/sites/authenticate";
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.LOGIN,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-
-
                             JSONObject obj = new JSONObject(response);
                             int responseCode = obj.getInt("responseCode");
                             if (responseCode == 200) {

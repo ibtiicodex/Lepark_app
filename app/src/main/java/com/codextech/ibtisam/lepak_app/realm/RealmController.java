@@ -71,7 +71,7 @@ public class RealmController {
     }
 
     //find all objects in the Ticket.class
-    public RealmResults<Ticket> getBooks() {
+    public RealmResults<Ticket> getTickets() {
 
         return realm.where(Ticket.class).findAll();
     }
@@ -83,13 +83,13 @@ public class RealmController {
     }
 
     //isServiceRunning if Ticket.class is empty
-    public boolean hasBooks() {
+    public boolean hasTickets() {
 
         return !realm.allObjects(Ticket.class).isEmpty();
     }
 
     //query example
-    public RealmResults<Ticket> queryedBooks() {
+    public RealmResults<Ticket> queryedTickets() {
 
         return realm.where(Ticket.class)
                 .contains("author", "Author 0")

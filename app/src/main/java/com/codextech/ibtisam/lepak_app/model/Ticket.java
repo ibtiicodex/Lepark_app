@@ -11,15 +11,13 @@ public class Ticket extends RealmObject {
 
     @PrimaryKey
     private long id;
-
-    private String agentName;
-
+    private String siteName;
     private String number;
     private String price;
     private String location;
-
     private String timeIn;
     private String timeOut;
+    private String syncStatus;
 
     public String getNumber() {
         return number;
@@ -55,14 +53,13 @@ public class Ticket extends RealmObject {
         this.id = id;
     }
 
-    public String getAgentName() {
-        return agentName;
+    public String getSiteName() {
+        return siteName;
     }
 
-    public void setAgentName(String agentName) {
-        this.agentName = agentName;
+    public void setSiteName(String name) {
+        this.siteName = name;
     }
-
 
     public String getTimeIn() {
         return timeIn;
@@ -79,5 +76,23 @@ public class Ticket extends RealmObject {
 
     public void setTimeOut(String timeOut) {
         this.timeOut = timeOut;
+    }
+
+    public String getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
+    }
+
+    private String vehicleType;
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
     }
 }

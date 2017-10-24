@@ -32,6 +32,8 @@ import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.model.Ticket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
+import com.codextech.ibtisam.lepak_app.sync.TicketSenderAsync;
+import com.codextech.ibtisam.lepak_app.sync.MyUrls;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -52,7 +54,7 @@ public class TicketFormatActivity extends Activity {
     private int mBaudrate = 4; // 9600
     MediaPlayer player;
     boolean isCanPrint = true;
-    TextView tvagent,
+    TextView tvSiteName,
             tvtime,
             tvnumber,
             tvprice,
@@ -61,12 +63,10 @@ public class TicketFormatActivity extends Activity {
     String ticket_time = "";
     String ticket_time_Out = "";
     String veh_number = "";
-    String agent_name = "Ali";
+    String site_name = "";
     String veh_type = "car";
     String fee = "20";
-    String device_location = "Liberty";
-    private long timeNowMillis;
-    private PosApi mPosSDK;
+    String device_location = "Lati/Logi";
     SessionManager sessionManager;
 
     @Override
@@ -79,15 +79,16 @@ public class TicketFormatActivity extends Activity {
         RealmController.with(this).refresh();
         Intent intenti = getIntent();
         veh_number = intenti.getStringExtra(TicketFormatActivity.CAR_NUMBER);
-        timeNowMillis = Calendar.getInstance().getTimeInMillis();
+        site_name = sessionManager.getKeySiteName();
+        long timeNowMillis = Calendar.getInstance().getTimeInMillis();
         ticket_time = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
 //        ticket_time = DateFormat.getDateTimeInstance().format(new Date());
-        tvagent = (TextView) findViewById(R.id.Dname);
+        tvSiteName = (TextView) findViewById(R.id.tvSiteName);
         tvtime = (TextView) findViewById(R.id.Dtime);
         tvnumber = (TextView) findViewById(R.id.Dnumber);
         tvprice = (TextView) findViewById(R.id.Dprice);
         tvlocation = (TextView) findViewById(R.id.Dlocation);
-        tvagent.setText(agent_name);
+        tvSiteName.setText(site_name);
         tvtime.setText(ticket_time);
         tvnumber.setText(veh_number);
         tvprice.setText(fee);
@@ -99,6 +100,7 @@ public class TicketFormatActivity extends Activity {
             @Override
             public void onClick(View v) {
                 printMix();
+//                saveTicket(site_name, ticket_time, ticket_time_Out, veh_number, veh_type, fee, device_location, "ticket_not_synced");
             }
         });
         mPrintQueue = new PrintQueue(this, ScanService.mApi);
@@ -248,13 +250,13 @@ public class TicketFormatActivity extends Activity {
             sb.append("        PARKING TICKET     ");
             sb.append("\n");
             sb.append("Site Name: ");
-            sb.append(sessionManager.getKeySiteName());
+            sb.append(site_name);
             sb.append("\n");
             sb.append("Time:  " + ticket_time);
             sb.append("\n");
             sb.append("Veh Reg No:  " + veh_number);
             sb.append("\n");
-            sb.append("Veh Type:  Car");
+            sb.append("Veh Type:  " + veh_type);
             sb.append("\n");
             sb.append("Parking Fee:  20");
             sb.append("\n");
@@ -274,7 +276,7 @@ public class TicketFormatActivity extends Activity {
             sb.append("\n");
             text = sb.toString().getBytes("GBK");
             addPrintTextWithSize(1, concentration, text);
-            saveTicket(agent_name, "" + ticket_time, ticket_time_Out, veh_number, veh_type, fee, device_location);
+            saveTicket(site_name, ticket_time, ticket_time_Out, veh_number, veh_type, fee, device_location, "ticket_not_synced");
             mPrintQueue.printStart();
             //TODO if ticket is printed successfull then do this
         } catch (UnsupportedEncodingException e) {
@@ -283,34 +285,38 @@ public class TicketFormatActivity extends Activity {
         }
     }
 
-    public void saveTicket(String agent_name, String ticket_time_in, String ticket_time_out, String veh_number, String veh_type, String fee, String device_location) {
+    public void saveTicket(String site_name, String ticket_time_in, String ticket_time_out, String veh_number, String veh_type, String fee, String device_location, final String syncStatus) {
 
-        if (agent_name != null && ticket_time_in != null && veh_number != null && veh_type != null && fee != null && device_location != null) {
+        if (site_name != null && ticket_time_in != null && veh_number != null && veh_type != null && fee != null && device_location != null) {
 
             Ticket ticket = new Ticket();
-            ticket.setId(RealmController.getInstance().getBooks().size() + System.currentTimeMillis());
-            ticket.setAgentName(agent_name);
+            ticket.setId(RealmController.getInstance().getTickets().size() + System.currentTimeMillis());
+            ticket.setSiteName(site_name);
             ticket.setTimeIn(ticket_time_in);
             ticket.setTimeOut(ticket_time_out);
             ticket.setNumber(veh_number);
+            ticket.setVehicleType(veh_type);
             ticket.setPrice(fee);
             ticket.setLocation(device_location);
+            ticket.setSyncStatus(syncStatus);
             realm.beginTransaction();
             realm.copyToRealm(ticket);
             realm.commitTransaction();
 
+            TicketSenderAsync ticketSenderAsync = new TicketSenderAsync(TicketFormatActivity.this);
+            ticketSenderAsync.execute();
+
+
 //            long count = realm.where(Ticket.class).count();
 //            Log.d(TAG, "saveTicket: COUNT: " + count);
-            // Toast.makeText(TicketFormatActivity.this, "Entry Saved" + RealmController.getInstance().getBooks().size() + System.currentTimeMillis(), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(TicketFormatActivity.this, "Entry Saved" + RealmController.getInstance().getTickets().size() + System.currentTimeMillis(), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void syncTicket(final String site_id, final String vehicle_no, final String vehicle_type, final String fee, final String ticket_time, final String token) {
         RequestQueue queue = Volley.newRequestQueue(TicketFormatActivity.this, new HurlStack());
 
-        String url = "http://34.215.56.25/apiLepak/public/api/sites/ticket";
-
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.TICKET_SEND,
 
                 new Response.Listener<String>() {
                     @Override

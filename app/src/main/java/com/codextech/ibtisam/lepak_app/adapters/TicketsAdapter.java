@@ -30,7 +30,7 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<Ticket> {
     // create new views (invoked by the layout manager)
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // inflate a new card view
+        // inflate a new card_ticket view
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tickets, parent, false);
         return new CardViewHolder(view);
     }
@@ -44,20 +44,22 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<Ticket> {
         // cast the generic view holder to our specific one
         final CardViewHolder holder = (CardViewHolder) viewHolder;
         // set the title and the snippet
-        holder.textName.setText(ticket.getAgentName());
-        holder.textTimeIn.setText(ticket.getTimeIn());
+        holder.tvSiteName.setText(ticket.getSiteName());
+        holder.textVehicalType.setText(ticket.getVehicleType());
+        holder.tvTimeIn.setText(ticket.getTimeIn());
         holder.textTimeOut.setText(ticket.getTimeOut());
         holder.textNumber.setText(ticket.getNumber());
         holder.textPrice.setText(ticket.getPrice());
         holder.textLocation.setText(ticket.getLocation());
+        holder.syncStatus.setText(ticket.getSyncStatus());
         //remove single match from realm
-        holder.card.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.card_ticket.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 RealmResults<Ticket> results = realm.where(Ticket.class).findAll();
                 // Get the ticket title to show it in toast message
                 Ticket b = results.get(position);
-                String title = b.getAgentName();
+                String title = b.getSiteName();
                 // All changes to data must happen in a transaction
                 realm.beginTransaction();
                 // remove single match
@@ -84,25 +86,29 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<Ticket> {
 
     private static class CardViewHolder extends RecyclerView.ViewHolder {
 
-        private CardView card;
-        private TextView textName;
+        private CardView card_ticket;
+        private TextView tvSiteName;
         private TextView textTimeOut;
-        private TextView textTimeIn;
+        private TextView tvTimeIn;
         private TextView textNumber;
         private TextView textPrice;
         private TextView textLocation;
+        private TextView textVehicalType;
+        public TextView syncStatus;
 
         //  public ImageView imageBackground;
         private CardViewHolder(View itemView) {
             // standard view holder pattern with Butterknife view injection
             super(itemView);
-            card = (CardView) itemView.findViewById(R.id.card_books);
-            textName = (TextView) itemView.findViewById(R.id.agnetName);
-            textTimeIn = (TextView) itemView.findViewById(R.id.timeIn);
+            card_ticket = (CardView) itemView.findViewById(R.id.card_ticket);
+            tvSiteName = (TextView) itemView.findViewById(R.id.tvSiteName);
+            tvTimeIn = (TextView) itemView.findViewById(R.id.tvTimeIn);
             textTimeOut = (TextView) itemView.findViewById(R.id.timeOut);
             textNumber = (TextView) itemView.findViewById(R.id.Dnumber);
             textPrice = (TextView) itemView.findViewById(R.id.Dprice);
             textLocation = (TextView) itemView.findViewById(R.id.Dlocation);
+            syncStatus = (TextView) itemView.findViewById(R.id.tvSyncStatus);
+            textVehicalType = (TextView) itemView.findViewById(R.id.tvVehicleType);
 
         }
     }

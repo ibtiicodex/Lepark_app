@@ -36,7 +36,8 @@ public class ReturnTicketFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.retrun_ticket_fragment, container, false);
-        this.realm = RealmController.with(this).getRealm();
+//        this.realm = RealmController.with(this).getRealm();
+        realm = Realm.getInstance(getContext());
         RealmController.with(this).refresh();
         timeNowMillis = Calendar.getInstance().getTimeInMillis();
         ticket_time_out = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
@@ -55,7 +56,8 @@ public class ReturnTicketFragment extends Fragment {
         tvPrice = (TextView) view.findViewById(R.id.tvPrice);
 
         tvLocation = (TextView) view.findViewById(R.id.tvLocation);
-        realm = Realm.getInstance(getContext());
+
+
 //
         tvTimeDifference = (TextView) view.findViewById(R.id.tvTimeDifference);
 
@@ -78,7 +80,7 @@ public class ReturnTicketFragment extends Fragment {
 
                         if (manyTicket.size() > 0) {
 
-                            tvAgentName.setText(manyTicket.first().getAgentName());
+                            tvAgentName.setText(manyTicket.first().getSiteName());
 
                             tvTimeIn.setText(manyTicket.first().getTimeIn());
 

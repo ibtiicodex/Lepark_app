@@ -64,11 +64,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Agent Name" />
+                    android:text="Site Name" />
 
 
                 <TextView
-                    android:id="@+id/Dname"
+                    android:id="@+id/tvSiteName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="48dp"

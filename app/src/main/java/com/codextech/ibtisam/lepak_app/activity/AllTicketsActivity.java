@@ -61,7 +61,7 @@ public class AllTicketsActivity extends AppCompatActivity {
         // get all persisted objects
         // create the helper adapter and notify data set changes
         // changes will be reflected automatically
-        setRealmAdapter(RealmController.with(this).getBooks());
+        setRealmAdapter(RealmController.with(this).getTickets());
 
         //  Toast.makeText(this, "Press card item for edit, long press to remove item", Toast.LENGTH_LONG).show();
     }

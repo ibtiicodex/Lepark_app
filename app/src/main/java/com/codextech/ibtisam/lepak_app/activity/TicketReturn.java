@@ -19,6 +19,7 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
+@Deprecated
 public class TicketReturn extends Activity {
     private static final String TAG = "TicketReturn";
     TextView tvAgentName, tvTimeOut, tvNumber, tvPrice, tvLocation;
@@ -71,7 +72,7 @@ public class TicketReturn extends Activity {
 
                 Log.e(TAG, "onCreate: " + manyTicket.toString());
 
-                tvAgentName.setText(manyTicket.first().getAgentName());
+                tvAgentName.setText(manyTicket.first().getSiteName());
 
                 tvTimeIn.setText(manyTicket.first().getTimeIn());
 
