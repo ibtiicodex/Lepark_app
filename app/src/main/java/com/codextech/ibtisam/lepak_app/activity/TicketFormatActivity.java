@@ -99,8 +99,9 @@ public class TicketFormatActivity extends Activity {
         btnPrintMix.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                printMix();
-//                saveTicket(site_name, ticket_time, ticket_time_Out, veh_number, veh_type, fee, device_location, "ticket_not_synced");
+                //printMix();
+                saveTicket(site_name, "" + ticket_time, ticket_time_Out, veh_number, veh_type, fee, device_location, "ticket_not_synced");
+//abc
             }
         });
         mPrintQueue = new PrintQueue(this, ScanService.mApi);
@@ -276,7 +277,7 @@ public class TicketFormatActivity extends Activity {
             sb.append("\n");
             text = sb.toString().getBytes("GBK");
             addPrintTextWithSize(1, concentration, text);
-            saveTicket(site_name, ticket_time, ticket_time_Out, veh_number, veh_type, fee, device_location, "ticket_not_synced");
+//            saveTicket(agent_name, "" + ticket_time, ticket_time_Out, veh_number, veh_type, fee, device_location);
             mPrintQueue.printStart();
             //TODO if ticket is printed successfull then do this
         } catch (UnsupportedEncodingException e) {

@@ -24,54 +24,28 @@
             android:drawablePadding="5dp"
             android:ems="10"
             android:imeOptions="actionNext"
-            android:hint="Username"
+            android:hint="Site Name"
             android:inputType="textEmailAddress"
             android:paddingLeft="8dp"
             android:textColorHint="@color/textcolor" />
 
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/edback"
-            android:imeOptions="actionNext"
-            android:drawablePadding="5dp"
-            android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:paddingLeft="8dp"
-            android:textColorHint="@color/textcolor" />
 
-        <EditText
-            android:id="@+id/edpassword"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/edback"
-            android:drawablePadding="5dp"
-            android:ems="10"
-            android:imeOptions="actionNext"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:paddingLeft="8dp"
-            android:textColor="#FFF"
-            android:textColorHint="@color/textcolor" />
 
-        <EditText
-            android:id="@+id/edconfirm"
+        <Spinner
+            android:id="@+id/spLocation"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
             android:background="@color/edback"
-            android:drawablePadding="5dp"
-            android:imeOptions="actionNext"
-            android:ems="10"
-            android:hint="Confirm Pass"
-            android:inputType="textPassword"
-            android:paddingLeft="8dp"
-            android:textColor="#FFF"
-            android:textColorHint="@color/textcolor" />
+            android:textColor="@color/textcolor"/>
+        >
+        <Spinner
+            android:id="@+id/spCityId"
+            android:layout_width="match_parent"
+            android:layout_height="39dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/edback"
+            android:textColor="@color/textcolor"/>
         >
         <TextView
             android:layout_width="wrap_content"
