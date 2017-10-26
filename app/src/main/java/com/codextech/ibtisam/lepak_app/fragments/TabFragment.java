@@ -71,9 +71,9 @@ public class TabFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Return Ticket";
+                    return "Return LPTicket";
                 case 1:
-                    return "Print Ticket";
+                    return "Print LPTicket";
             }
             return null;
         }

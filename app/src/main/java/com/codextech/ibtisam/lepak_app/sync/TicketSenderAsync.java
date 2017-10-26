@@ -13,7 +13,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.SessionManager;
-import com.codextech.ibtisam.lepak_app.model.Ticket;
+import com.codextech.ibtisam.lepak_app.model.LPTicket;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,20 +52,19 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void>{
 
         realm = Realm.getInstance(config);
 
-        RealmQuery<Ticket> query = realm.where(Ticket.class);
+        RealmQuery<LPTicket> query = realm.where(LPTicket.class);
 
         query.equalTo("syncStatus", "ticket_not_synced" );
 
-        RealmResults<Ticket> manyTicket = query.findAll();
+        RealmResults<LPTicket> manyLPTicket = query.findAll();
 
-//        Log.d(TAG, "sendTicketToServer: manyTicket: " + manyTicket.toString());
+//        Log.d(TAG, "sendTicketToServer: manyLPTicket: " + manyLPTicket.toString());
 
-        for (Ticket oneTicket : manyTicket) {
-            Log.d(TAG, "sendTicketToServer: oneTicket " + oneTicket);
-            Log.d(TAG, "sendTicketToServer: oneTicket Number " + oneTicket.getNumber());
-            syncTicket(oneTicket.getNumber(), oneTicket.getVehicleType(), oneTicket.getPrice(), oneTicket.getTimeIn());
+        for (LPTicket oneLPTicket : manyLPTicket) {
+            Log.d(TAG, "sendTicketToServer: oneLPTicket " + oneLPTicket);
+            Log.d(TAG, "sendTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
+            syncTicket(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn());
         }
-
     }
 
     private void syncTicket(final String veh_num, final String veh_type, final String fee, final String time_in ) {

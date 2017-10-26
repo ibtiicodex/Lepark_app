@@ -29,7 +29,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
-import com.codextech.ibtisam.lepak_app.model.Ticket;
+import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.sync.TicketSenderAsync;
@@ -110,7 +110,7 @@ public class TicketFormatActivity extends Activity {
             @Override
             public void onFinish() {
                 isCanPrint = true;
-                syncTicket(sessionManager.getKeySiteId(), veh_number, veh_type, fee, ticket_time, sessionManager.getLoginToken());
+//                syncTicket(sessionManager.getKeySiteId(), veh_number, veh_type, fee, ticket_time, sessionManager.getLoginToken());
                 finish();
                 Toast.makeText(getApplicationContext(), getString(R.string.print_complete), Toast.LENGTH_SHORT).show();
             }
@@ -290,25 +290,25 @@ public class TicketFormatActivity extends Activity {
 
         if (site_name != null && ticket_time_in != null && veh_number != null && veh_type != null && fee != null && device_location != null) {
 
-            Ticket ticket = new Ticket();
-            ticket.setId(RealmController.getInstance().getTickets().size() + System.currentTimeMillis());
-            ticket.setSiteName(site_name);
-            ticket.setTimeIn(ticket_time_in);
-            ticket.setTimeOut(ticket_time_out);
-            ticket.setNumber(veh_number);
-            ticket.setVehicleType(veh_type);
-            ticket.setPrice(fee);
-            ticket.setLocation(device_location);
-            ticket.setSyncStatus(syncStatus);
+            LPTicket LPTicket = new LPTicket();
+            LPTicket.setId(RealmController.getInstance().getTickets().size() + System.currentTimeMillis());
+            LPTicket.setSiteName(site_name);
+            LPTicket.setTimeIn(ticket_time_in);
+            LPTicket.setTimeOut(ticket_time_out);
+            LPTicket.setNumber(veh_number);
+            LPTicket.setVehicleType(veh_type);
+            LPTicket.setPrice(fee);
+            LPTicket.setLocation(device_location);
+            LPTicket.setSyncStatus(syncStatus);
             realm.beginTransaction();
-            realm.copyToRealm(ticket);
+            realm.copyToRealm(LPTicket);
             realm.commitTransaction();
 
             TicketSenderAsync ticketSenderAsync = new TicketSenderAsync(TicketFormatActivity.this);
             ticketSenderAsync.execute();
 
 
-//            long count = realm.where(Ticket.class).count();
+//            long count = realm.where(LPTicket.class).count();
 //            Log.d(TAG, "saveTicket: COUNT: " + count);
             // Toast.makeText(TicketFormatActivity.this, "Entry Saved" + RealmController.getInstance().getTickets().size() + System.currentTimeMillis(), Toast.LENGTH_SHORT).show();
         }
@@ -323,7 +323,7 @@ public class TicketFormatActivity extends Activity {
                     @Override
                     public void onResponse(String response) {
                         // response
-                        Toast.makeText(TicketFormatActivity.this, "Ticket Sent", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TicketFormatActivity.this, "LPTicket Sent", Toast.LENGTH_SHORT).show();
 
                     }
                 },
@@ -332,7 +332,7 @@ public class TicketFormatActivity extends Activity {
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
                         // error
-                        Toast.makeText(TicketFormatActivity.this, "Error Sending Ticket", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TicketFormatActivity.this, "Error Sending LPTicket", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {

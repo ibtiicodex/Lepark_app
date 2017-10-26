@@ -65,9 +65,6 @@
             android:screenOrientation="portrait" />
         <!-- <activity android:name=".activity.LoginActivity" /> -->
         <activity
-            android:name=".activity.LocationActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".fragments.SummaryFragment"
             android:screenOrientation="portrait" />
         <!-- <activity -->

@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.support.v4.app.Fragment;
 
-import com.codextech.ibtisam.lepak_app.model.Ticket;
+import com.codextech.ibtisam.lepak_app.model.LPLocation;
+import com.codextech.ibtisam.lepak_app.model.LPTicket;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -62,42 +63,44 @@ public class RealmController {
         realm.refresh();
     }
 
-    //clear all objects from Ticket.class
+
+    public LPLocation getLocationFromLocationName(String locationName) {
+
+        return realm.where(LPLocation.class).equalTo("locationName", locationName).findFirst();
+    }
+
+
+    //clear all objects from LPTicket.class
     public void clearAll() {
 
         realm.beginTransaction();
-        realm.clear(Ticket.class);
+        realm.clear(LPTicket.class);
         realm.commitTransaction();
     }
 
-    //find all objects in the Ticket.class
-    public RealmResults<Ticket> getTickets() {
-
-        return realm.where(Ticket.class).findAll();
+    //find all objects in the LPTicket.class
+    public RealmResults<LPTicket> getTickets() {
+        return realm.where(LPTicket.class).findAll();
     }
 
     //query a single item with the given id
-    public Ticket getBook(String id) {
-
-        return realm.where(Ticket.class).equalTo("id", id).findFirst();
+    public LPTicket getBook(String id) {
+        return realm.where(LPTicket.class).equalTo("id", id).findFirst();
     }
 
-    //isServiceRunning if Ticket.class is empty
+    //isServiceRunning if LPTicket.class is empty
     public boolean hasTickets() {
-
-        return !realm.allObjects(Ticket.class).isEmpty();
+        return !realm.allObjects(LPTicket.class).isEmpty();
     }
 
     //query example
-    public RealmResults<Ticket> queryedTickets() {
+    public RealmResults<LPTicket> queryedTickets() {
 
-        return realm.where(Ticket.class)
+        return realm.where(LPTicket.class)
                 .contains("author", "Author 0")
                 .or()
                 .contains("title", "Realm")
                 //
                 .findAll();
-
-
     }
 }

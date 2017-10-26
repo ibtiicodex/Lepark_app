@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codextech.ibtisam.lepak_app.R;
-import com.codextech.ibtisam.lepak_app.model.Ticket;
+import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
 
@@ -69,7 +69,7 @@ public class SummaryFragment extends AppCompatActivity {
         tvTicketCount = (TextView) findViewById(R.id.tvTicketCount);
         tvTicketTotal = (TextView) findViewById(R.id.tvTicketTotal);
         this.realm = RealmController.with(this).getRealm();
-        count = realm.where(Ticket.class).count();
+        count = realm.where(LPTicket.class).count();
         Log.d(TAG, "saveTicket: COUNT: " + count);
         tvTicketCount.setText(count + "");
         tvTicketTotal.setText(count * 20 + "");

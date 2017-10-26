@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.codextech.ibtisam.lepak_app.R;
-import com.codextech.ibtisam.lepak_app.model.Ticket;
+import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
@@ -64,29 +64,29 @@ public class TicketReturn extends Activity {
             @Override
             public void onClick(View view) {
 
-                RealmQuery<Ticket> query = realm.where(Ticket.class);
+                RealmQuery<LPTicket> query = realm.where(LPTicket.class);
 
                 query.equalTo("number", etCarNumber.getText().toString());
 
-                RealmResults<Ticket> manyTicket = query.findAll();
+                RealmResults<LPTicket> manyLPTicket = query.findAll();
 
-                Log.e(TAG, "onCreate: " + manyTicket.toString());
+                Log.e(TAG, "onCreate: " + manyLPTicket.toString());
 
-                tvAgentName.setText(manyTicket.first().getSiteName());
+                tvAgentName.setText(manyLPTicket.first().getSiteName());
 
-                tvTimeIn.setText(manyTicket.first().getTimeIn());
+                tvTimeIn.setText(manyLPTicket.first().getTimeIn());
 
                 tvTimeOut.setText(ticket_time_out);
 
-                tvNumber.setText(manyTicket.first().getNumber());
+                tvNumber.setText(manyLPTicket.first().getNumber());
 
-                tvPrice.setText(manyTicket.first().getPrice());
+                tvPrice.setText(manyLPTicket.first().getPrice());
 
-                tvLocation.setText(manyTicket.first().getLocation());
+                tvLocation.setText(manyLPTicket.first().getLocation());
 
                 realm.beginTransaction();
 
-                manyTicket.first().setTimeOut(ticket_time_out);
+                manyLPTicket.first().setTimeOut(ticket_time_out);
                 realm.commitTransaction();
 
 

@@ -11,7 +11,7 @@ import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.adapters.RealmTicketsAdapter;
 import com.codextech.ibtisam.lepak_app.adapters.TicketsAdapter;
 import com.codextech.ibtisam.lepak_app.app.Prefs;
-import com.codextech.ibtisam.lepak_app.model.Ticket;
+import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 
 import java.util.ArrayList;
@@ -66,9 +66,9 @@ public class AllTicketsActivity extends AppCompatActivity {
         //  Toast.makeText(this, "Press card item for edit, long press to remove item", Toast.LENGTH_LONG).show();
     }
 
-    public void setRealmAdapter(RealmResults<Ticket> tickets) {
+    public void setRealmAdapter(RealmResults<LPTicket> LPTickets) {
 
-        RealmTicketsAdapter realmAdapter = new RealmTicketsAdapter(this.getApplicationContext(), tickets, true);
+        RealmTicketsAdapter realmAdapter = new RealmTicketsAdapter(this.getApplicationContext(), LPTickets, true);
         // Set the data and tell the RecyclerView to draw
         adapter.setRealmAdapter(realmAdapter);
 
@@ -94,9 +94,9 @@ public class AllTicketsActivity extends AppCompatActivity {
     }
 
     private void setRealmData() {
-        ArrayList<Ticket> tickets = new ArrayList<>();
+        ArrayList<LPTicket> LPTickets = new ArrayList<>();
 
-        for (Ticket b : tickets) {
+        for (LPTicket b : LPTickets) {
             // Persist your data easily
             realm.beginTransaction();
 

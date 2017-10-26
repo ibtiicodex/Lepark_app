@@ -33,8 +33,11 @@ import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    private EditText emailEditText;
-    private EditText passEditText;
+    public static final String LOGIN_EMAIL = "login_email";
+    public static final String LOGIN_PASSWORD = "login_password";
+    private  EditText emailEditText;
+    private  EditText passEditText;
+    private static String TAGA="LoginActivity";
     Button btnNext;
     TextView tvsignup;
     ProgressDialog pdLoading;
@@ -47,16 +50,20 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Address the email and password field
+
+        String email = getIntent().getStringExtra(LoginActivity.LOGIN_EMAIL);
+        String password = getIntent().getStringExtra(LoginActivity.LOGIN_PASSWORD);
+
         btLogin = (Button) findViewById(R.id.btLogin);
-        emailEditText = (EditText) findViewById(R.id.username);
+        emailEditText = (EditText) findViewById(R.id.edSiteName);
+        emailEditText.setText(email);
+        passEditText = (EditText) findViewById(R.id.password);
+        passEditText.setText(password);
         btnNext = (Button) findViewById(R.id.btnext);
         tvsignup = (TextView) findViewById(R.id.tvsignup);
         pdLoading = new ProgressDialog(this);
         pdLoading.setTitle("Loading data");
         pdLoading.setMessage("Please Wait...");
-
-        passEditText = (EditText) findViewById(R.id.password);
 
         sessionManager = new SessionManager(LoginActivity.this);
         queue = Volley.newRequestQueue(LoginActivity.this, new HurlStack());

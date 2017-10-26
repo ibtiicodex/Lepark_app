@@ -11,13 +11,13 @@ import android.widget.Toast;
 
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.app.Prefs;
-import com.codextech.ibtisam.lepak_app.model.Ticket;
+import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class TicketsAdapter extends RealmRecyclerViewAdapter<Ticket> {
+public class TicketsAdapter extends RealmRecyclerViewAdapter<LPTicket> {
 
     private final Context context;
     private Realm realm;
@@ -40,25 +40,25 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<Ticket> {
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         realm = RealmController.getInstance().getRealm();
         // get the article
-        final Ticket ticket = getItem(position);
+        final LPTicket LPTicket = getItem(position);
         // cast the generic view holder to our specific one
         final CardViewHolder holder = (CardViewHolder) viewHolder;
         // set the title and the snippet
-        holder.tvSiteName.setText(ticket.getSiteName());
-        holder.textVehicalType.setText(ticket.getVehicleType());
-        holder.tvTimeIn.setText(ticket.getTimeIn());
-        holder.textTimeOut.setText(ticket.getTimeOut());
-        holder.textNumber.setText(ticket.getNumber());
-        holder.textPrice.setText(ticket.getPrice());
-        holder.textLocation.setText(ticket.getLocation());
-        holder.syncStatus.setText(ticket.getSyncStatus());
+        holder.tvSiteName.setText(LPTicket.getSiteName());
+        holder.textVehicalType.setText(LPTicket.getVehicleType());
+        holder.tvTimeIn.setText(LPTicket.getTimeIn());
+        holder.textTimeOut.setText(LPTicket.getTimeOut());
+        holder.textNumber.setText(LPTicket.getNumber());
+        holder.textPrice.setText(LPTicket.getPrice());
+        holder.textLocation.setText(LPTicket.getLocation());
+        holder.syncStatus.setText(LPTicket.getSyncStatus());
         //remove single match from realm
         holder.card_ticket.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                RealmResults<Ticket> results = realm.where(Ticket.class).findAll();
-                // Get the ticket title to show it in toast message
-                Ticket b = results.get(position);
+                RealmResults<LPTicket> results = realm.where(LPTicket.class).findAll();
+                // Get the LPTicket title to show it in toast message
+                LPTicket b = results.get(position);
                 String title = b.getSiteName();
                 // All changes to data must happen in a transaction
                 realm.beginTransaction();

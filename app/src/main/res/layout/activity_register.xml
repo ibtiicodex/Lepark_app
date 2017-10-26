@@ -17,7 +17,7 @@
         android:padding="40dp">
 
         <EditText
-            android:id="@+id/username"
+            android:id="@+id/edSiteName"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@color/edback"
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
-            android:background="@color/edback"
+
             android:textColor="@color/textcolor"/>
         >
         <Spinner
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="39dp"
             android:layout_marginTop="20dp"
-            android:background="@color/edback"
+
             android:textColor="@color/textcolor"/>
         >
         <TextView
