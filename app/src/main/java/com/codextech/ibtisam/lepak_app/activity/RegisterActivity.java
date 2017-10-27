@@ -42,6 +42,7 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
+import static com.codextech.ibtisam.lepak_app.sync.MyUrls.LocationUrl;
 import static java.lang.String.valueOf;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -151,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         final int MY_SOCKET_TIMEOUT_MS = 60000;
 
-        JsonArrayRequest req = new JsonArrayRequest("http://34.215.56.25/apiLepak/public/api/sites/locations",
+        JsonArrayRequest req = new JsonArrayRequest(LocationUrl,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {

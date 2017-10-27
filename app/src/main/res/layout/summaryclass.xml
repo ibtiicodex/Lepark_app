@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     android:background="@drawable/backsummary"
     >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:contentScrim="?attr/colorPrimary"
+        app:layout_scrollFlags="enterAlways" />
     <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginLeft="80dp"
+                android:layout_marginLeft="70dp"
                 android:layout_gravity="center"
                 android:text="Total Ticket"
                 android:textColor="#000"
@@ -35,6 +41,7 @@
             android:id="@+id/tvTicketCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
 
            />
@@ -50,7 +57,7 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="80dp"
+                android:layout_marginLeft="70dp"
                 android:layout_gravity="center"
 
                 android:text="Total Amount"
@@ -63,6 +70,7 @@
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="39dp"
                 />
         </LinearLayout>
 
@@ -78,7 +86,7 @@
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="75dp"
             android:background="@drawable/selector_xml_btn_yellow"
             android:text="Print Summary"
             android:textColor="#FFF"

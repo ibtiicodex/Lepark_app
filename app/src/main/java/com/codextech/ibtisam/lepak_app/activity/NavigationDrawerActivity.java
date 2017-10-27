@@ -1,5 +1,4 @@
 package com.codextech.ibtisam.lepak_app.activity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -12,15 +11,13 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.fragments.SummaryFragment;
 import com.codextech.ibtisam.lepak_app.fragments.TabFragment;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
-
-
+import com.codextech.ibtisam.lepak_app.sync.TicketSenderAsync;
 public class NavigationDrawerActivity extends AppCompatActivity {
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
@@ -28,7 +25,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     FragmentManager mFragmentManager;
     private ImageView ivProfileImgNavBar;
     SessionManager sessionManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +74,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 //                    startActivity(intent);
                 }
                 if (menuItem.getItemId() == R.id.nav_refresh) {
+
+                    TicketSenderAsync ticketSenderAsync = new TicketSenderAsync(NavigationDrawerActivity.this);
+                    ticketSenderAsync.execute();
                     Toast.makeText(NavigationDrawerActivity.this, " Refresh App", Toast.LENGTH_SHORT).show();
 
 //                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();

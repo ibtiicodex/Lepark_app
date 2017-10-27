@@ -62,7 +62,7 @@
                 android:id="@+id/tvAgentName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="48dp"
+                android:gravity="right"
                 android:layout_weight="1"
                 android:text="" />
         </LinearLayout>
@@ -87,8 +87,8 @@
                 android:id="@+id/IDtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:layout_weight="1"
-                android:ems="5"
                 android:text="" />
         </LinearLayout>
 
@@ -113,7 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="10"
+                android:gravity="right"
                 android:text="" />
         </LinearLayout>
 
@@ -137,7 +137,7 @@
                 android:id="@+id/tvNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="22dp"
+                android:gravity="right"
                 android:layout_weight="1"
                 android:text="" />
 
@@ -165,6 +165,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="right"
                 android:text="" />
         </LinearLayout>
 
@@ -188,7 +189,7 @@
                 android:id="@+id/tvLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="22dp"
+                android:gravity="right"
                 android:layout_weight="1"
                 android:text="" />
         </LinearLayout>

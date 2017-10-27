@@ -19,7 +19,7 @@ import com.google.zxing.common.BitMatrix;
 
 import java.util.HashMap;
 
-
+@Deprecated
 public abstract class BarcodeCreater {
 
 	private static int marginW = 20;

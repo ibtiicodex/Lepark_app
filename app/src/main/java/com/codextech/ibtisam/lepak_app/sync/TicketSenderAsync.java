@@ -27,7 +27,7 @@ import io.realm.RealmResults;
  * Created by ibtisam on 10/23/2017.
  */
 
-public class TicketSenderAsync extends AsyncTask<Void, Void, Void>{
+public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
     public static final String TAG = "TicketSenderAsync";
     Context context;
     SessionManager sessionManager;
@@ -54,7 +54,7 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void>{
 
         RealmQuery<LPTicket> query = realm.where(LPTicket.class);
 
-        query.equalTo("syncStatus", "ticket_not_synced" );
+        query.equalTo("syncStatus", "ticket_not_synced");
 
         RealmResults<LPTicket> manyLPTicket = query.findAll();
 
@@ -67,7 +67,7 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void>{
         }
     }
 
-    private void syncTicket(final String veh_num, final String veh_type, final String fee, final String time_in ) {
+    private void syncTicket(final String veh_num, final String veh_type, final String fee, final String time_in) {
         RequestQueue queue = Volley.newRequestQueue(context, new HurlStack());
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.TICKET_SEND,

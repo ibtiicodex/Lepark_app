@@ -27,7 +27,7 @@ public class DateAndTimeUtils {
 
     public static String getTimeAgo(long time, Context ctx) {
         if (time < 1000000000000L) {
-            // if timestamp given in seconds, convert to millis
+            // if timestamp                                                                                                                                                                                                                                                                                                                        in seconds, convert to millis
             time *= 1000;
         }
         long now = Calendar.getInstance().getTimeInMillis();

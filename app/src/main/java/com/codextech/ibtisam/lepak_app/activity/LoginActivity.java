@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     Button btnNext;
     TextView tvsignup;
     ProgressDialog pdLoading;
-
     private Button btLogin;
     private SessionManager sessionManager;
     private RequestQueue queue;
@@ -50,10 +49,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         String email = getIntent().getStringExtra(LoginActivity.LOGIN_EMAIL);
         String password = getIntent().getStringExtra(LoginActivity.LOGIN_PASSWORD);
-
         btLogin = (Button) findViewById(R.id.btLogin);
         emailEditText = (EditText) findViewById(R.id.edSiteName);
         emailEditText.setText(email);
