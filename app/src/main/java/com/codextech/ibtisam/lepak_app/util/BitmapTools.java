@@ -7,7 +7,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-
+@Deprecated
 public class BitmapTools {
 
 	public static Bitmap resizeImage(Bitmap bitmap, int w, int h) {

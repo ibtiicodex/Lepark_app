@@ -28,15 +28,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="70dp"
+
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dp"
         android:weightSum="2">
 
         <Button
-            android:id="@+id/carButton"
+            android:id="@+id/bCar"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
@@ -46,13 +46,43 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/bikeButton"
+            android:id="@+id/bBike"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:textColor="#FFF"
             android:background="@drawable/selector_xml_btn_yellow"
             android:text="Print bike"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/bVan"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="@drawable/selector_xml_btn_yellow"
+            android:text="Print Van"
+            android:textColor="#FFF"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/bTruck"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:textColor="#FFF"
+            android:background="@drawable/selector_xml_btn_yellow"
+            android:text="Print TRUCK"
             android:layout_weight="1" />
 
     </LinearLayout>

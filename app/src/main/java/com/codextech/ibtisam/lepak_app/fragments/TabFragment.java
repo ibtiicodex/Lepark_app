@@ -58,6 +58,7 @@ public class TabFragment extends Fragment {
                     return new ReturnTicketFragment();
                 case 1:
                     return new PrintTicketFragment();
+
             }
             return null;
         }
@@ -71,9 +72,10 @@ public class TabFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Return LPTicket";
+                    return "Return Ticket";
                 case 1:
-                    return "Print LPTicket";
+                    return "Print Ticket";
+
             }
             return null;
         }

@@ -5,71 +5,81 @@
     style="@style/AppTheme.Card.Margins"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <LinearLayout
-        android:background="#4567"
         android:layout_width="100dp"
-        android:layout_height="145dp"
-        android:padding="2dp"
+        android:layout_height="150dp"
+        android:background="#4567"
         android:orientation="vertical"
-        android:weightSum="8">
+        android:padding="2dp"
+        android:weightSum="9">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Site Name"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="Site Name" />
 
         <TextView
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Vehicle Type"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="Vehicle Type" />
 
         <TextView
             android:id="@+id/time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TimeIn"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="TimeIn" />
+
         <TextView
             android:id="@+id/timeO"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TimeOut"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="TimeOut" />
 
 
         <TextView
             android:id="@+id/number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Number"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="Number" />
+
         <TextView
             android:id="@+id/price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Price"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="Price" />
 
         <TextView
             android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="Location" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sync Status"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="Sync Status" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Server ID" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="145dp"
+        android:layout_height="150dp"
         android:layout_marginLeft="100dp"
         android:orientation="vertical"
         android:padding="2dp"
@@ -79,72 +89,82 @@
             android:id="@+id/tvSiteName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_marginRight="10dp"
             android:layout_gravity="right"
-            android:layout_weight="1"/>
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="right" />
+
         <TextView
             android:id="@+id/tvVehicleType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_marginRight="10dp"
             android:layout_gravity="right"
-            android:layout_weight="1"/>
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="right" />
 
         <TextView
             android:id="@+id/tvTimeIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_marginRight="10dp"
             android:layout_gravity="right"
-            android:layout_weight="1"/>
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="right" />
 
         <TextView
             android:id="@+id/timeOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_marginRight="10dp"
             android:layout_gravity="right"
-            android:layout_weight="1" />
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="right" />
 
         <TextView
             android:id="@+id/Dnumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_marginRight="10dp"
             android:layout_gravity="right"
-            android:layout_weight="1"/>
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="right" />
 
         <TextView
             android:id="@+id/Dprice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_marginRight="10dp"
             android:layout_gravity="right"
-            android:layout_weight="1"/>
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="right" />
 
         <TextView
             android:id="@+id/Dlocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_marginRight="10dp"
             android:layout_gravity="right"
-            android:layout_weight="1"/>
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="right" />
 
         <TextView
             android:id="@+id/tvSyncStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_marginRight="10dp"
             android:layout_gravity="right"
-            android:layout_weight="1"/>
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="right" />
+
+        <TextView
+            android:id="@+id/tvServerId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="right" />
     </LinearLayout>
 
 

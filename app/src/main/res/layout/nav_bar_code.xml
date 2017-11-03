@@ -1,0 +1,17 @@
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <!--android:background="@color/colorPrimaryDark"-->
+
+    <ImageView
+        android:id="@+id/backBtnImg"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:contentDescription="BackButton"
+        android:padding="5dp"
+        android:src="@drawable/railway_landscape" />
+
+    <include layout="@layout/custom_nav_bar" />
+
+</android.support.v7.widget.LinearLayoutCompat>

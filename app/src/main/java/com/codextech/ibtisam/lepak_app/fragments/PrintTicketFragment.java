@@ -10,13 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.codextech.ibtisam.lepak_app.R;
+import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.activity.TicketFormatActivity;
+import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
-
-import io.realm.Realm;
 
 /**
  * Created by HP on 10/18/2017.
@@ -24,35 +25,106 @@ import io.realm.Realm;
 
 public class PrintTicketFragment extends Fragment {
     public static final String TAG = "test";
-    private Button bcarButton;
+    private Button bCar;
+    private Button bBike;
+    private Button bVan;
+    private Button bTruck;
     private EditText edenternumber;
-    private Realm realm;
+    private String vehNumber;
+    private SessionManager sessionManager;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: PrintTicketFragment");
-        this.realm = RealmController.with(this).getRealm();
-        RealmController.with(this).refresh();
-//        startService();
         View view = inflater.inflate(R.layout.print_ticket_fragment, container, false);
         edenternumber = (EditText) view.findViewById(R.id.enterNum);
-        bcarButton = (Button) view.findViewById(R.id.carButton);
-        bcarButton.setOnClickListener(new View.OnClickListener() {
+        bCar = (Button) view.findViewById(R.id.bCar);
+        bBike = (Button) view.findViewById(R.id.bBike);
+        bVan = (Button) view.findViewById(R.id.bVan);
+        bTruck = (Button) view.findViewById(R.id.bTruck);
+        sessionManager = new SessionManager(getActivity());
+//        startService();
+
+        if (Integer.parseInt(sessionManager.getKeyCarAmount()) <= 0) {
+            bCar.setVisibility(View.GONE);
+
+        }
+        if (Integer.parseInt(sessionManager.getKeyBikeAmount()) <= 0) {
+            bBike.setVisibility(View.GONE);
+        }
+
+        if (Integer.parseInt(sessionManager.getKeyVanAmount()) <= 0) {
+            bVan.setVisibility(View.GONE);
+        }
+
+        if (Integer.parseInt(sessionManager.getKeyTruckAmount()) <= 0) {
+            bTruck.setVisibility(View.GONE);
+        }
+
+
+        bCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String carNum = edenternumber.getText().toString();
-                if (carNum.trim().length() >= 3 && carNum != null) {
-                    // realm.beginTransaction();
-                    Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
-                    intent.putExtra(TicketFormatActivity.CAR_NUMBER, carNum);
-                    startActivity(intent);
-
+                vehNumber = edenternumber.getText().toString();
+                if (vehNumber.trim().length() >= 1 && vehNumber != null) {
+                    LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
+                    if (lpTicket == null) {
+                        Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
+                        intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
+                        intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_CAR);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getActivity(), "car already exists", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    edenternumber.setError("tvNumber cannot be empty");
+                    edenternumber.setError("Empty Field!");
                 }
             }
         });
+        bBike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vehNumber = edenternumber.getText().toString();
+                if (vehNumber.trim().length() >= 1 && vehNumber != null) {
+                    Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
+                    intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
+                    intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_BIKE);
+                    startActivity(intent);
+                } else {
+                    edenternumber.setError("Empty Field!");
+                }
+            }
+        });
+        bVan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vehNumber = edenternumber.getText().toString();
+                if (vehNumber.trim().length() >= 1 && vehNumber != null) {
+                    Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
+                    intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
+                    intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_VAN);
+                    startActivity(intent);
+                } else {
+                    edenternumber.setError("Empty Field!");
+                }
+            }
+        });
+        bTruck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vehNumber = edenternumber.getText().toString();
+                if (vehNumber.trim().length() >= 1 && vehNumber != null) {
+                    Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
+                    intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
+                    intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_TRUCK);
+                    startActivity(intent);
+                } else {
+                    edenternumber.setError("Empty Field!");
+                }
+            }
+        });
+
         return view;
     }
 
@@ -61,8 +133,9 @@ public class PrintTicketFragment extends Fragment {
         super.onResume();
     }
 
-    private void startService() {
-        Log.d(TAG, "startService(): PrintTicketFragment");
+    private void startServiceIfNeeded() {
+        Log.d(TAG, "startServiceIfNeeded(): PrintTicketFragment");
+
         Intent newIntent = new Intent(getActivity(), ScanService.class);
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getActivity().startService(newIntent);

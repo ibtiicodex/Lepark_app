@@ -5,6 +5,7 @@ import android.app.Application;
 import android.support.v4.app.Fragment;
 
 import com.codextech.ibtisam.lepak_app.model.LPLocation;
+import com.codextech.ibtisam.lepak_app.model.LPNfc;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
 
 import io.realm.Realm;
@@ -63,12 +64,9 @@ public class RealmController {
         realm.refresh();
     }
 
-
     public LPLocation getLocationFromLocationName(String locationName) {
-
         return realm.where(LPLocation.class).equalTo("locationName", locationName).findFirst();
     }
-
 
     //clear all objects from LPTicket.class
     public void clearAll() {
@@ -83,9 +81,17 @@ public class RealmController {
         return realm.where(LPTicket.class).findAll();
     }
 
+    public RealmResults<LPNfc> getNfcGet() {
+        return realm.where(LPNfc.class).findAll();
+    }
+
     //query a single item with the given id
-    public LPTicket getBook(String id) {
+    public LPTicket getTicket(String id) {
         return realm.where(LPTicket.class).equalTo("id", id).findFirst();
+    }
+
+    public LPTicket getTicketFromNumber(String num) {
+        return realm.where(LPTicket.class).equalTo("number", num).findFirst();
     }
 
     //isServiceRunning if LPTicket.class is empty

@@ -2,7 +2,7 @@ package com.codextech.ibtisam.lepak_app.util;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-
+@Deprecated
 public class ProgressDialogUtils {
 	private static ProgressDialog mProgressDialog;
 

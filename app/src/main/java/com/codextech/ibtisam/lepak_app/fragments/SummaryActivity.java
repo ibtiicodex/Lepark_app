@@ -34,7 +34,7 @@ import static com.codextech.ibtisam.lepak_app.R.id.bPrintSummaryp;
 /**
  * Created by HP on 10/18/2017.
  */
-public class SummaryFragment extends AppCompatActivity {
+public class SummaryActivity extends AppCompatActivity {
 
     private Realm realm;
     private TextView tvTicketCount;
@@ -120,13 +120,13 @@ public class SummaryFragment extends AppCompatActivity {
                 isCanPrint = true;
                 switch (state) {
                     case 0:
-                        Toast.makeText(SummaryFragment.this, "Continued with paper", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SummaryActivity.this, "Continued with paper", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
-                        Toast.makeText(SummaryFragment.this, "Out of paper", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SummaryActivity.this, "Out of paper", Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
-                        Toast.makeText(SummaryFragment.this, "Black mark is detected", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SummaryActivity.this, "Black mark is detected", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }

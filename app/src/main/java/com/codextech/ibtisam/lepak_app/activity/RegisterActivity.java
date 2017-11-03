@@ -61,18 +61,29 @@ public class RegisterActivity extends AppCompatActivity {
     List<String> listLocations;
     String cityId;
     String locationName;
+    private int count = 0;
     private Realm realm;
+    private EditText etCarAmount;
+    private EditText etBikeAmount;
+    private EditText etVanAmount;
+    private EditText etTruckAmount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         queue = Volley.newRequestQueue(RegisterActivity.this, new HurlStack());
-        getAllLocationsFromServer(); // chalao
         btsignup = (Button) findViewById(R.id.btsignup);
         edSiteName = (EditText) findViewById(R.id.edSiteName);
+        etCarAmount = (EditText) findViewById(R.id.etCarAmount);
+        etBikeAmount = (EditText) findViewById(R.id.etBikeAmount);
+        etVanAmount = (EditText) findViewById(R.id.etVanAmount);
+        etTruckAmount = (EditText) findViewById(R.id.etTruckAmount);
         spCityId = (Spinner) findViewById(R.id.spLocation);
         spLocationNames = (Spinner) findViewById(R.id.spCityId);
+
+        getAllLocationsFromServer();
         pdLoading = new ProgressDialog(this);
         pdLoading.setTitle("Loading data");
         pdLoading.setMessage("Please Wait...");
@@ -83,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void addItemsOnSpinner2(String id, String location) {
-
+        Log.d(TAG, "addItemsOnSpinner2: Adding Items in Spinner");
         listId.add(id);
         listLocations.add(location);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listId);
@@ -93,11 +104,9 @@ public class RegisterActivity extends AppCompatActivity {
         dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spLocationNames.setAdapter(dataAdapter2);
 
-
         btsignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 //city id  like 1 1 1  1
                 cityId = valueOf(spCityId.getSelectedItem());
@@ -105,35 +114,55 @@ public class RegisterActivity extends AppCompatActivity {
                 //location names gulber, township ,iqbal town
                 locationName = String.valueOf(spLocationNames.getSelectedItem());
 
-//                if (locationName.equals("Gulberge")) {
-//
-//                    locationName = "1";
-//
-//                } else if (locationName.equals("TownShip")) {
-//                    locationName = "2";
-//
-//                } else if (locationName.equals("Johar Town")) {
-//                    locationName = "3";
-//
-//                } else if (locationName.equals("Iqbal Town")) {
-//                    locationName = "4";
-//
-//                }
-
-
-                // TODO getlocationId of particular locationName
                 String locationId = RealmController.with(RegisterActivity.this).getLocationFromLocationName(locationName).getId();
                 Log.d(TAG, "onClick: locationId: " + locationId);
 
+
+                boolean isValid = true;
+//                boolean isSiteValid = true;
+//                boolean isCarAmountValid = true;
+//                boolean isBikeAmountSiteValid = true;
+//                boolean isVanAmountValid = true;
+//                boolean isTruckAmountValid = true;
                 String siteName = edSiteName.getText().toString();
+                String carAmount = etCarAmount.getText().toString();
+                String bikeAmount = etBikeAmount.getText().toString();
+                String vanAmount = etVanAmount.getText().toString();
+                String truckAmount = etTruckAmount.getText().toString();
 
-                makeSignupRequest(siteName, locationId, cityId);
+                if (siteName.trim().length() < 3) {
+                    isValid = false;
+                    edSiteName.setError("Empty Field!");
+                }
 
-                Toast.makeText(RegisterActivity.this,
-                        "OnClickListener : "
-                                + "\nSpinner 2 : " + valueOf(spCityId.getSelectedItem())
-                                + "\nSpinner 1 : " + valueOf(spLocationNames.getSelectedItem()),
-                        Toast.LENGTH_SHORT).show();
+                if (carAmount.trim().length() < 1) {
+                    isValid = false;
+                    etCarAmount.setError("Empty Field!");
+                }
+
+                if (bikeAmount.trim().length() < 1) {
+                    isValid = false;
+                    etBikeAmount.setError("Empty Field!");
+                }
+
+                if (vanAmount.trim().length() < 1) {
+                    isValid = false;
+                    etVanAmount.setError("Empty Field!");
+                }
+
+                if (truckAmount.trim().length() < 1) {
+                    isValid = false;
+                    etTruckAmount.setError("Empty Field!");
+                }
+
+                if (isValid) {
+                    makeSignupRequest(siteName, locationId, cityId, carAmount, bikeAmount, vanAmount, truckAmount);
+                    Toast.makeText(RegisterActivity.this,
+                            "OnClickListener : "
+                                    + "\nSpinner 2 : " + valueOf(spCityId.getSelectedItem())
+                                    + "\nSpinner 1 : " + valueOf(spLocationNames.getSelectedItem()),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
 
         });
@@ -148,25 +177,18 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void getAllLocationsFromServer() {
-
-
         final int MY_SOCKET_TIMEOUT_MS = 60000;
-
         JsonArrayRequest req = new JsonArrayRequest(LocationUrl,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d(TAG, response.toString());
-
-                        RealmConfiguration config = new RealmConfiguration.Builder(RegisterActivity.this).build();
-                        realm = Realm.getInstance(config);
-
+                        Log.v(TAG, response.toString());
                         try {
+                            RealmConfiguration config = new RealmConfiguration.Builder(RegisterActivity.this).build();
+                            realm = Realm.getInstance(config);
                             jsonResponse = "";
                             for (int i = 0; i < response.length(); i++) {
-
                                 JSONObject obj = (JSONObject) response.get(i);
-
                                 String id = obj.getString("id");
                                 String location = obj.getString("location");
                                 String city_id = obj.getString("city_id");
@@ -177,8 +199,9 @@ public class RegisterActivity extends AppCompatActivity {
                                 RealmQuery<LPLocation> query = realm.where(LPLocation.class);
                                 query.equalTo("id", id);
                                 RealmResults<LPLocation> allLocations = query.findAll();
-                                Log.e(TAG, "allLocations: " + allLocations.toString());
+                                Log.d(TAG, "allLocations: " + allLocations.toString());
 
+                                // Duplication avoidance check
                                 if (allLocations.isEmpty()) {
                                     Log.d(TAG, "Location doesn't exist adding it.");
                                     LPLocation lpLocation = new LPLocation();
@@ -188,39 +211,31 @@ public class RegisterActivity extends AppCompatActivity {
                                     realm.beginTransaction();
                                     realm.copyToRealm(lpLocation);
                                     realm.commitTransaction();
-
-//                                    addItemsOnSpinner2(id, location);
                                 } else {
                                     Log.d(TAG, "Already Exists");
                                 }
                             }
                             Log.d(TAGI, jsonResponse.toString());
 
-
                             RealmQuery<LPLocation> query = realm.where(LPLocation.class);
                             query.equalTo("cityId", "1");
                             RealmResults<LPLocation> allLocations = query.findAll();
-                            Log.e(TAG, "allLocationsFromDB: " + allLocations.toString());
-
+                            Log.d(TAG, "allLocationsFromDB: " + allLocations.toString());
+                            Log.d(TAG, "allLocationsFromDB: SIZE: " + allLocations.size());
                             for (LPLocation oneLocation : allLocations) {
                                 addItemsOnSpinner2(oneLocation.getCityId(), oneLocation.getLocationName());
                             }
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),
-                                    "Error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG).show();
+                            Log.e(TAG, "onResponse: JSONException");
                         }
-
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "onErrorResponse:  " + error.networkResponse.statusCode);
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -231,7 +246,7 @@ public class RegisterActivity extends AppCompatActivity {
         queue.add(req);
     }
 
-    public void makeSignupRequest(final String sitename, final String locations, final String id) {
+    public void makeSignupRequest(final String sitename, final String locations, final String id, final String carAmount, final String bikeAmount, final String vanAmount, final String truckAmount) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.Register,
                 new Response.Listener<String>() {
                     @Override
@@ -282,6 +297,10 @@ public class RegisterActivity extends AppCompatActivity {
                 params.put("site_name", sitename);
                 params.put("location_id", locations);
                 params.put("city_id", id);
+                params.put("car", carAmount);
+                params.put("bike", bikeAmount);
+                params.put("truck", vanAmount);
+                params.put("van", truckAmount);
                 // Log.d(TAGX, "getParams: " +siteName+"  "+cityId+"  "+locationName+"  ");
                 return params;
             }

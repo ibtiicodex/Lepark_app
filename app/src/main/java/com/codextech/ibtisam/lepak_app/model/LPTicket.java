@@ -19,6 +19,7 @@ public class LPTicket extends RealmObject {
     private String timeOut;
     private String syncStatus;
     private String vehicleType;
+    private String server_id;
 
     public String getNumber() {
         return number;
@@ -90,5 +91,13 @@ public class LPTicket extends RealmObject {
 
     public void setVehicleType(String vehicleType) {
         this.vehicleType = vehicleType;
+    }
+
+    public String getServer_id() {
+        return server_id;
+    }
+
+    public void setServer_id(String server_id) {
+        this.server_id = server_id;
     }
 }

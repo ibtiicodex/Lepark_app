@@ -52,6 +52,7 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<LPTicket> {
         holder.textPrice.setText(LPTicket.getPrice());
         holder.textLocation.setText(LPTicket.getLocation());
         holder.syncStatus.setText(LPTicket.getSyncStatus());
+        holder.textServerId.setText(LPTicket.getServer_id());
         //remove single match from realm
         holder.card_ticket.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -94,6 +95,7 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<LPTicket> {
         private TextView textPrice;
         private TextView textLocation;
         private TextView textVehicalType;
+        private TextView textServerId;
         public TextView syncStatus;
 
         //  public ImageView imageBackground;
@@ -109,6 +111,7 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<LPTicket> {
             textLocation = (TextView) itemView.findViewById(R.id.Dlocation);
             syncStatus = (TextView) itemView.findViewById(R.id.tvSyncStatus);
             textVehicalType = (TextView) itemView.findViewById(R.id.tvVehicleType);
+            textServerId = (TextView) itemView.findViewById(R.id.tvServerId);
 
         }
     }

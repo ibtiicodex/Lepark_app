@@ -17,6 +17,10 @@ public class SessionManager {
     private static final String KEY_SITE_NAME = "site_login_name";
     private static final String KEY_LOGIN_TOKEN = "user_login_token";
     private static final String KEY_LOGIN_TIMESTAMP = "user_login_timestamp";
+    private static final String KEY_CAR_AMOUNT = "user_car_amount";
+    private static final String KEY_BIKE_AMOUNT = "user_bike_amount";
+    private static final String KEY_VAN_AMOUNT = "user_van_amount";
+    private static final String KEY_TRUCK_AMOUNT = "user_truck_amount";
 
 
     // Sharedpref file name
@@ -54,13 +58,18 @@ public class SessionManager {
         return true;
     }
 
-    public void loginSite(String id, String name, String token, Long timeStamp) {
+    public void loginSite(String id, String name, String token, Long timeStamp, String car, String bike, String van, String truck) {
         Log.d(TAG, "loginSite: ");
 //        deleteDataIfDifferentUser();
         setKeySiteId(id);
         setKeySiteName(name);
         setLoginTimestamp(timeStamp);
         setLoginToken(token);
+        setKeyCarAmount(car);
+        setKeyBikeAmount(bike);
+        setKeyVanAmount(van);
+        setKeyTruckAmount(truck);
+
         editor.commit();
     }
 
@@ -73,6 +82,10 @@ public class SessionManager {
         setKeySiteId("");
         setLoginTimestamp(00L);
         setLoginToken("");
+        setKeyCarAmount("");
+        setKeyBikeAmount("");
+        setKeyVanAmount("");
+        setKeyTruckAmount("");
         editor.commit();
     }
 
@@ -106,6 +119,44 @@ public class SessionManager {
         editor.putString(KEY_SITE_NAME, name);
         editor.commit();
     }
+
+
+    public String getKeyCarAmount() {
+        return pref.getString(KEY_CAR_AMOUNT, "");
+    }
+
+    public void setKeyCarAmount(String car) {
+        editor.putString(KEY_CAR_AMOUNT, car);
+        editor.commit();
+    }
+
+    public String getKeyBikeAmount() {
+        return pref.getString(KEY_BIKE_AMOUNT, "");
+    }
+
+    public void setKeyBikeAmount(String bike) {
+        editor.putString(KEY_BIKE_AMOUNT, bike);
+        editor.commit();
+    }
+
+    public String getKeyVanAmount() {
+        return pref.getString(KEY_VAN_AMOUNT, "");
+    }
+
+    public void setKeyVanAmount(String name) {
+        editor.putString(KEY_VAN_AMOUNT, name);
+        editor.commit();
+    }
+
+    public String getKeyTruckAmount() {
+        return pref.getString(KEY_TRUCK_AMOUNT, "");
+    }
+
+    public void setKeyTruckAmount(String name) {
+        editor.putString(KEY_TRUCK_AMOUNT, name);
+        editor.commit();
+    }
+
 
     public Long getLoginTimestamp() {
         return pref.getLong(KEY_LOGIN_TIMESTAMP, 00l);

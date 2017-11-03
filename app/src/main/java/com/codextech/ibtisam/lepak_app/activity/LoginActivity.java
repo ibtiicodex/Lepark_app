@@ -61,6 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         pdLoading = new ProgressDialog(this);
         pdLoading.setTitle("Loading data");
         pdLoading.setMessage("Please Wait...");
+//        Intent intent=new Intent(getApplicationContext(),NfcGetAllCoinsActivity.class);
+//        startActivity(intent);
 
         sessionManager = new SessionManager(LoginActivity.this);
         queue = Volley.newRequestQueue(LoginActivity.this, new HurlStack());
@@ -128,11 +130,16 @@ public class LoginActivity extends AppCompatActivity {
                                 String site_id = uniObject.getString("site_id");
                                 String site_name = uniObject.getString("site_name");
                                 String token = uniObject.getString("token");
+                                String car_fare = uniObject.getString("car_fare");
+                                String bike_fare = uniObject.getString("bike_fare");
+                                String van_fare = uniObject.getString("van_fare");
+                                String truck_fare = uniObject.getString("truck_fare");
                                 Log.d(TAG, "onResponse: site_id  :" + site_id);
                                 Log.d(TAG, "onResponse: site_name  :" + site_name);
                                 Log.d(TAG, "onResponse: token  :" + token);
-                                sessionManager.loginSite(site_id, site_name, token, Calendar.getInstance().getTimeInMillis());
+                                sessionManager.loginSite(site_id, site_name, token, Calendar.getInstance().getTimeInMillis(),car_fare,bike_fare,van_fare,truck_fare);
                                 Intent intent = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
+                               intent.putExtra("hello",site_name);
                                 startActivity(intent);
                                 finish();
                                 Toast.makeText(LoginActivity.this, "User Successfully Login ", Toast.LENGTH_SHORT).show();
@@ -164,6 +171,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
         queue.add(postRequest);
+//        Intent intent=new Intent(getApplicationContext(),NfcGetAllCoinsActivity.class);
+//        startActivity(intent);
     }
 
     @Override

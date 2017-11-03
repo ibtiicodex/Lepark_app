@@ -1,4 +1,5 @@
 package com.codextech.ibtisam.lepak_app.activity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,14 +11,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
-import com.codextech.ibtisam.lepak_app.fragments.SummaryFragment;
+import com.codextech.ibtisam.lepak_app.fragments.SummaryActivity;
 import com.codextech.ibtisam.lepak_app.fragments.TabFragment;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.sync.TicketSenderAsync;
+
+//import com.codextech.ibtisam.lepak_app.service.ScanService;
 public class NavigationDrawerActivity extends AppCompatActivity {
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
@@ -25,15 +30,22 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     FragmentManager mFragmentManager;
     private ImageView ivProfileImgNavBar;
     SessionManager sessionManager;
+
+    TextView datasetonheadedr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        datasetonheadedr = (TextView) findViewById(R.id.tvSite);
         sessionManager = new SessionManager(NavigationDrawerActivity.this);
+
+
         if (!sessionManager.isSiteSignedIn()) {
             finish();
             startActivity(new Intent(NavigationDrawerActivity.this, LoginActivity.class));
         }
+
         Intent newIntent = new Intent(NavigationDrawerActivity.this, ScanService.class);
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         NavigationDrawerActivity.this.startService(newIntent);
@@ -59,7 +71,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 }
                 if (menuItem.getItemId() == R.id.summarynav) {
 
-                    Intent intent = new Intent(getApplicationContext(), SummaryFragment.class);
+                    Intent intent = new Intent(getApplicationContext(), SummaryActivity.class);
                     startActivity(intent);
                 }
                 if (menuItem.getItemId() == R.id.logoutnav) {
@@ -73,16 +85,23 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 //                    Intent intent = new Intent(getApplicationContext(), LogOut.class);
 //                    startActivity(intent);
                 }
+                if (menuItem.getItemId() == R.id.nav_NfcActvity) {
+                    //sessionManager.logoutSite();
+                    // finish();
+                    Intent intent = new Intent(getApplicationContext(), NfcGetAllCoinsActivity.class);
+                    startActivity(intent);
+
+//                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+//                    xfragmentTransaction.replace(R.id.containerView,new TabFragment()).commit();
+//                    Intent intent = new Intent(getApplicationContext(), LogOut.class);
+//                    startActivity(intent);
+                }
                 if (menuItem.getItemId() == R.id.nav_refresh) {
 
                     TicketSenderAsync ticketSenderAsync = new TicketSenderAsync(NavigationDrawerActivity.this);
                     ticketSenderAsync.execute();
                     Toast.makeText(NavigationDrawerActivity.this, " Refresh App", Toast.LENGTH_SHORT).show();
 
-//                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
-//                    xfragmentTransaction.replace(R.id.containerView,new TabFragment()).commit();
-//                    Intent intent = new Intent(getApplicationContext(), LogOut.class);
-//                    startActivity(intent);
                 }
 
                 return false;

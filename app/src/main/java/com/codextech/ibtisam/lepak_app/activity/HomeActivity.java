@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.codextech.ibtisam.lepak_app.R;
-import com.codextech.ibtisam.lepak_app.service.ScanService;
-import com.codextech.ibtisam.lepak_app.wiget.App;
+//import com.codextech.ibtisam.lepak_app.service.ScanService;
+//import com.codextech.ibtisam.lepak_app.wiget.App;
 
 @Deprecated
 public class HomeActivity extends Activity {
@@ -27,7 +27,7 @@ public class HomeActivity extends Activity {
 
         setContentView(R.layout.activity_home);
 
-        carButton = (Button) findViewById(R.id.carButton);
+        carButton = (Button) findViewById(R.id.bCar);
 
         //Exit = (Button) findViewById(R.id.exit);
 
@@ -35,17 +35,17 @@ public class HomeActivity extends Activity {
 
         enternumber = (EditText) findViewById(R.id.enterNum);
 
-        mPosSDK = App.getInstance().getPosApi();
+      //  mPosSDK = App.getInstance().getPosApi();
 
         // TODO isServiceRunning if service is already running do not restart it again.
 
         Log.d(TAG, "onCreate: Service is NOT already running");
 
-        Intent newIntent = new Intent(HomeActivity.this, ScanService.class);
-
-        newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        startService(newIntent);
+//        Intent newIntent = new Intent(HomeActivity.this, ScanService.class);
+//
+//        newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//        startService(newIntent);
 
         carButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +59,7 @@ public class HomeActivity extends Activity {
 
                     Intent intent = new Intent(getApplicationContext(), TicketFormatActivity.class);
 
-                    intent.putExtra(TicketFormatActivity.CAR_NUMBER, carNum);
+                    intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, carNum);
 
                     startActivity(intent);
 

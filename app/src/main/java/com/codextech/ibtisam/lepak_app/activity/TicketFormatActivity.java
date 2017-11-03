@@ -20,32 +20,30 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
-import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
-import com.codextech.ibtisam.lepak_app.sync.TicketSenderAsync;
-import com.codextech.ibtisam.lepak_app.sync.MyUrls;
+import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import io.realm.Realm;
 
 public class TicketFormatActivity extends Activity {
     public static final String TAG = "TicketFormatActivity";
-    public static final String CAR_NUMBER = "car_number";
+
+    public static final String KEY_VEHICLE_TYPE = "key_vehicle_type";
+    public static final String VEHICLE_TYPE_CAR = "vehicle_type_car";
+    public static final String VEHICLE_TYPE_BIKE = "vehicle_type_bike";
+    public static final String VEHICLE_TYPE_VAN = "vehicle_type_van";
+    public static final String VEHICLE_TYPE_TRUCK = "vehicle_type_truck";
+
+    public static final String KEY_VEHICLE_NUMBER = "key_vehicle_num";
+
+
     private Button btnPrintMix;
     private Bitmap mBitmap = null;
     private PrintQueue mPrintQueue = null;
@@ -54,20 +52,21 @@ public class TicketFormatActivity extends Activity {
     private int mBaudrate = 4; // 9600
     MediaPlayer player;
     boolean isCanPrint = true;
-    TextView tvSiteName,
-            tvtime,
-            tvnumber,
-            tvprice,
-            tvlocation;
-    private Realm realm;
-    String ticket_time = "";
-    String ticket_time_Out = "";
-    String veh_number = "";
+    private TextView tvSiteName;
+    private TextView tvTimeIn;
+    private TextView tvNumber;
+    private TextView tvVehicleType;
+    private TextView tvPrice;
+    private TextView tvLocation;
     String site_name = "";
-    String veh_type = "car";
-    String fee = "20";
-    String device_location = "Lati/Logi";
+    String ticket_time_in = "";
+    String ticket_time_out = "";
+    String veh_number = "";
+    String veh_type = "";
+    String fee = "";
+    String device_location = "31.51,74.34";
     SessionManager sessionManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,33 +74,52 @@ public class TicketFormatActivity extends Activity {
         sessionManager = new SessionManager(TicketFormatActivity.this);
         Log.d(TAG, "onCreate: ");
         setContentView(R.layout.activity_ticket);
-        this.realm = RealmController.with(this).getRealm();
-        RealmController.with(this).refresh();
-        Intent intenti = getIntent();
-        veh_number = intenti.getStringExtra(TicketFormatActivity.CAR_NUMBER);
-        site_name = sessionManager.getKeySiteName();
-        long timeNowMillis = Calendar.getInstance().getTimeInMillis();
-        ticket_time = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
-//        ticket_time = DateFormat.getDateTimeInstance().format(new Date());
         tvSiteName = (TextView) findViewById(R.id.tvSiteName);
-        tvtime = (TextView) findViewById(R.id.Dtime);
-        tvnumber = (TextView) findViewById(R.id.Dnumber);
-        tvprice = (TextView) findViewById(R.id.Dprice);
-        tvlocation = (TextView) findViewById(R.id.Dlocation);
+        tvTimeIn = (TextView) findViewById(R.id.Dtime);
+        tvNumber = (TextView) findViewById(R.id.Dnumber);
+        tvVehicleType = (TextView) findViewById(R.id.tvVehicleType);
+        tvPrice = (TextView) findViewById(R.id.Dprice);
+        tvLocation = (TextView) findViewById(R.id.Dlocation);
+        btnPrintMix = (Button) this.findViewById(R.id.btnPrintMix);
+//        this.realm = RealmController.with(this).getRealm();
+//        RealmController.with(this).refresh();
+        Intent intent = getIntent();
+        if (intent != null) {
+            veh_number = intent.getStringExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER);
+            veh_type = intent.getStringExtra(TicketFormatActivity.KEY_VEHICLE_TYPE);
+            if (veh_type != null) {
+                if (veh_type.equals(TicketFormatActivity.VEHICLE_TYPE_CAR)) {
+                    veh_type = "Car";
+                    fee = sessionManager.getKeyCarAmount();
+                } else if (veh_type.equals(TicketFormatActivity.VEHICLE_TYPE_BIKE)) {
+                    veh_type = "Bike";
+                    fee = sessionManager.getKeyBikeAmount();
+                } else if (veh_type.equals(TicketFormatActivity.VEHICLE_TYPE_VAN)) {
+                    veh_type = "Van";
+                    fee = sessionManager.getKeyVanAmount();
+                } else if (veh_type.equals(TicketFormatActivity.VEHICLE_TYPE_TRUCK)) {
+                    veh_type = "Truck";
+                    fee = sessionManager.getKeyTruckAmount();
+                }
+            }
+        }
+
+        long timeNowMillis = Calendar.getInstance().getTimeInMillis();
+        ticket_time_in = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
+//        ticket_time_in = DateFormat.getDateTimeInstance().format(new Date());
+        site_name = sessionManager.getKeySiteName();
         tvSiteName.setText(site_name);
-        tvtime.setText(ticket_time);
-        tvnumber.setText(veh_number);
-        tvprice.setText(fee);
-        tvlocation.setText(device_location);
+        tvTimeIn.setText(ticket_time_in);
+        tvNumber.setText(veh_number);
+        tvVehicleType.setText(veh_type);
+        tvPrice.setText(fee);
+        tvLocation.setText(device_location);
         Toast.makeText(this, "  " + veh_number + " ", Toast.LENGTH_SHORT).show();
 
-        btnPrintMix = (Button) this.findViewById(R.id.btnPrintMix);
         btnPrintMix.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //printMix();
-                saveTicket(site_name, "" + ticket_time, ticket_time_Out, veh_number, veh_type, fee, device_location, "ticket_not_synced");
-//abc
+                printMix();
             }
         });
         mPrintQueue = new PrintQueue(this, ScanService.mApi);
@@ -110,7 +128,24 @@ public class TicketFormatActivity extends Activity {
             @Override
             public void onFinish() {
                 isCanPrint = true;
-//                syncTicket(sessionManager.getKeySiteId(), veh_number, veh_type, fee, ticket_time, sessionManager.getLoginToken());
+
+                Realm realm = Realm.getDefaultInstance();
+                LPTicket LPTicket = new LPTicket();
+//                  LPTicket.setId(RealmController.getInstance().getTickets().size() + System.currentTimeMillis());
+                LPTicket.setId(System.currentTimeMillis());
+                LPTicket.setSiteName(sessionManager.getKeySiteName());
+                LPTicket.setTimeIn(ticket_time_in);
+                LPTicket.setTimeOut("");
+                LPTicket.setNumber(veh_number);
+                LPTicket.setVehicleType(veh_type);
+                LPTicket.setPrice(sessionManager.getKeyCarAmount());
+                LPTicket.setLocation("Lati/Longi");
+                LPTicket.setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
+                realm.beginTransaction();
+                realm.copyToRealm(LPTicket);
+                realm.commitTransaction();
+                Log.d(TAG, "onFinish: mPrintQueue.setOnPrintListener");
+
                 finish();
                 Toast.makeText(getApplicationContext(), getString(R.string.print_complete), Toast.LENGTH_SHORT).show();
             }
@@ -250,18 +285,17 @@ public class TicketFormatActivity extends Activity {
             sb.append("\n");
             sb.append("        PARKING TICKET     ");
             sb.append("\n");
-            sb.append("Site Name: ");
-            sb.append(site_name);
+            sb.append("Site:       " + site_name);
             sb.append("\n");
-            sb.append("Time:  " + ticket_time);
+            sb.append("Time:       " + ticket_time_in);
             sb.append("\n");
-            sb.append("Veh Reg No:  " + veh_number);
+            sb.append("Number:     " + veh_number);
             sb.append("\n");
-            sb.append("Veh Type:  " + veh_type);
+            sb.append("Type:       " + veh_type);
             sb.append("\n");
-            sb.append("Parking Fee:  20");
+            sb.append("Fee:        " + fee);
             sb.append("\n");
-            sb.append("Location:  " + device_location);
+            sb.append("Location:   " + device_location);
             sb.append("\n");
             sb.append("--------------------------------");
             sb.append("   Parking at your own risk");
@@ -277,7 +311,6 @@ public class TicketFormatActivity extends Activity {
             sb.append("\n");
             text = sb.toString().getBytes("GBK");
             addPrintTextWithSize(1, concentration, text);
-//            saveTicket(agent_name, "" + ticket_time, ticket_time_Out, veh_number, veh_type, fee, device_location);
             mPrintQueue.printStart();
             //TODO if ticket is printed successfull then do this
         } catch (UnsupportedEncodingException e) {
@@ -286,74 +319,7 @@ public class TicketFormatActivity extends Activity {
         }
     }
 
-    public void saveTicket(String site_name, String ticket_time_in, String ticket_time_out, String veh_number, String veh_type, String fee, String device_location, final String syncStatus) {
 
-        if (site_name != null && ticket_time_in != null && veh_number != null && veh_type != null && fee != null && device_location != null) {
-
-            LPTicket LPTicket = new LPTicket();
-            LPTicket.setId(RealmController.getInstance().getTickets().size() + System.currentTimeMillis());
-            LPTicket.setSiteName(site_name);
-            LPTicket.setTimeIn(ticket_time_in);
-            LPTicket.setTimeOut(ticket_time_out);
-            LPTicket.setNumber(veh_number);
-            LPTicket.setVehicleType(veh_type);
-            LPTicket.setPrice(fee);
-            LPTicket.setLocation(device_location);
-            LPTicket.setSyncStatus(syncStatus);
-            realm.beginTransaction();
-            realm.copyToRealm(LPTicket);
-            realm.commitTransaction();
-
-            TicketSenderAsync ticketSenderAsync = new TicketSenderAsync(TicketFormatActivity.this);
-            ticketSenderAsync.execute();
-
-
-//            long count = realm.where(LPTicket.class).count();
-//            Log.d(TAG, "saveTicket: COUNT: " + count);
-            // Toast.makeText(TicketFormatActivity.this, "Entry Saved" + RealmController.getInstance().getTickets().size() + System.currentTimeMillis(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void syncTicket(final String site_id, final String vehicle_no, final String vehicle_type, final String fee, final String ticket_time, final String token) {
-        RequestQueue queue = Volley.newRequestQueue(TicketFormatActivity.this, new HurlStack());
-
-        StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.TICKET_SEND,
-
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        Toast.makeText(TicketFormatActivity.this, "LPTicket Sent", Toast.LENGTH_SHORT).show();
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                        // error
-                        Toast.makeText(TicketFormatActivity.this, "Error Sending LPTicket", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-
-                Map<String, String> params = new HashMap<String, String>();
-
-                params.put("site_id", site_id);
-                params.put("vehicle_no", vehicle_no);
-                params.put("vehicle_type", vehicle_type);
-                params.put("fee", fee);
-                params.put("ticket_time", ticket_time);
-                params.put("token", token);
-
-                return params;
-            }
-        };
-        queue.add(postRequest);
-
-    }
     private void showTip(String msg) {
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.tips))

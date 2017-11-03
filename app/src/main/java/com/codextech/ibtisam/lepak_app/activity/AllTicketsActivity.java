@@ -84,7 +84,7 @@ public class AllTicketsActivity extends AppCompatActivity {
 
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        layoutManager.setReverseLayout(true);
+        layoutManager.setReverseLayout(false);
 
         recycler.setLayoutManager(layoutManager);
         // create an empty adapter and add it to the recycler view
