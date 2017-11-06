@@ -39,6 +39,7 @@ public class PrintTicketFragment extends Fragment {
         Log.d(TAG, "onCreate: PrintTicketFragment");
         View view = inflater.inflate(R.layout.print_ticket_fragment, container, false);
         edenternumber = (EditText) view.findViewById(R.id.enterNum);
+
         bCar = (Button) view.findViewById(R.id.bCar);
         bBike = (Button) view.findViewById(R.id.bBike);
         bVan = (Button) view.findViewById(R.id.bVan);
@@ -75,7 +76,7 @@ public class PrintTicketFragment extends Fragment {
                         intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_CAR);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(getActivity(), "car already exists", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     edenternumber.setError("Empty Field!");
@@ -87,10 +88,15 @@ public class PrintTicketFragment extends Fragment {
             public void onClick(View view) {
                 vehNumber = edenternumber.getText().toString();
                 if (vehNumber.trim().length() >= 1 && vehNumber != null) {
-                    Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
-                    intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
-                    intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_BIKE);
-                    startActivity(intent);
+                    LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
+                    if (lpTicket == null) {
+                        Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
+                        intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
+                        intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_BIKE);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     edenternumber.setError("Empty Field!");
                 }
@@ -101,24 +107,36 @@ public class PrintTicketFragment extends Fragment {
             public void onClick(View view) {
                 vehNumber = edenternumber.getText().toString();
                 if (vehNumber.trim().length() >= 1 && vehNumber != null) {
-                    Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
-                    intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
-                    intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_VAN);
-                    startActivity(intent);
+                    LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
+                    if (lpTicket == null) {
+                        Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
+                        intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
+                        intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_VAN);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     edenternumber.setError("Empty Field!");
                 }
             }
         });
-        bTruck.setOnClickListener(new View.OnClickListener() {
+        bTruck.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
                 vehNumber = edenternumber.getText().toString();
                 if (vehNumber.trim().length() >= 1 && vehNumber != null) {
-                    Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
-                    intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
-                    intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_TRUCK);
-                    startActivity(intent);
+                    LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
+                    if (lpTicket == null) {
+                        Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
+                        intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
+                        intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_TRUCK);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     edenternumber.setError("Empty Field!");
                 }
@@ -131,11 +149,12 @@ public class PrintTicketFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        edenternumber.setText("");
     }
 
     private void startServiceIfNeeded() {
         Log.d(TAG, "startServiceIfNeeded(): PrintTicketFragment");
-
+        edenternumber.setText("");
         Intent newIntent = new Intent(getActivity(), ScanService.class);
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getActivity().startService(newIntent);

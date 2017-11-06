@@ -35,9 +35,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     public static final String LOGIN_EMAIL = "login_email";
     public static final String LOGIN_PASSWORD = "login_password";
-    private  EditText emailEditText;
-    private  EditText passEditText;
-    private static String TAGA="LoginActivity";
+    private EditText emailEditText;
+    private EditText passEditText;
+    private static String TAGA = "LoginActivity";
     Button btnNext;
     TextView tvsignup;
     ProgressDialog pdLoading;
@@ -137,9 +137,9 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.d(TAG, "onResponse: site_id  :" + site_id);
                                 Log.d(TAG, "onResponse: site_name  :" + site_name);
                                 Log.d(TAG, "onResponse: token  :" + token);
-                                sessionManager.loginSite(site_id, site_name, token, Calendar.getInstance().getTimeInMillis(),car_fare,bike_fare,van_fare,truck_fare);
+                                sessionManager.loginSite(site_id, site_name, token, Calendar.getInstance().getTimeInMillis(), car_fare, bike_fare, van_fare, truck_fare);
                                 Intent intent = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
-                               intent.putExtra("hello",site_name);
+                                intent.putExtra("hello", site_name);
                                 startActivity(intent);
                                 finish();
                                 Toast.makeText(LoginActivity.this, "User Successfully Login ", Toast.LENGTH_SHORT).show();

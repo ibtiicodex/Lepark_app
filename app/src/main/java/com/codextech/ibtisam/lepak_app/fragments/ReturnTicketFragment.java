@@ -11,14 +11,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
+
 import java.util.Calendar;
+
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+
 /**
  * Created by HP on 10/18/2017.
  */
@@ -32,6 +36,7 @@ public class ReturnTicketFragment extends Fragment {
     private long timeNowMillis;
     String ticket_time_out;
     private Realm realm;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,7 +64,7 @@ public class ReturnTicketFragment extends Fragment {
 
 
 //
-        tvTimeDifference = (TextView) view.findViewById(R.id.tvTimeDifference);
+       // tvTimeDifference = (TextView) view.findViewById(R.id.tvTimeDifference);
 
 
         btnPrintMix.setOnClickListener(new View.OnClickListener() {
@@ -72,39 +77,39 @@ public class ReturnTicketFragment extends Fragment {
 
                     RealmQuery<LPTicket> query = realm.where(LPTicket.class);
 
-                    query.equalTo("number", carNum );
+                    query.equalTo("number", carNum);
 
                     RealmResults<LPTicket> manyLPTicket = query.findAll();
 
                     Log.e(TAG, "onCreate: " + manyLPTicket.toString());
 
-                        if (manyLPTicket.size() > 0) {
+                    if (manyLPTicket.size() > 0) {
 
-                            tvAgentName.setText(manyLPTicket.first().getSiteName());
+                        tvAgentName.setText(manyLPTicket.first().getSiteName());
 
-                            tvTimeIn.setText(manyLPTicket.first().getTimeIn());
+                        tvTimeIn.setText(manyLPTicket.first().getTimeIn());
 
-                            tvTimeOut.setText(ticket_time_out);
+                        tvTimeOut.setText(ticket_time_out);
 
-                            tvNumber.setText(manyLPTicket.first().getNumber());
+                        tvNumber.setText(manyLPTicket.first().getNumber());
 
-                            tvPrice.setText(manyLPTicket.first().getPrice());
+                        tvPrice.setText(manyLPTicket.first().getPrice());
 
-                            tvLocation.setText(manyLPTicket.first().getLocation());
+                        tvLocation.setText(manyLPTicket.first().getLocation());
 
-                            realm.beginTransaction();
+                        realm.beginTransaction();
 
-                            manyLPTicket.first().setTimeOut(ticket_time_out);
-                            realm.commitTransaction();
+                        manyLPTicket.first().setTimeOut(ticket_time_out);
+                        realm.commitTransaction();
 
 
-                        } else {
+                    } else {
 
-                            Toast.makeText(getActivity(), "vehicle doesn't exist", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "vehicle doesn't exist", Toast.LENGTH_SHORT).show();
 
-                        }
+                    }
 
-                }else {
+                } else {
                     etCarNumber.setError("empty field!");
                 }
             }
@@ -119,5 +124,11 @@ public class ReturnTicketFragment extends Fragment {
         }
         return false;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        etCarNumber.setText("");
+    }
+
 
 }

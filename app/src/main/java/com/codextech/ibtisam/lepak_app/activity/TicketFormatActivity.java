@@ -40,10 +40,7 @@ public class TicketFormatActivity extends Activity {
     public static final String VEHICLE_TYPE_BIKE = "vehicle_type_bike";
     public static final String VEHICLE_TYPE_VAN = "vehicle_type_van";
     public static final String VEHICLE_TYPE_TRUCK = "vehicle_type_truck";
-
     public static final String KEY_VEHICLE_NUMBER = "key_vehicle_num";
-
-
     private Button btnPrintMix;
     private Bitmap mBitmap = null;
     private PrintQueue mPrintQueue = null;
@@ -138,8 +135,8 @@ public class TicketFormatActivity extends Activity {
                 LPTicket.setTimeOut("");
                 LPTicket.setNumber(veh_number);
                 LPTicket.setVehicleType(veh_type);
-                LPTicket.setPrice(sessionManager.getKeyCarAmount());
-                LPTicket.setLocation("Lati/Longi");
+                LPTicket.setPrice(fee);
+                LPTicket.setLocation(device_location);
                 LPTicket.setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
                 realm.beginTransaction();
                 realm.copyToRealm(LPTicket);

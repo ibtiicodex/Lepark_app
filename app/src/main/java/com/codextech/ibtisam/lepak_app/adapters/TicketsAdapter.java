@@ -1,6 +1,7 @@
 package com.codextech.ibtisam.lepak_app.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.app.Prefs;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
+import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -51,7 +53,13 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<LPTicket> {
         holder.textNumber.setText(LPTicket.getNumber());
         holder.textPrice.setText(LPTicket.getPrice());
         holder.textLocation.setText(LPTicket.getLocation());
-        holder.syncStatus.setText(LPTicket.getSyncStatus());
+        if (LPTicket.getSyncStatus().equals(SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED)){
+            holder.syncStatus.setTextColor(Color.parseColor("#FF1100"));
+            holder.syncStatus.setText("not sync");
+        }else {
+            holder.syncStatus.setTextColor(context.getResources().getColor(R.color.textcolor));
+            holder.syncStatus.setText("synced");
+        }
         holder.textServerId.setText(LPTicket.getServer_id());
         //remove single match from realm
         holder.card_ticket.setOnLongClickListener(new View.OnLongClickListener() {

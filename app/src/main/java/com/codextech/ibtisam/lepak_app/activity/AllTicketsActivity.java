@@ -68,6 +68,7 @@ public class AllTicketsActivity extends AppCompatActivity {
 
     public void setRealmAdapter(RealmResults<LPTicket> LPTickets) {
 
+
         RealmTicketsAdapter realmAdapter = new RealmTicketsAdapter(this.getApplicationContext(), LPTickets, true);
         // Set the data and tell the RecyclerView to draw
         adapter.setRealmAdapter(realmAdapter);
@@ -98,6 +99,8 @@ public class AllTicketsActivity extends AppCompatActivity {
 
         for (LPTicket b : LPTickets) {
             // Persist your data easily
+
+
             realm.beginTransaction();
 
             realm.copyToRealm(b);

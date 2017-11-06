@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
@@ -37,10 +36,16 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
     private Realm realm;
     private String vehicle_no;
     private String serverid;
+    RequestQueue queue;
+
+
 
     public TicketSenderAsync(Context context) {
         this.context = context;
         sessionManager = new SessionManager(context);
+       // config = new RealmConfiguration.Builder(context).build();
+       // realm = Realm.getInstance(config);
+//        realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -55,10 +60,11 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
 
 
     private void addTicketToServer() {
-
-        RealmConfiguration config = new RealmConfiguration.Builder(context).build();
-
-        realm = Realm.getInstance(config);
+         realm = Realm.getDefaultInstance();
+//        RealmConfiguration config = new RealmConfiguration.Builder(context).build();
+//
+//        realm = Realm.getInstance(config);
+        Log.d(TAG, "Site Id For Check "+sessionManager.getKeySiteId());
 
         RealmQuery<LPTicket> query = realm.where(LPTicket.class);
 
@@ -69,7 +75,6 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
 //        Log.d(TAG, "addTicketToServer: manyLPTicket: " + manyLPTicket.toString());
         Log.d(TAG, "addTicketToServer: count " + manyLPTicket.size());
         for (LPTicket oneLPTicket : manyLPTicket) {
-            query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
             Log.d(TAG, "addTicketToServer: oneLPTicket " + oneLPTicket);
             Log.d(TAG, "addTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
             addTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn());
@@ -77,7 +82,7 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
     }
 
     private void addTicketToServerSync(final String veh_num, final String veh_type, final String fee, final String time_in) {
-        RequestQueue queue = Volley.newRequestQueue(context, new HurlStack());
+         queue = Volley.newRequestQueue(context, new HurlStack());
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.TICKET_SEND,
 
@@ -92,32 +97,15 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
                                 JSONObject uniObject = obj.getJSONObject("response");
                                 //TODO  Save server_id of ticket in local db
                                 serverid = uniObject.getString("id");
-//                                String site_id = uniObject.getString("site_id");
                                 vehicle_no = uniObject.getString("vehicle_no");
-//                                String vehicle_type = uniObject.getString("vehicle_type");
-//                                String fee = uniObject.getString("fee");
                                 String time_in = uniObject.getString("time_in");
-//                                Log.d(TAG, "onResponse: site_id  :" + site_id);
-//                                Log.d(TAG, "onResponse: site_name  :" + site_name);
-//                                Log.d(TAG, "onResponse: token  :" + token);
-
-                                // Toast.makeText(LoginActivity.this, "User Successfully Login ", Toast.LENGTH_SHORT).show();
-                                //Toast.makeText(LoginActivity.this, sessionManager.getKeySiteId(), Toast.LENGTH_SHORT).show();
-//                                if (pdLoading != null && pdLoading.isShowing()) {
-//                                    pdLoading.dismiss();
-//                                }
-
-
-                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
-
-                                realm = Realm.getInstance(config);
-
+                                 realm = Realm.getDefaultInstance();
+//                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
+//                                realm = Realm.getInstance(config);
                                 RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-
                                 query.equalTo("timeIn", time_in);
                                 RealmResults<LPTicket> manyLPTicket = query.findAll();
                                 realm.beginTransaction();
-
                                 manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED);
                                 manyLPTicket.first().setServer_id(serverid);
                                 realm.commitTransaction();
@@ -131,9 +119,23 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
+                        Log.e(TAG, "onErrorResponse:  " + error.networkResponse.statusCode);
+                        if (error.networkResponse.statusCode == 409){
+                            Log.d(TAG, "onErrorResponse: CHANGING TICKET STATUS " + veh_num);
+                            // ticket already exists on server change its status to SYNCED
+                            realm = Realm.getDefaultInstance();
+//                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
+//                                realm = Realm.getInstance(config);
+                            RealmQuery<LPTicket> query = realm.where(LPTicket.class);
+                            query.equalTo("timeIn", time_in);
+                            RealmResults<LPTicket> manyLPTicket = query.findAll();
+                            realm.beginTransaction();
+                            manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED);
+//                            manyLPTicket.first().setServer_id(serverid);
+                            realm.commitTransaction();
+                        }
                         Log.e(TAG, "onErrorResponse: addTicketToServerSync" + error);
-                        Log.e(TAG, "onErrorResponse: VehNum" + veh_num);
-                        // error
+                        Log.e(TAG, "onErrorResponse: Vehicle Number: " + veh_num);
                         Toast.makeText(context, "Error Syncing Ticket", Toast.LENGTH_SHORT).show();
                     }
                 }

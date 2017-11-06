@@ -120,10 +120,10 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
                     "Vehicle  no : " + (make.first().getCoinVehicle()));
             int minus = Integer.parseInt(make.first().getCoinAmount());
 
-          int again = minus-10;
+            int again = minus - 10;
             realm.beginTransaction();
 
-            make.first().setCoinAmount(again+"");
+            make.first().setCoinAmount(again + "");
 
             realm.commitTransaction();
         }

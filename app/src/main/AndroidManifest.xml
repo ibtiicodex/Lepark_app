@@ -51,16 +51,10 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".activity.HomeActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.TicketFormatActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.AllTicketsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.TicketReturn"
             android:screenOrientation="portrait" />
         <!-- <activity android:name=".activity.LoginActivity" /> -->
         <activity
@@ -75,9 +69,6 @@
         <!-- <activity android:name=".LogOut"></activity> -->
         <activity
             android:name=".activity.NfcGetAllCoinsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".LogOut"
             android:screenOrientation="portrait" />
 
         <receiver android:name=".receiver.StartReceiver">
