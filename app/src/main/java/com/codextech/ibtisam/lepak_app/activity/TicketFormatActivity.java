@@ -117,6 +117,11 @@ public class TicketFormatActivity extends Activity {
             @Override
             public void onClick(View v) {
                 printMix();
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         mPrintQueue = new PrintQueue(this, ScanService.mApi);
@@ -142,7 +147,7 @@ public class TicketFormatActivity extends Activity {
                 realm.copyToRealm(LPTicket);
                 realm.commitTransaction();
                 Log.d(TAG, "onFinish: mPrintQueue.setOnPrintListener");
-
+                    realm.close();;
                 finish();
                 Toast.makeText(getApplicationContext(), getString(R.string.print_complete), Toast.LENGTH_SHORT).show();
             }
@@ -343,9 +348,11 @@ public class TicketFormatActivity extends Activity {
         closeDevice();
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         if (mBitmap != null) {
             mBitmap.recycle();
         }

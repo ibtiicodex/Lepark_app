@@ -65,6 +65,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Car"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
                     android:id="@+id/etCarAmount"
                     android:gravity="center"
                     android:layout_weight="1"/>
@@ -74,7 +76,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:id="@+id/etBikeAmount"
+                    android:imeOptions="actionNext"
                     android:gravity="center"
+                    android:inputType="number"
                     android:hint="Bike" />
 
             </LinearLayout>
@@ -90,6 +94,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:id="@+id/etVanAmount"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
                     android:gravity="center"
                     android:hint="Van" />
 
@@ -98,6 +104,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
                     android:id="@+id/etTruckAmount"
                     android:hint="Truck" />
 

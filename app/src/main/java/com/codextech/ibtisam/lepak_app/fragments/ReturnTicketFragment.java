@@ -101,7 +101,7 @@ public class ReturnTicketFragment extends Fragment {
 
                         manyLPTicket.first().setTimeOut(ticket_time_out);
                         realm.commitTransaction();
-
+                        realm.close();
 
                     } else {
 

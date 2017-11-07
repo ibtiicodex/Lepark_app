@@ -39,32 +39,35 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
     RequestQueue queue;
 
 
-
     public TicketSenderAsync(Context context) {
         this.context = context;
         sessionManager = new SessionManager(context);
-       // config = new RealmConfiguration.Builder(context).build();
-       // realm = Realm.getInstance(config);
+        // config = new RealmConfiguration.Builder(context).build();
+        // realm = Realm.getInstance(config);
 //        realm = Realm.getDefaultInstance();
+        addTicketToServer();
+
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
 
-        addTicketToServer();
+//        addTicketToServer();
         //TODO
         //editTicketToServer();
-
+        addTicketToServer();
         return null;
     }
 
 
+
     private void addTicketToServer() {
-         realm = Realm.getDefaultInstance();
+
+        realm = Realm.getDefaultInstance();
 //        RealmConfiguration config = new RealmConfiguration.Builder(context).build();
 //
 //        realm = Realm.getInstance(config);
-        Log.d(TAG, "Site Id For Check "+sessionManager.getKeySiteId());
+        Log.d(TAG, "Site Id For Check " + sessionManager.getKeySiteId());
 
         RealmQuery<LPTicket> query = realm.where(LPTicket.class);
 
@@ -79,10 +82,11 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
             Log.d(TAG, "addTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
             addTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn());
         }
+        realm.close();
     }
 
     private void addTicketToServerSync(final String veh_num, final String veh_type, final String fee, final String time_in) {
-         queue = Volley.newRequestQueue(context, new HurlStack());
+        queue = Volley.newRequestQueue(context, new HurlStack());
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.TICKET_SEND,
 
@@ -99,7 +103,7 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
                                 serverid = uniObject.getString("id");
                                 vehicle_no = uniObject.getString("vehicle_no");
                                 String time_in = uniObject.getString("time_in");
-                                 realm = Realm.getDefaultInstance();
+                                realm = Realm.getDefaultInstance();
 //                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
 //                                realm = Realm.getInstance(config);
                                 RealmQuery<LPTicket> query = realm.where(LPTicket.class);
@@ -109,6 +113,7 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
                                 manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED);
                                 manyLPTicket.first().setServer_id(serverid);
                                 realm.commitTransaction();
+                                realm.close();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -120,7 +125,7 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
                         Log.e(TAG, "onErrorResponse:  " + error.networkResponse.statusCode);
-                        if (error.networkResponse.statusCode == 409){
+                        if (error.networkResponse.statusCode == 409) {
                             Log.d(TAG, "onErrorResponse: CHANGING TICKET STATUS " + veh_num);
                             // ticket already exists on server change its status to SYNCED
                             realm = Realm.getDefaultInstance();
@@ -133,6 +138,7 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
                             manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED);
 //                            manyLPTicket.first().setServer_id(serverid);
                             realm.commitTransaction();
+                            realm.close();
                         }
                         Log.e(TAG, "onErrorResponse: addTicketToServerSync" + error);
                         Log.e(TAG, "onErrorResponse: Vehicle Number: " + veh_num);
@@ -159,6 +165,8 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
 
 
     }
+
+
 
 //    private void editTicketToServer() {
 //
