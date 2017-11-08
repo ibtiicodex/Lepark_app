@@ -1,83 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
-    android:layout_height="match_parent"    android:background="@color/pageback"
-
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pageback"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:background="@drawable/baclogin">
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="35dp"
+        android:background="@drawable/baclogin"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/edSiteName"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="110dp"
+            android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:imeOptions="actionNext"
-            android:drawablePadding="5dp"
-            android:background="@color/edback"
-            android:ems="10"
-            android:hint="Email"
-            android:text="jeffheights@lepark.com"
-            android:inputType="textEmailAddress"
-            android:paddingLeft="8dp"
-            android:textColor="@color/textcolor"
-            android:textColorHint="@color/textcolor" />
+            android:background="#b2e5eaea"
+            android:gravity="center">
 
-        <EditText
-            android:id="@+id/password"
+            <ImageView
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/leparklogo" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:hint="Password"
-            android:drawablePadding="5dp"
-            android:ems="10"
-            android:text="lepark1234"
-            android:background="@color/edback"
-            android:inputType="textPassword"
-            android:paddingLeft="8dp"
-            android:textColor="@color/textcolor"
-            android:textColorHint="@color/textcolor" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-        <Button
-            android:id="@+id/btLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:imeOptions="actionGo"
-            android:background="@drawable/selector_xml_btn_yellow"
-            android:text="Sign In"
-            android:textColor="#FFF" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:text="Not a number?"
-            android:textSize="13dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#48578b" />
-        <TextView
-            android:id="@+id/tvsignup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textSize="13dp"
-            android:text="Sign up now.?"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#2c2fd4" />
+            <EditText
+                android:id="@+id/edSiteName"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:layout_marginTop="20dp"
+                android:background="#29568f"
 
+                android:drawablePadding="5dp"
+                android:drawableStart="@drawable/email"
+                android:drawableLeft="@drawable/email"
+                android:hint="Email"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:textColorHint="#FFF" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:layout_marginTop="10dp"
+                android:background="#29568f"
+                android:drawableLeft="@drawable/keypass"
+                android:drawablePadding="5dp"
+                android:ems="10"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:textColor="#FFF"
+                android:textColorHint="#FFF" />
+
+            <Button
+                android:id="@+id/btLogin"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="#fbd022"
+                android:imeOptions="actionGo"
+                android:text="Sign In"
+                android:textColor="#000" />
+
+
+            <TextView
+                android:id="@+id/tvsignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:text="Forget your password ?"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFF"
+                android:textSize="13dp" />
+
+            <Button
+                android:id="@+id/btRegister"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="#fbd022"
+                android:imeOptions="actionGo"
+                android:text="Register"
+                android:textColor="#000" />
+
+
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
-    </ScrollView>
+</ScrollView><!--Yellow : fbd022--><!--Blue: 29568f--><!--Dark Grey: 171717-->
