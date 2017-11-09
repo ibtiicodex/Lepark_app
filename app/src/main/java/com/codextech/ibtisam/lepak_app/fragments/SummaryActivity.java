@@ -188,7 +188,7 @@ public class SummaryActivity extends AppCompatActivity {
 
     private void openDevice() {
         // open power
-        ScanService.mApi.gpioControl(mGpioPower, 0, 1);
+//        ScanService.mApi.gpioControl(mGpioPower, 0, 1);
         ScanService.mApi.extendSerialInit(mCurSerialNo, mBaudrate, 1, 1, 1, 1);
     }
 
@@ -276,13 +276,13 @@ public class SummaryActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        openDevice();
+//        openDevice();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        closeDevice();
+        //closeDevice();
     }
 
     @Override

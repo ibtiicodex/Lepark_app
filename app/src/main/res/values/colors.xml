@@ -10,6 +10,8 @@
     <color name="textcolor">#737171</color>
     <color name="edback">#d7dbdc</color>
     <color name="pageback">#FFF</color>
+    <color name="selected">#29568f</color>
+    <color name="unselected">#FFF</color>
     <color name="mainToolColor">@color/colorPrimary</color>
 
 </resources>

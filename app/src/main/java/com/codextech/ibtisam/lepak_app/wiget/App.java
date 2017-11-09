@@ -35,8 +35,8 @@ public class App extends Application {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		Log.v("hello", "APP onCreate~~");
-		mPosApi = PosApi.getInstance(this);
-		init();
+//		mPosApi = PosApi.getInstance(this);
+//		init();
 		RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
 				.name(Realm.DEFAULT_REALM_NAME)
 				.schemaVersion(0)
@@ -54,7 +54,7 @@ public class App extends Application {
 			mPosApi.initPosDev("ima35s12");
 			setCurDevice("ima35s12");
 		}else{
-			mPosApi.initPosDev(PosApi.PRODUCT_MODEL_IMA80M01);
+//			mPosApi.initPosDev(PosApi.PRODUCT_MODEL_IMA80M01);
 			setCurDevice(PosApi.PRODUCT_MODEL_IMA80M01);
 		}
 	}

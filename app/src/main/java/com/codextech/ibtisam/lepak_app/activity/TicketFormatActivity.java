@@ -116,21 +116,7 @@ public class TicketFormatActivity extends Activity {
         btnPrintMix.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                printMix();
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        mPrintQueue = new PrintQueue(this, ScanService.mApi);
-        mPrintQueue.init();
-        mPrintQueue.setOnPrintListener(new OnPrintListener() {
-            @Override
-            public void onFinish() {
-                isCanPrint = true;
-
+                //printMix();
                 Realm realm = Realm.getDefaultInstance();
                 LPTicket LPTicket = new LPTicket();
 //                  LPTicket.setId(RealmController.getInstance().getTickets().size() + System.currentTimeMillis());
@@ -146,8 +132,37 @@ public class TicketFormatActivity extends Activity {
                 realm.beginTransaction();
                 realm.copyToRealm(LPTicket);
                 realm.commitTransaction();
-                Log.d(TAG, "onFinish: mPrintQueue.setOnPrintListener");
-                    realm.close();;
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mPrintQueue = new PrintQueue(this, ScanService.mApi);
+        mPrintQueue.init();
+        mPrintQueue.setOnPrintListener(new OnPrintListener() {
+            @Override
+            public void onFinish() {
+             //   isCanPrint = true;
+
+//                Realm realm = Realm.getDefaultInstance();
+//                LPTicket LPTicket = new LPTicket();
+////                  LPTicket.setId(RealmController.getInstance().getTickets().size() + System.currentTimeMillis());
+//                LPTicket.setId(System.currentTimeMillis());
+//                LPTicket.setSiteName(sessionManager.getKeySiteName());
+//                LPTicket.setTimeIn(ticket_time_in);
+//                LPTicket.setTimeOut("");
+//                LPTicket.setNumber(veh_number);
+//                LPTicket.setVehicleType(veh_type);
+//                LPTicket.setPrice(fee);
+//                LPTicket.setLocation(device_location);
+//                LPTicket.setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
+//                realm.beginTransaction();
+//                realm.copyToRealm(LPTicket);
+//                realm.commitTransaction();
+//                Log.d(TAG, "onFinish: mPrintQueue.setOnPrintListener");
+//                    //realm.close();;
                 finish();
                 Toast.makeText(getApplicationContext(), getString(R.string.print_complete), Toast.LENGTH_SHORT).show();
             }
@@ -339,13 +354,13 @@ public class TicketFormatActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        openDevice();
+       // openDevice();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        closeDevice();
+       // closeDevice();
     }
 
 

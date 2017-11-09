@@ -31,27 +31,27 @@
             android:orientation="vertical"
             android:padding="30dp">
 
-              <LinearLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
-
-                  <ImageView
-                      android:id="@+id/imageView"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:background="@drawable/cityicon" />
-
-                  <Spinner
-                android:id="@+id/spLocation"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="#29568f"
-                android:imeOptions="actionNext" />
-              </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cityicon" />
+
+                <Spinner
+                    android:id="@+id/spLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="#29568f"
+                    android:imeOptions="actionNext" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/imageViewTwo"
@@ -60,14 +60,15 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/areaicon" />
 
-            <Spinner
-                android:id="@+id/spCityId"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="#29568f"
-                android:imeOptions="actionNext" />
-</LinearLayout>
+                <Spinner
+                    android:id="@+id/spCityId"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#29568f"
+                    android:imeOptions="actionNext" />
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/edSiteName"
                 android:layout_width="match_parent"
@@ -95,8 +96,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionNext"
                 android:layout_marginTop="10dp"
+                android:imeOptions="actionNext"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -109,21 +110,19 @@
                     android:gravity="center"
                     android:hint="Price Car"
                     android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:layout_weight="0.80" />
+                    android:inputType="number" />
 
                 <EditText
                     android:id="@+id/etBikeAmount"
                     android:layout_width="130dp"
                     android:layout_height="100dp"
-                  android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="#FFF"
                     android:drawableTop="@drawable/bikeicon"
-                    android:background="#29568f"
                     android:gravity="center"
-                    android:hint="Bike"
+                    android:hint="Price Bike"
                     android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:textColorHint="#FFF" />
+                    android:inputType="number" />
 
             </LinearLayout>
 
@@ -139,13 +138,12 @@
                     android:id="@+id/etVanAmount"
                     android:layout_width="130dp"
                     android:layout_height="100dp"
-                    android:background="#29568f"
                     android:drawableTop="@drawable/vanicon"
                     android:gravity="center"
-                    android:hint="Van"
+                    android:hint="Price Van"
                     android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:textColorHint="#FFF" />
+                   android:background="#FFF" />
 
 
                 <EditText
@@ -153,13 +151,13 @@
                     android:layout_width="130dp"
                     android:layout_height="100dp"
                     android:layout_marginLeft="5dp"
-                    android:background="#29568f"
+                    android:background="#FFF"
                     android:drawableTop="@drawable/truckicon"
                     android:gravity="center"
                     android:hint="Truck"
                     android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:textColorHint="#FFF" />
+                   />
 
             </LinearLayout>
 
@@ -180,4 +178,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</ScrollView><!--Yellow : fbd022--><!--Blue: 29568f--><!--Dark Grey: 171717-->
+</ScrollView>

@@ -3,6 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#29568f"
     android:layout_height="match_parent"
     tools:context="com.codextech.ibtisam.lepak_app.activity.TicketFormatActivity">
 
@@ -10,7 +11,11 @@
         android:id="@+id/etCarNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#FFF"
         android:gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:hint="Enter number"
         android:inputType="number" />
 
@@ -18,7 +23,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="55dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="40dp"
@@ -229,8 +234,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"
-        android:background="@drawable/selector_xml_btn_yellow"
+        android:background="#ffee24"
         android:text="Return Ticket"
-        android:textColor="#FFF" />
+        android:textColor="#29568f" />
 
 </RelativeLayout>

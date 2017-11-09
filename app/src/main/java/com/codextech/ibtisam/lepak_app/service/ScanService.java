@@ -67,7 +67,7 @@ public class ScanService extends Service {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                openDevice();
+//                openDevice();
             }
         }, 500);
     }
@@ -103,7 +103,7 @@ public class ScanService extends Service {
 
     private static void openDevice() {
         // open power
-        mApi.gpioControl(mGpioPower, 0, 1);
+//        mApi.gpioControl(mGpioPower, 0, 1);
 
         mApi.extendSerialInit(mCurSerialNo, mBaudrate, 1, 1, 1, 1);
     }
