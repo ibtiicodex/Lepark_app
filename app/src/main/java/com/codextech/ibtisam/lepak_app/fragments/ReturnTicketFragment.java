@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
+import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
 import java.util.Calendar;
@@ -105,6 +106,7 @@ public class ReturnTicketFragment extends Fragment {
                                 realm.beginTransaction();
 
                                 manyLPTicket.first().setTimeOut(ticket_time_out);
+                                manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED);
                                 realm.commitTransaction();
 
                             }

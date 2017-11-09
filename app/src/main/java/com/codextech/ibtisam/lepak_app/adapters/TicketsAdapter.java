@@ -55,7 +55,10 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<LPTicket> {
         holder.textLocation.setText(LPTicket.getLocation());
         if (LPTicket.getSyncStatus().equals(SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED)){
             holder.syncStatus.setTextColor(Color.parseColor("#FF1100"));
-            holder.syncStatus.setText("not sync");
+            holder.syncStatus.setText("not added to server");
+        }else if (LPTicket.getSyncStatus().equals(SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED)) {
+            holder.syncStatus.setTextColor(Color.parseColor("#FF1100"));
+            holder.syncStatus.setText("not edited to server");
         }else {
             holder.syncStatus.setTextColor(context.getResources().getColor(R.color.textcolor));
             holder.syncStatus.setText("synced");

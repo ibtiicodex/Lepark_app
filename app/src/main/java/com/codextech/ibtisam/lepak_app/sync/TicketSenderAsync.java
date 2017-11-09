@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
@@ -43,23 +44,15 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
         this.context = context;
         sessionManager = new SessionManager(context);
         Log.d(TAG, "TicketSenderAsync: TOKEN: " + sessionManager.getLoginToken());
-        // config = new RealmConfiguration.Builder(context).build();
-        // realm = Realm.getInstance(config);
-//        realm = Realm.getDefaultInstance();
-        addTicketToServer();
-
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
-
-//        addTicketToServer();
-        //TODO
-        //editTicketToServer();
+        Log.d(TAG, "TicketSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
         addTicketToServer();
+        editTicketToServer();
         return null;
     }
-
 
 
     private void addTicketToServer() {
@@ -124,28 +117,33 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        Log.e(TAG, "onErrorResponse:  " + error.networkResponse.statusCode);
-
-                        if (error.networkResponse.statusCode == 500) {
-                            Toast.makeText(context, "Server Error", Toast.LENGTH_SHORT).show();
-                        } else if (error.networkResponse.statusCode == 409) {
-                            Log.d(TAG, "onErrorResponse: CHANGING TICKET STATUS " + veh_num);
-                            // ticket already exists on server change its status to SYNCED
-                            realm = Realm.getDefaultInstance();
+                        if (error.networkResponse != null) {
+                            if (error.networkResponse.statusCode != 0) {
+                                Log.e(TAG, "onErrorResponse:  " + error.networkResponse.statusCode);
+                                if (error.networkResponse.statusCode == 500) {
+                                    Toast.makeText(context, "Server Error", Toast.LENGTH_SHORT).show();
+                                } else if (error.networkResponse.statusCode == 409) {
+                                    Log.d(TAG, "onErrorResponse: CHANGING TICKET STATUS " + veh_num);
+                                    // ticket already exists on server change its status to SYNCED
+                                    realm = Realm.getDefaultInstance();
 //                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
 //                                realm = Realm.getInstance(config);
-                            RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-                            query.equalTo("timeIn", time_in);
-                            RealmResults<LPTicket> manyLPTicket = query.findAll();
-                            realm.beginTransaction();
-                            manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED);
+                                    RealmQuery<LPTicket> query = realm.where(LPTicket.class);
+                                    query.equalTo("timeIn", time_in);
+                                    RealmResults<LPTicket> manyLPTicket = query.findAll();
+                                    realm.beginTransaction();
+                                    manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED);
 //                            manyLPTicket.first().setServer_id(serverid);
-                            realm.commitTransaction();
-                            realm.close();
+                                    realm.commitTransaction();
+                                    realm.close();
+                                }
+                            }
+                        } else {
+                            Toast.makeText(context, "check internet connection", Toast.LENGTH_SHORT).show();
                         }
                         Log.e(TAG, "onErrorResponse: addTicketToServerSync" + error);
                         Log.e(TAG, "onErrorResponse: Vehicle Number: " + veh_num);
-                        Toast.makeText(context, "Error Syncing Ticket", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "Error Syncing Ticket", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -166,81 +164,78 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
             }
         };
         queue.add(postRequest);
+    }
 
+    private void editTicketToServer() {
+
+        RealmConfiguration config = new RealmConfiguration.Builder(context).build();
+
+        realm = Realm.getInstance(config);
+
+        RealmQuery<LPTicket> query = realm.where(LPTicket.class);
+
+        query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED);
+
+        RealmResults<LPTicket> manyLPTicket = query.findAll();
+
+//        Log.d(TAG, "editTicketToServer: manyLPTicket: " + manyLPTicket.toString());
+        Log.d(TAG, "editTicketToServer: count " + manyLPTicket.size());
+        for (LPTicket oneLPTicket : manyLPTicket) {
+            Log.d(TAG, "editTicketToServer: oneLPTicket " + oneLPTicket);
+            Log.d(TAG, "editTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
+            editTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn(), oneLPTicket.getTimeOut());
+        }
 
     }
 
+    private void editTicketToServerSync(String number, String vehicleType, String price, String timeIn, String timeOut) {
 
-//
-//    private void editTicketToServer() {
-//
-//        RealmConfiguration config = new RealmConfiguration.Builder(context).build();
-//
-//        realm = Realm.getInstance(config);
-//
-//        RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-//
-//        query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED);
-//
-//        RealmResults<LPTicket> manyLPTicket = query.findAll();
-//
-////        Log.d(TAG, "addTicketToServer: manyLPTicket: " + manyLPTicket.toString());
-//
-//        for (LPTicket oneLPTicket : manyLPTicket) {
-//            Log.d(TAG, "addTicketToServer: oneLPTicket " + oneLPTicket);
-//            Log.d(TAG, "addTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
-//            editTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn());
-//        }
-//
-//    }
-//
-//        private void editTicketToServerSync(String number, String vehicleType, String price, String timeIn) {
-//
-//    }
-//    public void add() {
-//        RequestQueue queue = Volley.newRequestQueue(context, new HurlStack());
-//        StringRequest putRequest = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/ticket/timeout/5/2017-11-03 01:48:06",
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        // response
-//                        Log.d("Response           ::: ", response.toString());
-//                        Toast.makeText(context, "" +response.toString(), Toast.LENGTH_SHORT).show();
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        // error
-//                        Log.d("Error.Response   ::::: ", error.toString());
-//                        Toast.makeText(context, "" +error.toString(), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//        ) {
-//
+        RequestQueue queue = Volley.newRequestQueue(context, new HurlStack());
+        StringRequest putRequest = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/ticket/timeout/" + timeOut,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d(TAG, response.toString());
+                        Toast.makeText(context, "Successfully Edited to server", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d(TAG, error.toString());
+                        Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+
 //            @Override
 //            public Map<String, String> getHeaders() {
 //                Map<String, String> headers = new HashMap<String, String>();
-//                headers.put("Content-Type", "application/json");
-//                //or try with this:
-//                //headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+////                headers.put("Content-Type", "application/json");
+////                headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
 //                return headers;
 //            }
-//
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("id",5+"");
-//                params.put("time_out", "2017-11-03 01:42:06");
-//
-//                return params;
-//            }
-//        };
-//
-//        queue.add(putRequest);
-//    }
-//
 
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded";
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                //                params.put("id", 5 + "");
+                params.put("time_out", "2017-11-03 01:42:06");
+
+                return params;
+            }
+        };
+
+        queue.add(putRequest);
+    }
 
 
 }

@@ -159,10 +159,24 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        pdLoading.dismiss();
-                        Log.e(TAG, "onErrorResponse: " + error);
-                        if (error.networkResponse == null){
-                            Toast.makeText(LoginActivity.this, "Error login Check Internet", Toast.LENGTH_SHORT).show();
+                        try {
+                            pdLoading.dismiss();
+                            Log.e(TAG, "onErrorResponse: " + error);
+                            if (error.networkResponse != null) {
+                                if (error.networkResponse.statusCode == 401) {
+                                    JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                    int responseCode = jObj.getInt("responseCode");
+                                    if (responseCode == 17) {
+                                        Toast.makeText(LoginActivity.this, "User doesn't exist", Toast.LENGTH_SHORT).show();
+                                    }else if (responseCode == 5){
+                                        Toast.makeText(LoginActivity.this, "Invalid Password", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }else {
+                                Toast.makeText(LoginActivity.this, "Error login Check Internet", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }
