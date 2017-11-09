@@ -137,7 +137,7 @@ public class ScanService extends Service {
     @Override
     public void onDestroy() {
         // TODO Auto-generated method stub
-        mApi.closeDev();
+//        mApi.closeDev();
         super.onDestroy();
     }
 

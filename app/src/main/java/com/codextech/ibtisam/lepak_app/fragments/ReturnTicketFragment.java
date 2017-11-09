@@ -87,10 +87,10 @@ public class ReturnTicketFragment extends Fragment {
                     Log.e(TAG, "onCreate: " + manyLPTicket.toString());
 
 
-                    if (manyLPTicket.size() > 0) {
+                        if (manyLPTicket.size() > 0) {
 
-//                         if(manyLPTicket.first().getTimeOut()=="") {
-                        Log.d(TAG, "onClick: in   __________________________________________________________________________" + manyLPTicket.first().getTimeOut());
+                           // if(manyLPTicket.first().getTimeOut()=="") {
+                            Log.d(TAG, "onClick: in   __________________________________________________________________________" + manyLPTicket.first().getTimeOut());
 
                           if (manyLPTicket.first().getTimeOut().equals("")) {
                         tvAgentName.setText(manyLPTicket.first().getSiteName());

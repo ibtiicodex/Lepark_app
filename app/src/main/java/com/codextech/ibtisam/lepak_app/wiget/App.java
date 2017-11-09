@@ -54,7 +54,7 @@ public class App extends Application {
 			mPosApi.initPosDev("ima35s12");
 			setCurDevice("ima35s12");
 		}else{
-//			mPosApi.initPosDev(PosApi.PRODUCT_MODEL_IMA80M01);
+			mPosApi.initPosDev(PosApi.PRODUCT_MODEL_IMA80M01);
 			setCurDevice(PosApi.PRODUCT_MODEL_IMA80M01);
 		}
 	}
