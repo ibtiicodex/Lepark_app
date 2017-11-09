@@ -42,6 +42,7 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
     public TicketSenderAsync(Context context) {
         this.context = context;
         sessionManager = new SessionManager(context);
+        Log.d(TAG, "TicketSenderAsync: TOKEN: " + sessionManager.getLoginToken());
         // config = new RealmConfiguration.Builder(context).build();
         // realm = Realm.getInstance(config);
 //        realm = Realm.getDefaultInstance();
@@ -87,7 +88,6 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
 
     private void addTicketToServerSync(final String veh_num, final String veh_type, final String fee, final String time_in) {
         queue = Volley.newRequestQueue(context, new HurlStack());
-
         StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.TICKET_SEND,
 
                 new Response.Listener<String>() {
@@ -125,7 +125,10 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
                         Log.e(TAG, "onErrorResponse:  " + error.networkResponse.statusCode);
-                        if (error.networkResponse.statusCode == 409) {
+
+                        if (error.networkResponse.statusCode == 500) {
+                            Toast.makeText(context, "Server Error", Toast.LENGTH_SHORT).show();
+                        } else if (error.networkResponse.statusCode == 409) {
                             Log.d(TAG, "onErrorResponse: CHANGING TICKET STATUS " + veh_num);
                             // ticket already exists on server change its status to SYNCED
                             realm = Realm.getDefaultInstance();
@@ -156,6 +159,7 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
                 params.put("vehicle_type", veh_type);
                 params.put("fee", fee);
                 params.put("time_in", time_in);
+                params.put("time_out", "");
                 params.put("token", sessionManager.getLoginToken());
 
                 return params;

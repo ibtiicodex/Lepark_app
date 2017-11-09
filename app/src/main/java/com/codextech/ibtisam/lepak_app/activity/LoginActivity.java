@@ -150,6 +150,8 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Log.d(TAG, "onResponse: JSONException: ");
+                            pdLoading.dismiss();
                         }
                     }
                 },
@@ -157,8 +159,11 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        pdLoading.show();
-                        Toast.makeText(LoginActivity.this, "Error login ", Toast.LENGTH_SHORT).show();
+                        pdLoading.dismiss();
+                        Log.e(TAG, "onErrorResponse: " + error);
+                        if (error.networkResponse == null){
+                            Toast.makeText(LoginActivity.this, "Error login Check Internet", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
         ) {

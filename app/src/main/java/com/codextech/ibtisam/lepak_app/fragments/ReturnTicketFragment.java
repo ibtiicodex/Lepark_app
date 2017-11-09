@@ -36,6 +36,7 @@ public class ReturnTicketFragment extends Fragment {
     private long timeNowMillis;
     String ticket_time_out;
     private Realm realm;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,7 +81,7 @@ public class ReturnTicketFragment extends Fragment {
 
                     RealmResults<LPTicket> manyLPTicket = query.findAll();
 
-                    Log.e(TAG, "onCreate: " + manyLPTicket.toString());
+                    Log.d(TAG, "onCreate: " + manyLPTicket.toString());
 
 
                         if (manyLPTicket.size() > 0) {

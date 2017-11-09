@@ -64,7 +64,6 @@ public class TicketFormatActivity extends Activity {
     String device_location = "31.51,74.34";
     SessionManager sessionManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,27 +115,15 @@ public class TicketFormatActivity extends Activity {
         btnPrintMix.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //printMix();
-                Realm realm = Realm.getDefaultInstance();
-                LPTicket LPTicket = new LPTicket();
-//                  LPTicket.setId(RealmController.getInstance().getTickets().size() + System.currentTimeMillis());
-                LPTicket.setId(System.currentTimeMillis());
-                LPTicket.setSiteName(sessionManager.getKeySiteName());
-                LPTicket.setTimeIn(ticket_time_in);
-                LPTicket.setTimeOut("");
-                LPTicket.setNumber(veh_number);
-                LPTicket.setVehicleType(veh_type);
-                LPTicket.setPrice(fee);
-                LPTicket.setLocation(device_location);
-                LPTicket.setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
-                realm.beginTransaction();
-                realm.copyToRealm(LPTicket);
-                realm.commitTransaction();
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                btnPrintMix.setEnabled(false);
+                btnPrintMix.setVisibility(View.GONE);
+                printMix();
+                storeTicketInRealm();
+//                try {
+//                    Thread.sleep(5000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
         mPrintQueue = new PrintQueue(this, ScanService.mApi);
@@ -144,25 +131,17 @@ public class TicketFormatActivity extends Activity {
         mPrintQueue.setOnPrintListener(new OnPrintListener() {
             @Override
             public void onFinish() {
-             //   isCanPrint = true;
+                isCanPrint = true;
 
-//                Realm realm = Realm.getDefaultInstance();
-//                LPTicket LPTicket = new LPTicket();
-////                  LPTicket.setId(RealmController.getInstance().getTickets().size() + System.currentTimeMillis());
-//                LPTicket.setId(System.currentTimeMillis());
-//                LPTicket.setSiteName(sessionManager.getKeySiteName());
-//                LPTicket.setTimeIn(ticket_time_in);
-//                LPTicket.setTimeOut("");
-//                LPTicket.setNumber(veh_number);
-//                LPTicket.setVehicleType(veh_type);
-//                LPTicket.setPrice(fee);
-//                LPTicket.setLocation(device_location);
-//                LPTicket.setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
-//                realm.beginTransaction();
-//                realm.copyToRealm(LPTicket);
-//                realm.commitTransaction();
-//                Log.d(TAG, "onFinish: mPrintQueue.setOnPrintListener");
-//                    //realm.close();;
+                storeTicketInRealm();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        btnPrintMix.setEnabled(true);
+                        btnPrintMix.setVisibility(View.VISIBLE);
+                    }
+                });
                 finish();
                 Toast.makeText(getApplicationContext(), getString(R.string.print_complete), Toast.LENGTH_SHORT).show();
             }
@@ -212,6 +191,28 @@ public class TicketFormatActivity extends Activity {
         mFilter.addAction(PosApi.ACTION_POS_COMM_STATUS);
         registerReceiver(receiver, mFilter);
         player = MediaPlayer.create(getApplicationContext(), R.raw.beep);
+    }
+
+    private void storeTicketInRealm() {
+
+        Realm realm = Realm.getDefaultInstance();
+        LPTicket LPTicket = new LPTicket();
+//                  LPTicket.setId(RealmController.getInstance().getTickets().size() + System.currentTimeMillis());
+        LPTicket.setId(System.currentTimeMillis());
+        LPTicket.setSiteName(sessionManager.getKeySiteName());
+        LPTicket.setTimeIn(ticket_time_in);
+        LPTicket.setTimeOut("");
+        LPTicket.setNumber(veh_number);
+        LPTicket.setVehicleType(veh_type);
+        LPTicket.setPrice(fee);
+        LPTicket.setLocation(device_location);
+        LPTicket.setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
+        realm.beginTransaction();
+        realm.copyToRealm(LPTicket);
+        realm.commitTransaction();
+        Log.d(TAG, "onFinish: mPrintQueue.setOnPrintListener");
+        realm.close();
+
     }
 
     BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -328,7 +329,7 @@ public class TicketFormatActivity extends Activity {
             sb.append("\n");
             text = sb.toString().getBytes("GBK");
             addPrintTextWithSize(1, concentration, text);
-            mPrintQueue.printStart();
+//            mPrintQueue.printStart();
             //TODO if ticket is printed successfull then do this
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
@@ -354,13 +355,13 @@ public class TicketFormatActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-       // openDevice();
+//        openDevice();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-       // closeDevice();
+//        closeDevice();
     }
 
 

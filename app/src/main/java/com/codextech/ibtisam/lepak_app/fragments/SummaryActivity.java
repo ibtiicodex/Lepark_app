@@ -241,7 +241,7 @@ public class SummaryActivity extends AppCompatActivity {
             text = sb.toString().getBytes("GBK");
             addPrintTextWithSize(1, concentration, text);
 
-            mPrintQueue.printStart();
+//            mPrintQueue.printStart();
             //TODO if ticket is printed successfull then do this
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
