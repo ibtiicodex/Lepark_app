@@ -36,7 +36,6 @@ public class ReturnTicketFragment extends Fragment {
     private long timeNowMillis;
     String ticket_time_out;
     private Realm realm;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,35 +82,55 @@ public class ReturnTicketFragment extends Fragment {
 
                     Log.e(TAG, "onCreate: " + manyLPTicket.toString());
 
-                    if (manyLPTicket.size() > 0) {
 
-                        tvAgentName.setText(manyLPTicket.first().getSiteName());
+                        if (manyLPTicket.size() > 0) {
 
-                        tvTimeIn.setText(manyLPTicket.first().getTimeIn());
+                           // if(manyLPTicket.first().getTimeOut()=="") {
+                            Log.d(TAG, "onClick: in   __________________________________________________________________________" + manyLPTicket.first().getTimeOut());
 
-                        tvTimeOut.setText(ticket_time_out);
+                            if(manyLPTicket.first().getTimeOut().equals("")) {
+                                tvAgentName.setText(manyLPTicket.first().getSiteName());
 
-                        tvNumber.setText(manyLPTicket.first().getNumber());
+                                tvTimeIn.setText(manyLPTicket.first().getTimeIn());
 
-                        tvPrice.setText(manyLPTicket.first().getPrice());
+                                tvTimeOut.setText(ticket_time_out);
 
-                        tvLocation.setText(manyLPTicket.first().getLocation());
+                                tvNumber.setText(manyLPTicket.first().getNumber());
 
-                        realm.beginTransaction();
+                                tvPrice.setText(manyLPTicket.first().getPrice());
 
-                        manyLPTicket.first().setTimeOut(ticket_time_out);
-                        realm.commitTransaction();
-                        realm.close();
+                                tvLocation.setText(manyLPTicket.first().getLocation());
+
+                                realm.beginTransaction();
+
+                                manyLPTicket.first().setTimeOut(ticket_time_out);
+                                realm.commitTransaction();
+
+                            }
+                            else
+                            {
+
+                                Toast.makeText(getActivity(), "Already Exit ", Toast.LENGTH_SHORT).show();
+                            }
+                               // realm.close();
+                           //// }
+                            //else
+                           // {
+
+                             //   Toast.makeText(getActivity(), "Already Exist", Toast.LENGTH_SHORT).show();
+
+                            //}
+
+                        } else {
+
+                            Toast.makeText(getActivity(), "vehicle doesn't exist", Toast.LENGTH_SHORT).show();
+
+                        }
 
                     } else {
-
-                        Toast.makeText(getActivity(), "vehicle doesn't exist", Toast.LENGTH_SHORT).show();
-
+                        etCarNumber.setError("empty field!");
                     }
 
-                } else {
-                    etCarNumber.setError("empty field!");
-                }
             }
         });
 
@@ -129,6 +148,5 @@ public class ReturnTicketFragment extends Fragment {
         super.onResume();
         etCarNumber.setText("");
     }
-
 
 }

@@ -1,113 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/baclogin">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#f7f7f7"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:background="@drawable/baclogin"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="#b2e5eaea"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/leparklogo" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="40dp">
+            android:padding="30dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cityicon" />
+
+                <Spinner
+                    android:id="@+id/spLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="#29568f"
+                    android:imeOptions="actionNext" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageViewTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/areaicon" />
+
+                <Spinner
+                    android:id="@+id/spCityId"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#29568f"
+                    android:imeOptions="actionNext" />
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/edSiteName"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@color/edback"
+                android:layout_marginTop="20dp"
+                android:background="#29568f"
+                android:drawableLeft="@drawable/siteicon"
                 android:drawablePadding="5dp"
                 android:ems="10"
-                android:hint="Site Name"
+                android:hint="Enter Site Name"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
-                android:paddingLeft="8dp"
-                android:textColorHint="@color/textcolor" />
+                android:textColorHint="#FFF" />
 
 
-            <Spinner
-                android:id="@+id/spLocation"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-
-                android:textColor="@color/textcolor" />
-            >
-
-            <Spinner
-                android:id="@+id/spCityId"
-                android:layout_width="match_parent"
-                android:layout_height="39dp"
-                android:layout_marginTop="20dp"
-
-                android:textColor="@color/textcolor" />
-            >
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Please Set Your Sites Id Rates"
-        android:layout_gravity="center"
-        android:gravity="center"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Please enter parking rates"
+                android:textColor="#FFF" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal">
+                android:layout_marginTop="10dp"
+                android:imeOptions="actionNext"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
                 <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Car"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
                     android:id="@+id/etCarAmount"
+                    android:layout_width="130dp"
+                    android:layout_height="100dp"
+                    android:background="#FFF"
+                    android:drawableTop="@drawable/caricon"
                     android:gravity="center"
-                    android:layout_weight="1"/>
+                    android:hint="Price Car"
+                    android:imeOptions="actionNext"
+                    android:inputType="number" />
 
                 <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:id="@+id/etBikeAmount"
-                    android:imeOptions="actionNext"
+                    android:layout_width="130dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="#FFF"
+                    android:drawableTop="@drawable/bikeicon"
                     android:gravity="center"
-                    android:inputType="number"
-                    android:hint="Bike" />
+                    android:hint="Price Bike"
+                    android:imeOptions="actionNext"
+                    android:inputType="number" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal">
+                android:layout_marginTop="5dp"
+                android:imeOptions="actionNext"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
                 <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:id="@+id/etVanAmount"
+                    android:layout_width="130dp"
+                    android:layout_height="100dp"
+                    android:drawableTop="@drawable/vanicon"
+                    android:gravity="center"
+                    android:hint="Price Van"
                     android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:gravity="center"
-                    android:hint="Van" />
+                   android:background="#FFF" />
+
 
                 <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:id="@+id/etTruckAmount"
+                    android:layout_width="130dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="#FFF"
+                    android:drawableTop="@drawable/truckicon"
                     android:gravity="center"
+                    android:hint="Truck"
                     android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:id="@+id/etTruckAmount"
-                    android:hint="Truck" />
+                   />
 
             </LinearLayout>
 
@@ -118,11 +168,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/selector_xml_btn_yellow"
+                android:background="#fbd022"
                 android:imeOptions="actionGo"
                 android:onClick="checkLogin"
-                android:text="Sign Up"
-                android:textColor="#FFF" />
+                android:text="Register?"
+                android:textColor="#000" />
 
 
         </LinearLayout>

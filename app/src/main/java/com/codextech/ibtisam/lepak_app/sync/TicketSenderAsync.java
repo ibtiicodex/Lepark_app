@@ -167,7 +167,7 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
     }
 
 
-
+//
 //    private void editTicketToServer() {
 //
 //        RealmConfiguration config = new RealmConfiguration.Builder(context).build();
@@ -189,8 +189,8 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
 //        }
 //
 //    }
-
-    //    private void editTicketToServerSync(String number, String vehicleType, String price, String timeIn) {
+//
+//        private void editTicketToServerSync(String number, String vehicleType, String price, String timeIn) {
 //
 //    }
 //    public void add() {
@@ -235,79 +235,8 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
 //
 //        queue.add(putRequest);
 //    }
+//
 
-
-//    private void updateFirebaseIdAndInitConfigMakeRequest(Activity activity, @Nullable JSONObject returnInitJson) {
-//
-//        final int MY_SOCKET_TIMEOUT_MS = 60000;
-//        final String BASE_URL = MyURLs.UPDATE_AGENT;
-//        Uri builtUri;
-//        if (returnInitJson != null) {
-//            builtUri = Uri.parse(BASE_URL)
-//                    .buildUpon()
-//                    .appendQueryParameter("config", "" + returnInitJson)
-//                    .appendQueryParameter("device_id", "" + sessionManager.getKeyLoginFirebaseRegId())
-//                    .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
-//                    .build();
-//
-//        }else {
-//            builtUri = Uri.parse(BASE_URL)
-//                    .buildUpon()
-//                    .appendQueryParameter("device_id", "" + sessionManager.getKeyLoginFirebaseRegId())
-//                    .appendQueryParameter("api_token", "" + sessionManager.getLoginToken())
-//                    .build();
-//        }
-//        final String myUrl = builtUri.toString();
-//        StringRequest sr = new StringRequest(Request.Method.PUT, myUrl, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                Log.d(TAG, "onResponse() updateFirebaseIdAndInitConfigMakeRequest: response = [" + response + "]");
-//                try {
-//                    if (pdLoading != null && pdLoading.isShowing()) {
-//                        pdLoading.dismiss();
-//                    }
-//                    JSONObject jObj = new JSONObject(response);
-//                    int responseCode = jObj.getInt("responseCode");
-//                    if (responseCode == 200) {
-//                        JSONObject responseObject = jObj.getJSONObject("response");
-//                        Log.d(TAG, "onResponse : FirebaseLocalRegID : " + sessionManager.getKeyLoginFirebaseRegId());
-//                        Log.d(TAG, "onResponse : FirebaseServerRegID : " + responseObject.getString("device_id"));
-//
-//                        TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-//                        theCallLogEngine.execute();
-//                        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-//                        dataSenderAsync.run();
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                if (pdLoading != null && pdLoading.isShowing()) {
-//                    pdLoading.dismiss();
-//                }
-//                error.printStackTrace();
-//                Log.d(TAG, "onErrorResponse: CouldNotUpdateInitConfigMakeRequest OR CouldNotSyncAgentFirebaseRegId");
-//
-////                RecordingManager recordingManager = new RecordingManager();
-////                recordingManager.execute();
-//                TheCallLogEngine theCallLogEngine = new TheCallLogEngine(getApplicationContext());
-//                theCallLogEngine.execute();
-//                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
-//                dataSenderAsync.run();
-//            }
-//        }) {
-//        };
-//        sr.setRetryPolicy(new DefaultRetryPolicy(
-//                MY_SOCKET_TIMEOUT_MS,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//        queue.add(sr);
-//
-//    }
-//
 
 
 }

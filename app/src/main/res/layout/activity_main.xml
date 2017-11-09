@@ -11,10 +11,11 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:background="#ffee24"
         android:id="@+id/toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="LePak Parking Application" />
+        app:title="Dashboard"
+        app:titleTextColor="#295684"/>
 
 
     <android.support.v4.widget.DrawerLayout
@@ -31,6 +32,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:id="@+id/containerView">
         </FrameLayout>
 

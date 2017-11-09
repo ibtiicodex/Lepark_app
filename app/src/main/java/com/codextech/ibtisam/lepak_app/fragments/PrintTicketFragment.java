@@ -46,20 +46,28 @@ public class PrintTicketFragment extends Fragment {
         bTruck = (Button) view.findViewById(R.id.bTruck);
         sessionManager = new SessionManager(getActivity());
 //        startService();
+//        bCar.setText("CAR :"+sessionManager.getKeyCarAmount());
+//        bBike.setText("BIKE :"+sessionManager.getKeyBikeAmount());
+//        bVan.setText("VAN :"+sessionManager.getKeyVanAmount());
+//        bTruck.setText("TRUCK :"+sessionManager.getKeyTruckAmount());
 
         if (Integer.parseInt(sessionManager.getKeyCarAmount()) <= 0) {
+           // bCar.setText("CAR :"+sessionManager.getKeyCarAmount());
             bCar.setVisibility(View.GONE);
 
         }
         if (Integer.parseInt(sessionManager.getKeyBikeAmount()) <= 0) {
+          //  bBike.setText("BIKE :"+sessionManager.getKeyBikeAmount());
             bBike.setVisibility(View.GONE);
         }
 
         if (Integer.parseInt(sessionManager.getKeyVanAmount()) <= 0) {
+           // bVan.setText("VAN :"+sessionManager.getKeyVanAmount());
             bVan.setVisibility(View.GONE);
         }
 
         if (Integer.parseInt(sessionManager.getKeyTruckAmount()) <= 0) {
+           // bTruck.setText("TRUCK :"+sessionManager.getKeyTruckAmount());
             bTruck.setVisibility(View.GONE);
         }
 

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/printt"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pageback"
-    android:id="@+id/printt"
-    android:gravity="center"
+    android:background="#29568f"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -14,23 +13,24 @@
         android:gravity="center"
 
         android:padding="10dp">
-
         <EditText
             android:id="@+id/enterNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:ems="10"
-            android:textColorHint="#FFC9CACA"
+            android:textSize="30dp"
+            android:background="#FFF"
             android:gravity="center"
             android:hint="@string/enter_number"
-            android:inputType="number" />
+            android:inputType="number"
+            android:textColorHint="#FFC9CACA" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-
+        android:layout_height="100dp"
         android:gravity="center"
+        android:background="#29568f"
         android:orientation="horizontal"
         android:padding="10dp"
         android:weightSum="2">
@@ -40,28 +40,31 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:background="@drawable/selector_xml_btn_yellow"
-            android:text="Print Car"
-            android:textColor="#FFF"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/caricon"
+
+            android:gravity="center_horizontal"
+            android:textColor="#000" />
 
         <Button
             android:id="@+id/bBike"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:textColor="#FFF"
-            android:background="@drawable/selector_xml_btn_yellow"
-            android:text="Print bike"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+           android:background="@drawable/bikeicon"
+
+            android:textColor="#000" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="100dp"
         android:gravity="center"
         android:orientation="horizontal"
+        android:background="#29568f"
         android:padding="10dp"
         android:weightSum="2">
 
@@ -70,20 +73,22 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:background="@drawable/selector_xml_btn_yellow"
-            android:text="Print Van"
-            android:textColor="#FFF"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:background="@drawable/vanicon"
+
+            android:textColor="#000" />
 
         <Button
             android:id="@+id/bTruck"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:textColor="#FFF"
-            android:background="@drawable/selector_xml_btn_yellow"
-            android:text="Print TRUCK"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:background="@drawable/truckicon"
+
+            android:textColor="#000" />
 
     </LinearLayout>
-    </LinearLayout>
+</LinearLayout>
