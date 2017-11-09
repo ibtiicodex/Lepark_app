@@ -14,6 +14,9 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
+             android:background="#ffee24"
+            app:titleTextColor="#171717"
+            app:title="All Tickets"
             android:layout_height="?attr/actionBarSize"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="enterAlways" />
