@@ -52,22 +52,22 @@ public class PrintTicketFragment extends Fragment {
 //        bTruck.setText("TRUCK :"+sessionManager.getKeyTruckAmount());
 
         if (Integer.parseInt(sessionManager.getKeyCarAmount()) <= 0) {
-           // bCar.setText("CAR :"+sessionManager.getKeyCarAmount());
+            // bCar.setText("CAR :"+sessionManager.getKeyCarAmount());
             bCar.setVisibility(View.GONE);
 
         }
         if (Integer.parseInt(sessionManager.getKeyBikeAmount()) <= 0) {
-          //  bBike.setText("BIKE :"+sessionManager.getKeyBikeAmount());
+            //  bBike.setText("BIKE :"+sessionManager.getKeyBikeAmount());
             bBike.setVisibility(View.GONE);
         }
 
         if (Integer.parseInt(sessionManager.getKeyVanAmount()) <= 0) {
-           // bVan.setText("VAN :"+sessionManager.getKeyVanAmount());
+            // bVan.setText("VAN :"+sessionManager.getKeyVanAmount());
             bVan.setVisibility(View.GONE);
         }
 
         if (Integer.parseInt(sessionManager.getKeyTruckAmount()) <= 0) {
-           // bTruck.setText("TRUCK :"+sessionManager.getKeyTruckAmount());
+            // bTruck.setText("TRUCK :"+sessionManager.getKeyTruckAmount());
             bTruck.setVisibility(View.GONE);
         }
 

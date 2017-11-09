@@ -60,7 +60,6 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
     }
 
 
-
     private void addTicketToServer() {
 
         realm = Realm.getDefaultInstance();
@@ -236,7 +235,6 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
 //        queue.add(putRequest);
 //    }
 //
-
 
 
 }

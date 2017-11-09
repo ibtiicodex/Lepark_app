@@ -12,11 +12,11 @@
         app:tabMode="fixed"
 
         app:tabBackground="@drawable/tab_color_selector"
-        app:tabIndicatorColor="#29568f"
+        app:tabIndicatorColor="#ffee24"
         app:tabIndicatorHeight="7dp"
         app:tabSelectedTextColor="@color/white"
 
-        app:tabTextColor="#29568f"
+        app:tabTextColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </android.support.design.widget.TabLayout>

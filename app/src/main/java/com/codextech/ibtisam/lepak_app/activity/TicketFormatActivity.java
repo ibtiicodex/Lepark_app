@@ -1,6 +1,5 @@
 package com.codextech.ibtisam.lepak_app.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,6 +12,8 @@ import android.os.Bundle;
 import android.posapi.PosApi;
 import android.posapi.PrintQueue;
 import android.posapi.PrintQueue.OnPrintListener;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,7 +33,7 @@ import java.util.Calendar;
 
 import io.realm.Realm;
 
-public class TicketFormatActivity extends Activity {
+public class TicketFormatActivity extends AppCompatActivity {
     public static final String TAG = "TicketFormatActivity";
 
     public static final String KEY_VEHICLE_TYPE = "key_vehicle_type";
@@ -78,6 +79,20 @@ public class TicketFormatActivity extends Activity {
         tvPrice = (TextView) findViewById(R.id.Dprice);
         tvLocation = (TextView) findViewById(R.id.Dlocation);
         btnPrintMix = (Button) this.findViewById(R.id.btnPrintMix);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        }
+
+        //set toolbar
+        setSupportActionBar(toolbar);
+
+
+
 //        this.realm = RealmController.with(this).getRealm();
 //        RealmController.with(this).refresh();
         Intent intent = getIntent();
