@@ -167,7 +167,7 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
     }
 
     private void editTicketToServer() {
-
+        Log.d(TAG, "editTicketToServer////////////////////////////////////i///////////////////////////////////////: ");
         RealmConfiguration config = new RealmConfiguration.Builder(context).build();
 
         realm = Realm.getInstance(config);
@@ -182,6 +182,7 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
         Log.d(TAG, "editTicketToServer: count " + manyLPTicket.size());
         for (LPTicket oneLPTicket : manyLPTicket) {
             Log.d(TAG, "editTicketToServer: oneLPTicket " + oneLPTicket);
+            Log.d(TAG, "editTicketToServer///////////////////////////////////////////////////////////////////////////: ");
             Log.d(TAG, "editTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
             editTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn(), oneLPTicket.getTimeOut());
         }
@@ -190,19 +191,43 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
 
     private void editTicketToServerSync(String number, String vehicleType, String price, String timeIn, String timeOut) {
 
+        Log.d(TAG, "editTicketToServerSync////////////////////////////////////on ui///////////////////////////////////////: ");
+
         RequestQueue queue = Volley.newRequestQueue(context, new HurlStack());
         StringRequest putRequest = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/ticket/timeout/" + timeOut,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d(TAG, "editTicketToServerSync__________________________on up______________________________________: ");
                         // response
                         Log.d(TAG, response.toString());
+
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            int responseCode = obj.getInt("responseCode");
+                            if (responseCode == 200) {
+                                JSONObject uniObject = obj.getJSONObject("response");
+                                //TODO  Save server_id of ticket in local db
+                                String serverid = uniObject.getString("id");
+                                String vehicle_no = uniObject.getString("vehicle_no");
+                                String vehicle_type = uniObject.getString("vehicle_type");
+                                String fee = uniObject.getString("fee");
+                                String time_in = uniObject.getString("time_in");
+                                String time_out = uniObject.getString("time_out");
+                                Log.d(TAG, "editTicketToServerSync_____________________reponse in try___________________________________________: ");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                         Toast.makeText(context, "Successfully Edited to server", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "editTicketToServerSync_____________________________________error___________________________: ");
                         // error
                         Log.d(TAG, error.toString());
                         Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
@@ -228,8 +253,8 @@ public class TicketSenderAsync extends AsyncTask<Void, Void, Void> {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 //                params.put("id", 5 + "");
-                params.put("time_out", "2017-11-03 01:42:06");
-
+                    params.put("time_out", "2017-11-03 01:42:06");
+//
                 return params;
             }
         };

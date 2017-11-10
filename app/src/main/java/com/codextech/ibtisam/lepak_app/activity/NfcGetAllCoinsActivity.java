@@ -14,6 +14,7 @@ import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -70,6 +71,16 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc_get_all_coins);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        }
+
+        setSupportActionBar(toolbar);
         queue = Volley.newRequestQueue(NfcGetAllCoinsActivity.this, new HurlStack());
         BTsave = (Button) findViewById(R.id.BNsave);
         this.realm = RealmController.with(this).getRealm();
@@ -114,9 +125,9 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
             RealmQuery<LPNfc> query = realm.where(LPNfc.class);
             query.equalTo("coinId", coinget);
             RealmResults<LPNfc> make = query.findAll();
-            ((TextView) findViewById(R.id.text2)).setText(
+            ((TextView) findViewById(R.id.tvAmountNfc)).setText(
                     "Amount  : " + (make.first().getCoinAmount()));
-            ((TextView) findViewById(R.id.text3)).setText(
+            ((TextView) findViewById(R.id.tvVehicleNfc)).setText(
                     "Vehicle  no : " + (make.first().getCoinVehicle()));
             int minus = Integer.parseInt(make.first().getCoinAmount());
 

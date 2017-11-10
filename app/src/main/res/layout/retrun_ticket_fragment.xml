@@ -264,6 +264,6 @@
         android:layout_marginTop="10dp"
         android:background="#ffee24"
         android:text="Return Ticket"
-        android:textColor="#29568f" />
+        android:textColor="#171717" />
 
 </RelativeLayout>

@@ -76,7 +76,7 @@ public class PrintTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 vehNumber = edenternumber.getText().toString();
-                if (vehNumber.trim().length() >= 1 && vehNumber != null) {
+                if (vehNumber.trim().length() >= 1 && vehNumber != null&&vehNumber.trim().length() <= 5) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
                         Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
@@ -87,7 +87,7 @@ public class PrintTicketFragment extends Fragment {
                         Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    edenternumber.setError("Empty Field!");
+                    edenternumber.setError("Empty Field! or number may be exceed 5 digits");
                 }
             }
         });
@@ -95,7 +95,7 @@ public class PrintTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 vehNumber = edenternumber.getText().toString();
-                if (vehNumber.trim().length() >= 1 && vehNumber != null) {
+                if (vehNumber.trim().length() >= 1 && vehNumber != null&&vehNumber.trim().length() <= 5) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
                         Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
@@ -106,7 +106,7 @@ public class PrintTicketFragment extends Fragment {
                         Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    edenternumber.setError("Empty Field!");
+                    edenternumber.setError("Empty Field!or number may be exceed 5 digits");
                 }
             }
         });
@@ -114,7 +114,7 @@ public class PrintTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 vehNumber = edenternumber.getText().toString();
-                if (vehNumber.trim().length() >= 1 && vehNumber != null) {
+                if (vehNumber.trim().length() >= 1 && vehNumber != null&&vehNumber.trim().length() <= 5) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
                         Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
@@ -125,7 +125,7 @@ public class PrintTicketFragment extends Fragment {
                         Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    edenternumber.setError("Empty Field!");
+                    edenternumber.setError("Empty Field!or number may be exceed 5 digits");
                 }
             }
         });
@@ -135,7 +135,7 @@ public class PrintTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 vehNumber = edenternumber.getText().toString();
-                if (vehNumber.trim().length() >= 1 && vehNumber != null) {
+                if (vehNumber.trim().length() >= 1 && vehNumber != null&&vehNumber.trim().length() <= 5) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
                         Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
@@ -146,7 +146,7 @@ public class PrintTicketFragment extends Fragment {
                         Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    edenternumber.setError("Empty Field!");
+                    edenternumber.setError("Empty Field!or number may be exceed 5 digits");
                 }
             }
         });

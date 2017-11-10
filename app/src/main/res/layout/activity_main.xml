@@ -15,7 +15,7 @@
         android:id="@+id/toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="Dashboard"
-        app:titleTextColor="#295684"/>
+        app:titleTextColor="#171717"/>
 
 
     <android.support.v4.widget.DrawerLayout

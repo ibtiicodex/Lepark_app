@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
->
+    android:background="#29568f"
+    android:layout_height="match_parent">
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
@@ -14,96 +15,104 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:contentScrim="?attr/colorPrimary"
             android:background="#ffee24"
-            app:title="Summary"
-            android:titleTextColor="#171717"
-            app:layout_scrollFlags="enterAlways" />
+            app:titleTextColor="#171717"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="enterAlways"
+            app:title="Summary" />
 
     </android.support.design.widget.AppBarLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="70dp"
-
         android:orientation="vertical"
-        android:weightSum="9">
+        android:weightSum="9"
+        android:layout_marginTop="60dp"
+        android:padding="50dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
 
-            <TextView
-
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="70dp"
                 android:layout_weight="1"
-                android:text="Total Ticket"
-                android:textColor="#000"
-                android:textSize="14dp" />
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <TextView
-                android:id="@+id/tvTicketCount"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total Ticket"
+                    android:textSize="15dp"
+                    android:textColor="#000" />
+
+                <TextView
+                    android:id="@+id/tvTicketCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textSize="15dp"
+                    android:layout_gravity="right"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-                />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="15dp"
+                    android:text="Total Amount"
+                    android:textColor="#000" />
+
+                <TextView
+                    android:id="@+id/tvTicketTotal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textSize="15dp"
+                    android:layout_gravity="right"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/bPrintSummaryp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="#ffee24"
+                    android:text="Print Summary"
+                    android:textColor="#171717" />
+            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <TextView
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="70dp"
-
-                android:layout_weight="1"
-                android:text="Total Amount"
-                android:textColor="#000"
-                android:textSize="14dp" />
-
-
-            <TextView
-                android:id="@+id/tvTicketTotal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="39dp"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <Button
-                android:id="@+id/bPrintSummaryp"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="75dp"
-                android:background="#29568f"
-                android:text="Print Summary"
-                android:textColor="#FFF"
-                android:textSize="14dp" />
-        </LinearLayout>
-    </LinearLayout>
 </RelativeLayout>
+
+
+    <!--<LinearLayout--><!--android:id="@+id/linearLayout"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:orientation="vertical"--><!--android:background="#e8e9cf"--><!--android:layout_margin="1dp"--><!--android:padding="12dp"--><!--android:weightSum="8">-->
+
+    <!--<LinearLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="0dp"--><!--android:layout_weight="1"--><!--android:gravity="center"--><!--android:orientation="horizontal">-->
+
+    <!--<TextView--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:gravity="center"--><!--android:text="PARKING TICKET"--><!--android:textSize="15dp"--><!--android:textStyle="bold"--><!--/>--><!--</LinearLayout>-->
+
+    <!--<LinearLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="0dp"--><!--android:layout_weight="1"--><!--android:gravity="center"--><!--android:orientation="horizontal"--><!--android:weightSum="2">-->
+
+    <!--<TextView--><!--android:id="@+id/Oname"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="1"--><!--android:text="Site Name" />-->
+
+    <!--<TextView--><!--android:id="@+id/tvAgentName"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="1"--><!--android:gravity="right"--><!--android:text="" />--><!--</LinearLayout>-->
