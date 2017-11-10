@@ -87,7 +87,7 @@ public class PrintTicketFragment extends Fragment {
                         Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    edenternumber.setError("Empty Field! or number may be exceed 5 digits");
+                    edenternumber.setError("Empty  or too long");
                 }
             }
         });
@@ -106,7 +106,7 @@ public class PrintTicketFragment extends Fragment {
                         Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    edenternumber.setError("Empty Field!or number may be exceed 5 digits");
+                    edenternumber.setError("Empty or too long");
                 }
             }
         });
@@ -125,7 +125,7 @@ public class PrintTicketFragment extends Fragment {
                         Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    edenternumber.setError("Empty Field!or number may be exceed 5 digits");
+                    edenternumber.setError("Empty or too long");
                 }
             }
         });
@@ -146,7 +146,7 @@ public class PrintTicketFragment extends Fragment {
                         Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    edenternumber.setError("Empty Field!or number may be exceed 5 digits");
+                    edenternumber.setError("Empty or too long");
                 }
             }
         });

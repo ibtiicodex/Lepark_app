@@ -15,6 +15,7 @@ import android.posapi.PrintQueue.OnPrintListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -395,5 +396,13 @@ public class TicketFormatActivity extends AppCompatActivity {
             mPrintQueue.close();
         }
         unregisterReceiver(receiver);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

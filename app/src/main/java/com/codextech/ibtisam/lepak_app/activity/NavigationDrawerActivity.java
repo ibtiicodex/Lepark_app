@@ -100,7 +100,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
                     DataSenderAsync dataSenderAsync = new DataSenderAsync(NavigationDrawerActivity.this);
                     dataSenderAsync.execute();
-                    Toast.makeText(NavigationDrawerActivity.this, " Refresh App", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NavigationDrawerActivity.this, " Refreshed ", Toast.LENGTH_SHORT).show();
 
                 }
 

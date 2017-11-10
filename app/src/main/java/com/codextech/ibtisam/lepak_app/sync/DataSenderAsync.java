@@ -287,7 +287,8 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                         try {
                             JSONObject obj = new JSONObject(response);
                             int responseCode = obj.getInt("responseCode");
-//                            if (responseCode == 200) {
+                           if (responseCode == 200) {
+                               Toast.makeText(context, "Coin Synced", Toast.LENGTH_SHORT).show();
 //                                JSONObject uniObject = obj.getJSONObject("response");
 //                                //TODO  Save server_id of ticket in local db
 //                                String serverid = uniObject.getString("id");
@@ -315,7 +316,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
 ////                                manyLPTicket.first().setServer_id(serverid);
 //                                realm.commitTransaction();
 //                                realm.close();
-                            //  }
+                              }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d(TAG, "onResponse: JSONException: " + e);

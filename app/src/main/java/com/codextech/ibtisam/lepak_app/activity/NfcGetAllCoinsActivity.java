@@ -34,6 +34,7 @@ import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.model.LPNfc;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
+import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
 
 import org.json.JSONArray;
@@ -125,8 +126,6 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
                     " " +
                             ByteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID)));
             coinget = ByteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
-
-
             RealmQuery<LPNfc> query = realm.where(LPNfc.class);
             query.equalTo("coinId", coinget);
             RealmResults<LPNfc> make = query.findAll();
@@ -143,21 +142,16 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
                     int minus = Integer.parseInt(make.first().getCoinAmount());
                     int again = minus - 10;
                     realm.beginTransaction();
-
                     make.first().setCoinAmount(again + "");
                     make.first().setSyncStatus(SyncStatus.SYNC_STATUS_COIN_EDIT_NOT_SYNCED);
-
                     realm.commitTransaction();
                     tvAmountNfc.setText("Amount  : " + (make.first().getCoinAmount()));
                     tvVehicleNfc.setText("Vehicle  no : " + (make.first().getCoinVehicle()));
                     btDetecta.setVisibility(View.GONE);
-
-
+                    DataSenderAsync dataSenderAsync = new DataSenderAsync(NfcGetAllCoinsActivity.this);
+                    dataSenderAsync.execute();
                 }
             });
-
-
-
         }
     }
 
@@ -165,7 +159,6 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
         int i, j, in;
         String[] hex = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
         String out = "";
-
         for (j = 0; j < inarray.length; ++j) {
             in = (int) inarray[j] & 0xff;
             i = (in >> 4) & 0x0f;
@@ -183,10 +176,8 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, response.toString());
-
                         RealmConfiguration config = new RealmConfiguration.Builder(NfcGetAllCoinsActivity.this).build();
                         realm = Realm.getInstance(config);
-
                         try {
                             jsonResponse = "";
                             for (int i = 0; i < response.length(); i++) {
@@ -278,5 +269,4 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
         });
 
     }
-
 }
