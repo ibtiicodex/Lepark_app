@@ -8,11 +8,13 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class LPNfc extends RealmObject {
-   @PrimaryKey
+    @PrimaryKey
     private long id;
+    private long serverId;
     private String coinId;
     private String coinAmount;
     private String coinVehicle;
+    private String syncStatus;
 
     public long getId() {
         return id;
@@ -45,4 +47,21 @@ public class LPNfc extends RealmObject {
     public void setCoinVehicle(String coinVehicle) {
         this.coinVehicle = coinVehicle;
     }
+
+    public long getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(long serverId) {
+        this.serverId = serverId;
+    }
+
+    public String getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
+    }
+
 }

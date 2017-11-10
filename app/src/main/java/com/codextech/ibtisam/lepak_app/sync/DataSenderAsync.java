@@ -13,6 +13,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.SessionManager;
+import com.codextech.ibtisam.lepak_app.model.LPNfc;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
 
 import org.json.JSONException;
@@ -51,6 +52,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
         Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
         addTicketToServer();
         editTicketToServer();
+        editCoinsToServer();
         return null;
     }
 
@@ -249,6 +251,98 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                 //                params.put("id", 5 + "");
                     params.put("time_out", timeOut);
                     params.put("token", sessionManager.getLoginToken());
+                params.put("time_out", "2017-11-03 01:42:06");
+//
+                return params;
+            }
+        };
+
+        queue.add(putRequest);
+    }
+
+    //////////////////////////////////////////////////////////////////////////////coinsupdate
+    private void editCoinsToServer() {
+        RealmConfiguration config = new RealmConfiguration.Builder(context).build();
+        realm = Realm.getInstance(config);
+        LPNfc lpNfc = new LPNfc();
+        RealmQuery<LPNfc> query = realm.where(LPNfc.class);
+        query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_COIN_EDIT_NOT_SYNCED);
+        RealmResults<LPNfc> manyLPCoin = query.findAll();
+        Log.d(TAG, "editCoinToServer: count " + manyLPCoin.size());
+        for (LPNfc oneLPCoin : manyLPCoin) {
+        Log.d(TAG, "editCoinToServer: oneLPCoin " + oneLPCoin);
+
+            editCoinToServerSync(oneLPCoin.getCoinId(), oneLPCoin.getCoinVehicle(), oneLPCoin.getCoinAmount());
+        }
+    }
+
+    private void editCoinToServerSync(String coinId, String coinvehicle, final String coinAmount) {
+
+        RequestQueue queue = Volley.newRequestQueue(context, new HurlStack());
+        StringRequest putRequest = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/coin/" + coinId,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "onResponse: " + response.toString());
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            int responseCode = obj.getInt("responseCode");
+//                            if (responseCode == 200) {
+//                                JSONObject uniObject = obj.getJSONObject("response");
+//                                //TODO  Save server_id of ticket in local db
+//                                String serverid = uniObject.getString("id");
+//                                String vehicle_no = uniObject.getString("vehicle_no");
+//                                String vehicle_type = uniObject.getString("vehicle_type");
+//                                String fee = uniObject.getString("fee");
+//                                String time_in = uniObject.getString("time_in");
+//                                String time_out = uniObject.getString("time_out");
+//
+//                                Log.d(TAG, "onResponse: serverid: " + serverid);
+//                                Log.d(TAG, "onResponse: vehicle_no: " + vehicle_no);
+//                                Log.d(TAG, "onResponse: vehicle_type: " + vehicle_type);
+//                                Log.d(TAG, "onResponse: fee: " + fee);
+//                                Log.d(TAG, "onResponse: time_in: " + time_in);
+//                                Log.d(TAG, "onResponse: time_out: " + time_out);
+//
+//                                realm = Realm.getDefaultInstance();
+////                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
+////                                realm = Realm.getInstance(config);
+//                                RealmQuery<LPCoin> query = realm.where(LPCoin.class);
+//                                query.equalTo("timeIn", time_in);
+//                                RealmResults<LPCoin> manyLPCoin = query.findAll();
+//                                realm.beginTransaction();
+//                                manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_SYNCED);
+////                                manyLPTicket.first().setServer_id(serverid);
+//                                realm.commitTransaction();
+//                                realm.close();
+                            //  }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d(TAG, "onResponse: JSONException: " + e);
+                        }
+
+                        Toast.makeText(context, "Successfully Edited to server", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "editCoinToServerSync onErrorResponse: " + error.toString());
+                        Log.d(TAG, "editCoinToServerSync onErrorResponse:  statusCode: " + error.networkResponse.statusCode);
+                        // error
+                        Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded";
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("coin_amount", coinAmount);
                 return params;
             }
         };
