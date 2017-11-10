@@ -1,8 +1,11 @@
 package com.codextech.ibtisam.lepak_app.activity;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.IsoDep;
 import android.nfc.tech.MifareClassic;
@@ -14,7 +17,6 @@ import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,29 +34,34 @@ import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.model.LPNfc;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
+import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 import static android.R.attr.id;
 
 public class NfcGetAllCoinsActivity extends AppCompatActivity {
+    // list of NFC technologies detected:
+
     private RequestQueue queue;
     private String jsonResponse;
     private String TAGI = "NfcGetAllCoinsActivity";
     private String TAG = "NfcGetAllCoinsActivity";
     private Realm realm;
-    private static String TAGQ = "NfcGetAllCoinsActivity";
-    private Button BTsave;
     private String coin_id;
     private String coin_amount;
     private String coin_vehicle;
+    private long idserver;
     String coinget;
+
+    TextView tvCoinID;
     private final String[][] techList = new String[][]{
             new String[]{
                     NfcA.class.getName(),
@@ -66,29 +73,26 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
                     MifareUltralight.class.getName(), Ndef.class.getName()
             }
     };
+    private Button btDetecta;
+    private TextView tvAmountNfc;
+    private TextView tvVehicleNfc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc_get_all_coins);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // add back arrow to toolbar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getAllLocationsFromServer();
+        tvCoinID = (TextView) findViewById(R.id.text);
+        tvAmountNfc = (TextView) findViewById(R.id.tvAmountNfc);
+        tvVehicleNfc = (TextView) findViewById(R.id.tvVehicleNfc);
+        btDetecta = (Button) findViewById(R.id.btDetecta);
 
-        }
-
-        setSupportActionBar(toolbar);
         queue = Volley.newRequestQueue(NfcGetAllCoinsActivity.this, new HurlStack());
-        BTsave = (Button) findViewById(R.id.BNsave);
-        this.realm = RealmController.with(this).getRealm();
-        RealmController.with(this).refresh();
         getAllLocationsFromServer();
-        dataenter();
-
-
+        WifiManager manager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = manager.getConnectionInfo();
+        String address = info.getMacAddress();
+        Toast.makeText(this, " Mack Address         " + address, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -117,26 +121,43 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
-            ((TextView) findViewById(R.id.text)).setText(
-                    "NFC Tag\n" +
+            tvCoinID.setText(
+                    " " +
                             ByteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID)));
             coinget = ByteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
+
 
             RealmQuery<LPNfc> query = realm.where(LPNfc.class);
             query.equalTo("coinId", coinget);
             RealmResults<LPNfc> make = query.findAll();
-            ((TextView) findViewById(R.id.tvAmountNfc)).setText(
-                    "Amount  : " + (make.first().getCoinAmount()));
-            ((TextView) findViewById(R.id.tvVehicleNfc)).setText(
-                    "Vehicle  no : " + (make.first().getCoinVehicle()));
-            int minus = Integer.parseInt(make.first().getCoinAmount());
+            tvAmountNfc.setText("Amount  : " + (make.first().getCoinAmount()));
+            tvVehicleNfc.setText("Vehicle  no : " + (make.first().getCoinVehicle()));
+            btDetecta.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    RealmQuery<LPNfc> query = realm.where(LPNfc.class);
+                    query.equalTo("coinId", coinget);
+                    RealmResults<LPNfc> make = query.findAll();
+                    tvAmountNfc.setText("Amount  : " + (make.first().getCoinAmount()));
+                    tvVehicleNfc.setText("Vehicle  no : " + (make.first().getCoinVehicle()));
+                    int minus = Integer.parseInt(make.first().getCoinAmount());
+                    int again = minus - 10;
+                    realm.beginTransaction();
 
-            int again = minus - 10;
-            realm.beginTransaction();
+                    make.first().setCoinAmount(again + "");
+                    make.first().setSyncStatus(SyncStatus.SYNC_STATUS_COIN_EDIT_NOT_SYNCED);
 
-            make.first().setCoinAmount(again + "");
+                    realm.commitTransaction();
+                    tvAmountNfc.setText("Amount  : " + (make.first().getCoinAmount()));
+                    tvVehicleNfc.setText("Vehicle  no : " + (make.first().getCoinVehicle()));
+                    btDetecta.setVisibility(View.GONE);
 
-            realm.commitTransaction();
+
+                }
+            });
+
+
+
         }
     }
 
@@ -155,7 +176,6 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
         return out;
     }
 
-
     private void getAllLocationsFromServer() {
         final int MY_SOCKET_TIMEOUT_MS = 60000;
         JsonArrayRequest req = new JsonArrayRequest("http://34.215.56.25/apiLepak/public/api/sites/coins/data",
@@ -164,16 +184,14 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, response.toString());
 
-//                        RealmConfiguration config = new RealmConfiguration.Builder(RegisterActivity.this).build();
-//                        realm = Realm.getInstance(config);
+                        RealmConfiguration config = new RealmConfiguration.Builder(NfcGetAllCoinsActivity.this).build();
+                        realm = Realm.getInstance(config);
 
                         try {
                             jsonResponse = "";
                             for (int i = 0; i < response.length(); i++) {
-
                                 JSONObject obj = (JSONObject) response.get(i);
-
-                                // String id = obj.getString("id");
+                                idserver = obj.getLong("id");
                                 coin_id = obj.getString("coin_id");
                                 coin_amount = obj.getString("coin_amount");
                                 coin_vehicle = obj.getString("coin_vehicle");
@@ -181,21 +199,48 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
                                 jsonResponse += "coin_id: " + coin_id + "\n\n";
                                 jsonResponse += "coin_amount: " + coin_amount + "\n\n";
                                 jsonResponse += "coin_vehicle: " + coin_vehicle + "\n\n";
-
                                 LPNfc lpNfc = new LPNfc();
+                                RealmQuery<LPNfc> query = realm.where(LPNfc.class);
+                                query.equalTo("serverId", idserver);
+                                RealmResults<LPNfc> al = query.findAll();
+                                Log.d(TAG, "allLocations: " + al.toString());
+                                if (al.isEmpty()) {
+                                    lpNfc.setId(RealmController.getInstance().getNfcGet().size() + System.currentTimeMillis());
+                                    lpNfc.setServerId(idserver);
+                                    lpNfc.setCoinId(coin_id);
+                                    lpNfc.setCoinAmount(coin_amount);
+                                    lpNfc.setCoinVehicle(coin_vehicle);
+                                    realm.beginTransaction();
+                                    realm.copyToRealm(lpNfc);
+                                    realm.commitTransaction();
+                                } else {
+                                    Log.d(TAG, "Already Exists");
+                                }
 
-                                lpNfc.setId(RealmController.getInstance().getNfcGet().size() + System.currentTimeMillis());
-
-                                lpNfc.setCoinId(coin_id);
-                                lpNfc.setCoinAmount(coin_amount);
-                                lpNfc.setCoinVehicle(coin_vehicle);
-                                realm.beginTransaction();
-                                realm.copyToRealm(lpNfc);
-                                realm.commitTransaction();
-
-
+//                                RealmQuery<LPLocation> query = realm.where(LPLocation.class);
+//                                query.equalTo("id", id);
+//                                RealmResults<LPLocation> allLocations = query.findAll();
+//                                Log.d(TAG, "allLocations: " + allLocations.toString());
+//
+//                                // Duplication avoidance check
+//                                if (allLocations.isEmpty()) {
+//                                    Log.d(TAG, "Location doesn't exist adding it.");
+//                                    LPLocation lpLocation = new LPLocation();
+//                                    lpLocation.setId(id);
+//                                    lpLocation.setLocationName(location);
+//                                    lpLocation.setCityId(city_id);
+//                                    realm.beginTransaction();
+//                                    realm.copyToRealm(lpLocation);
+//                                    realm.commitTransaction();
+//                                } else {
+//                                    Log.d(TAG, "Already Exists");
+//                                }
                             }
                             Log.d(TAGI, jsonResponse.toString());
+                            RealmQuery<LPNfc> query = realm.where(LPNfc.class);
+                            // query.equalTo("coinId", coinget);
+                            RealmResults<LPNfc> make = query.findAll();
+                            Log.d(TAGI, jsonResponse.toString() + make);
 
 
                         } catch (JSONException e) {
@@ -222,15 +267,12 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
         queue.add(req);
     }
 
+
     private void dataenter() {
 
-        BTsave.setOnClickListener(new View.OnClickListener() {
+        btDetecta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RealmQuery<LPNfc> query = realm.where(LPNfc.class);
-                query.equalTo("coinId", coinget);
-                RealmResults<LPNfc> make = query.findAll();
-
 
             }
         });
