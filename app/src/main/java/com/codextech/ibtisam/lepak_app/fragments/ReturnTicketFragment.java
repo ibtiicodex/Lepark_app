@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
+import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
@@ -52,89 +53,58 @@ public class ReturnTicketFragment extends Fragment {
         timeNowMillis = Calendar.getInstance().getTimeInMillis();
         ticket_time_out = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
         etCarNumber = (EditText) view.findViewById(R.id.etCarNumber);
-
         btnPrintMix = (Button) view.findViewById(R.id.btnPrintMix);
-
         tvAgentName = (TextView) view.findViewById(R.id.tvAgentName);
-
-        tvTimeIn = (TextView) view.findViewById(R.id.IDtime);
-
+        tvTimeIn = (TextView) view.findViewById(R.id.tvTimeIn);
         tvTimeOut = (TextView) view.findViewById(R.id.tvTimeOut);
-
         tvNumber = (TextView) view.findViewById(R.id.tvNumber);
-
         tvPrice = (TextView) view.findViewById(R.id.tvPrice);
-
-
-//
         tvTimeDifference = (TextView) view.findViewById(R.id.tvTotalHours);
         tvTotallPrice = (TextView) view.findViewById(R.id.tvTotallPrice);
-
 
         btnPrintMix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String carNum = etCarNumber.getText().toString();
-
                 if (isValidCarNumber(carNum)) {
-
                     RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-
                     query.equalTo("number", carNum);
-
                     RealmResults<LPTicket> manyLPTicket = query.findAll();
-
                     Log.e(TAG, "onCreate: " + manyLPTicket.toString());
-
-
-                        if (manyLPTicket.size() > 0) {
-
-                           // if(manyLPTicket.first().getTimeOut()=="") {
-                            Log.d(TAG, "onClick: in   __________________________________________________________________________" + manyLPTicket.first().getTimeOut());
-
-                          if (manyLPTicket.first().getTimeOut().equals("")) {
-                        tvAgentName.setText(manyLPTicket.first().getSiteName());
-
-                        tvTimeIn.setText(manyLPTicket.first().getTimeIn());
-
-                        tvTimeOut.setText(ticket_time_out);
-
-                        tvNumber.setText(manyLPTicket.first().getNumber());
-
-                        tvPrice.setText(manyLPTicket.first().getPrice());
-
-
-                        realm.beginTransaction();
-
-                                manyLPTicket.first().setTimeOut(ticket_time_out);
+                    if (manyLPTicket.size() > 0) {
+                        // if(manyLPTicket.first().getTimeOut()=="") {
+                        Log.d(TAG, "onClick: in   __________________________________________________________________________" + manyLPTicket.first().getTimeOut());
+                        if (manyLPTicket.first().getTimeOut().equals("")) {
+                            tvAgentName.setText(manyLPTicket.first().getSiteName());
+                            tvTimeIn.setText(manyLPTicket.first().getTimeIn());
+                            tvTimeOut.setText(ticket_time_out);
+                            tvNumber.setText(manyLPTicket.first().getNumber());
+                            tvPrice.setText(manyLPTicket.first().getPrice());
+                            realm.beginTransaction();
+                            manyLPTicket.first().setTimeOut(ticket_time_out);
+                            if (manyLPTicket.first().getSyncStatus() != null) {
+                                if (manyLPTicket.first().getSyncStatus().equals(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED)) {
+                                    manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED);
+                                }
+                            } else {
                                 manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED);
-                                realm.commitTransaction();
-                        manyLPTicket.first().setTimeOut(ticket_time_out);
-
-                        timeDifference(manyLPTicket.first().getTimeIn(), manyLPTicket.first().getTimeOut(), manyLPTicket.first().getPrice());
-
-
-                        realm.commitTransaction();
-
+                            }
+                            realm.commitTransaction();
+                            timeDifference(manyLPTicket.first().getTimeIn(), manyLPTicket.first().getTimeOut(), manyLPTicket.first().getPrice());
+                            realm.commitTransaction();
+                            DataSenderAsync dataSenderAsync = new DataSenderAsync(getActivity());
+                            dataSenderAsync.execute();
                         } else {
-
                             Toast.makeText(getActivity(), "Already Exit ", Toast.LENGTH_SHORT).show();
                         }
-
                     } else {
-
                         Toast.makeText(getActivity(), "vehicle doesn't exist", Toast.LENGTH_SHORT).show();
-
                     }
-
                 } else {
                     etCarNumber.setError("empty field!");
                 }
-
             }
         });
-
         return view;
     }
 
@@ -144,6 +114,7 @@ public class ReturnTicketFragment extends Fragment {
         }
         return false;
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -157,22 +128,13 @@ public class ReturnTicketFragment extends Fragment {
         try {
             Date date1 = simpleDateFormat.parse(in);
             Date date2 = simpleDateFormat.parse(out);
-
             printDifference(date1, date2, fee);
-
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-//1 minute = 60 seconds
-//1 hour = 60 x 60 = 3600
-//1 day = 3600 x 24 = 86400
-
-
     }
 
     public void printDifference(Date startDate, Date endDate, String fee) {
-        //milliseconds
         long different = endDate.getTime() - startDate.getTime();
         System.out.println("startDate : " + startDate);
         System.out.println("endDate : " + endDate);
@@ -190,7 +152,6 @@ public class ReturnTicketFragment extends Fragment {
         long elapsedSeconds = different / secondsInMilli;
         long price = Long.parseLong(fee);
         tvTotallPrice.setText("" + elapsedHours * price);
-        tvTimeDifference.setText(elapsedHours +" h - " + elapsedMinutes +" m");
-
+        tvTimeDifference.setText(elapsedHours + " h - " + elapsedMinutes + " m");
     }
 }

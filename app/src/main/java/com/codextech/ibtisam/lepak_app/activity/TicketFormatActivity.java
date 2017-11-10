@@ -25,6 +25,7 @@ import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
+import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
@@ -158,6 +159,8 @@ public class TicketFormatActivity extends AppCompatActivity {
                     }
                 });
                 finish();
+                DataSenderAsync dataSenderAsync = new DataSenderAsync(TicketFormatActivity.this);
+                dataSenderAsync.execute();
                 Toast.makeText(getApplicationContext(), getString(R.string.print_complete), Toast.LENGTH_SHORT).show();
             }
 

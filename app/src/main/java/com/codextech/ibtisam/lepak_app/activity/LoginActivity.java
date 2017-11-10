@@ -106,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
-
     }
 
     // validating password

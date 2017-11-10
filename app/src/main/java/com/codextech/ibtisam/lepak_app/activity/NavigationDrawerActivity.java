@@ -20,7 +20,7 @@ import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.fragments.SummaryActivity;
 import com.codextech.ibtisam.lepak_app.fragments.TabFragment;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
-import com.codextech.ibtisam.lepak_app.sync.TicketSenderAsync;
+import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
 
 //import com.codextech.ibtisam.lepak_app.service.ScanService;
 public class NavigationDrawerActivity extends AppCompatActivity {
@@ -98,8 +98,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 }
                 if (menuItem.getItemId() == R.id.nav_refresh) {
 
-                    TicketSenderAsync ticketSenderAsync = new TicketSenderAsync(NavigationDrawerActivity.this);
-                    ticketSenderAsync.execute();
+                    DataSenderAsync dataSenderAsync = new DataSenderAsync(NavigationDrawerActivity.this);
+                    dataSenderAsync.execute();
                     Toast.makeText(NavigationDrawerActivity.this, " Refresh App", Toast.LENGTH_SHORT).show();
 
                 }
