@@ -10,7 +10,7 @@ import io.realm.RealmConfiguration;
 
 
 public class App extends Application {
-
+	public static final String TAG = "test";
 	public static final String DEVICE_MODEL_IMA3511 = "iMA3511";
 	public static final String DEVICE_MODEL_IMA3507 = "iMA3507";
 	public static final String DEVICE_MODEL_SK_16 = "SK-16";
@@ -34,9 +34,9 @@ public class App extends Application {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		Log.v("hello", "APP onCreate~~");
-//		mPosApi = PosApi.getInstance(this);
-//		init();
+		Log.v(TAG, "APP onCreate~~");
+		mPosApi = PosApi.getInstance(this);
+		init();
 		RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
 				.name(Realm.DEFAULT_REALM_NAME)
 				.schemaVersion(0)
@@ -47,6 +47,7 @@ public class App extends Application {
 	}
 
 	public static void init(){
+		Log.d(TAG, "init: App" + Build.MODEL);
 		if (Build.MODEL.equalsIgnoreCase("3508")|| Build.MODEL.equalsIgnoreCase("403")) {
 			mPosApi.initPosDev("ima35s09");
 			setCurDevice("ima35s09");

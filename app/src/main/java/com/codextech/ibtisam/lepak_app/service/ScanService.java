@@ -47,27 +47,28 @@ public class ScanService extends Service {
 
         init();
 
-        initGPIO();
+//        initGPIO();
 
-        IntentFilter mFilter = new IntentFilter();
-        mFilter.addAction(PosApi.ACTION_POS_COMM_STATUS);
+//        IntentFilter mFilter = new IntentFilter();
+//        mFilter.addAction(PosApi.ACTION_POS_COMM_STATUS);
+//
+//        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction("ismart.intent.scandown");
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("ismart.intent.scandown");
-
-        player = MediaPlayer.create(getApplicationContext(), R.raw.beep);
+//        player = MediaPlayer.create(getApplicationContext(), R.raw.beep);
 
         super.onCreate();
 
     }
 
     public static void init() {
+        Log.d(TAG, "init: ");
         mApi = App.getInstance().getPosApi();
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-//                openDevice();
+                openDevice();
             }
         }, 500);
     }
@@ -103,7 +104,7 @@ public class ScanService extends Service {
 
     private static void openDevice() {
         // open power
-//        mApi.gpioControl(mGpioPower, 0, 1);
+        mApi.gpioControl(mGpioPower, 0, 1);
 
         mApi.extendSerialInit(mCurSerialNo, mBaudrate, 1, 1, 1, 1);
     }
@@ -132,12 +133,11 @@ public class ScanService extends Service {
 //        }, 1000);
 //    }
 
-    Vibrator vibrator;
 
     @Override
     public void onDestroy() {
         // TODO Auto-generated method stub
-//        mApi.closeDev();
+        mApi.closeDev();
         super.onDestroy();
     }
 

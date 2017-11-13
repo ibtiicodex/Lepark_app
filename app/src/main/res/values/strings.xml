@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lepak_app</string>
+    <string name="app_name">LePark</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="car">Car</string>
     <string name="enter_number">Enter Number</string>

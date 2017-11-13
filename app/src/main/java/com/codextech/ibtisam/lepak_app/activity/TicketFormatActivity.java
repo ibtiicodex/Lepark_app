@@ -36,7 +36,7 @@ import java.util.Calendar;
 import io.realm.Realm;
 
 public class TicketFormatActivity extends AppCompatActivity {
-    public static final String TAG = "TicketFormatActivity";
+    public static final String TAG = "test";
 
     public static final String KEY_VEHICLE_TYPE = "key_vehicle_type";
     public static final String VEHICLE_TYPE_CAR = "vehicle_type_car";
@@ -71,7 +71,7 @@ public class TicketFormatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sessionManager = new SessionManager(TicketFormatActivity.this);
-        Log.d(TAG, "onCreate: ");
+        Log.d(TAG, "onCreate: TicketFormatActivity");
         setContentView(R.layout.activity_ticket);
         tvSiteName = (TextView) findViewById(R.id.tvSiteName);
         tvTimeIn = (TextView) findViewById(R.id.Dtime);
@@ -89,13 +89,11 @@ public class TicketFormatActivity extends AppCompatActivity {
 
         }
 
-        //set toolbar
-        setSupportActionBar(toolbar);
+        IntentFilter mFilter = new IntentFilter();
+        mFilter.addAction(PosApi.ACTION_POS_COMM_STATUS);
+        registerReceiver(receiver, mFilter);
+        player = MediaPlayer.create(getApplicationContext(), R.raw.beep);
 
-
-
-//        this.realm = RealmController.with(this).getRealm();
-//        RealmController.with(this).refresh();
         Intent intent = getIntent();
         if (intent != null) {
             veh_number = intent.getStringExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER);
@@ -132,15 +130,9 @@ public class TicketFormatActivity extends AppCompatActivity {
         btnPrintMix.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-//                btnPrintMix.setEnabled(false);
                 btnPrintMix.setVisibility(View.GONE);
                 printMix();
-                storeTicketInRealm();
-//                try {
-//                    Thread.sleep(5000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+//                storeTicketInRealm();
             }
         });
         mPrintQueue = new PrintQueue(this, ScanService.mApi);
@@ -149,13 +141,10 @@ public class TicketFormatActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 isCanPrint = true;
-
                 storeTicketInRealm();
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-//                        btnPrintMix.setEnabled(true);
                         btnPrintMix.setVisibility(View.VISIBLE);
                     }
                 });
@@ -187,6 +176,7 @@ public class TicketFormatActivity extends AppCompatActivity {
             @Override
             public void onGetState(int arg0) {
                 // TODO Auto-generated method stub
+                Log.d(TAG, "onGetState: ");
             }
 
             @Override
@@ -205,11 +195,6 @@ public class TicketFormatActivity extends AppCompatActivity {
                 }
             }
         });
-
-        IntentFilter mFilter = new IntentFilter();
-        mFilter.addAction(PosApi.ACTION_POS_COMM_STATUS);
-        registerReceiver(receiver, mFilter);
-        player = MediaPlayer.create(getApplicationContext(), R.raw.beep);
     }
 
     private void storeTicketInRealm() {
@@ -231,12 +216,12 @@ public class TicketFormatActivity extends AppCompatActivity {
         realm.commitTransaction();
         Log.d(TAG, "onFinish: mPrintQueue.setOnPrintListener");
         realm.close();
-
     }
 
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "onReceive: Print Request Received");
             String action = intent.getAction();
             if (action.equalsIgnoreCase(PosApi.ACTION_POS_COMM_STATUS)) {
                 int cmdFlag = intent.getIntExtra(PosApi.KEY_CMD_FLAG, -1);
@@ -348,7 +333,7 @@ public class TicketFormatActivity extends AppCompatActivity {
             sb.append("\n");
             text = sb.toString().getBytes("GBK");
             addPrintTextWithSize(1, concentration, text);
-//            mPrintQueue.printStart();
+            mPrintQueue.printStart();
             //TODO if ticket is printed successfull then do this
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
@@ -374,13 +359,13 @@ public class TicketFormatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        openDevice();
+        openDevice();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-//        closeDevice();
+        closeDevice();
     }
 
 

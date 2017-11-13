@@ -15,7 +15,7 @@
     <application
         android:name=".wiget.App"
         android:allowBackup="true"
-        android:icon="@drawable/pos_ico"
+        android:icon="@drawable/leparklogo"
         android:label="@string/app_name"
         android:resizeableActivity="false"
         android:screenOrientation="portrait"

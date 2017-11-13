@@ -17,7 +17,6 @@ import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.activity.TicketFormatActivity;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
-import com.codextech.ibtisam.lepak_app.service.ScanService;
 
 /**
  * Created by HP on 10/18/2017.
@@ -33,7 +32,6 @@ public class PrintTicketFragment extends Fragment {
     private String vehNumber;
     private SessionManager sessionManager;
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: PrintTicketFragment");
@@ -45,7 +43,6 @@ public class PrintTicketFragment extends Fragment {
         bVan = (Button) view.findViewById(R.id.bVan);
         bTruck = (Button) view.findViewById(R.id.bTruck);
         sessionManager = new SessionManager(getActivity());
-//        startService();
 //        bCar.setText("CAR :"+sessionManager.getKeyCarAmount());
 //        bBike.setText("BIKE :"+sessionManager.getKeyBikeAmount());
 //        bVan.setText("VAN :"+sessionManager.getKeyVanAmount());
@@ -159,20 +156,6 @@ public class PrintTicketFragment extends Fragment {
         super.onResume();
         edenternumber.setText("");
     }
-
-    private void startServiceIfNeeded() {
-        Log.d(TAG, "startServiceIfNeeded(): PrintTicketFragment");
-        edenternumber.setText("");
-        Intent newIntent = new Intent(getActivity(), ScanService.class);
-        newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getActivity().startService(newIntent);
-    }
-
-
-//    public void onClick(View v) {
-//        Intent intent =new Intent(getContext(), TicketFormatActivity.class);
-//        startActivity(intent);
-//    }
 }
 
 

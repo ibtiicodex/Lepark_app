@@ -40,13 +40,13 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         datasetonheadedr = (TextView) findViewById(R.id.tvSite);
         sessionManager = new SessionManager(NavigationDrawerActivity.this);
 
-
         if (!sessionManager.isSiteSignedIn()) {
             finish();
             startActivity(new Intent(NavigationDrawerActivity.this, LoginActivity.class));
         }
 
         Intent newIntent = new Intent(NavigationDrawerActivity.this, ScanService.class);
+//        newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         NavigationDrawerActivity.this.startService(newIntent);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
