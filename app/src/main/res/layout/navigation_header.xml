@@ -31,37 +31,14 @@
                 android:layout_height="80dp"
                 android:contentDescription="lEVEL" />
 
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="TouqerrAhmad"-->
-                <!--android:layout_marginTop="80dp"/>-->
-
         </android.support.v7.widget.CardView>
 
         <TextView
             android:id="@+id/tvSite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TouqerAhmad"
-           />
+            android:text="TouqerAhmad" />
 
     </LinearLayout>
 
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="80dp"-->
-    <!--android:layout_height="80dp"-->
-    <!--android:orientation="vertical"-->
-    <!--android:layout_gravity="center"-->
-    <!--android:layout_marginLeft="30dp">-->
-
-    <!--<ImageView-->
-    <!--android:id="@+id/ivLogo"-->
-    <!--android:layout_width="80dp"-->
-    <!--android:layout_height="80dp"-->
-    <!--android:src="@drawable/railway_landscape"-->
-    <!--android:contentDescription="Lasting Sales Logo" />-->
-    <!--</LinearLayout>-->
 </LinearLayout>

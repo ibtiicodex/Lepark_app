@@ -2,7 +2,6 @@ package com.codextech.ibtisam.lepak_app.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,45 +32,30 @@ public class PrintTicketFragment extends Fragment {
     private String vehNumber;
     private SessionManager sessionManager;
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: PrintTicketFragment");
         View view = inflater.inflate(R.layout.print_ticket_fragment, container, false);
         edenternumber = (EditText) view.findViewById(R.id.enterNum);
-
         bCar = (Button) view.findViewById(R.id.bCar);
         bBike = (Button) view.findViewById(R.id.bBike);
         bVan = (Button) view.findViewById(R.id.bVan);
         bTruck = (Button) view.findViewById(R.id.bTruck);
         sessionManager = new SessionManager(getActivity());
-//        startService();
-//        bCar.setText("CAR :"+sessionManager.getKeyCarAmount());
-//        bBike.setText("BIKE :"+sessionManager.getKeyBikeAmount());
-//        bVan.setText("VAN :"+sessionManager.getKeyVanAmount());
-//        bTruck.setText("TRUCK :"+sessionManager.getKeyTruckAmount());
-
         if (Integer.parseInt(sessionManager.getKeyCarAmount()) <= 0) {
-            // bCar.setText("CAR :"+sessionManager.getKeyCarAmount());
             bCar.setVisibility(View.GONE);
-
         }
         if (Integer.parseInt(sessionManager.getKeyBikeAmount()) <= 0) {
-            //  bBike.setText("BIKE :"+sessionManager.getKeyBikeAmount());
             bBike.setVisibility(View.GONE);
         }
 
         if (Integer.parseInt(sessionManager.getKeyVanAmount()) <= 0) {
-            // bVan.setText("VAN :"+sessionManager.getKeyVanAmount());
             bVan.setVisibility(View.GONE);
         }
 
         if (Integer.parseInt(sessionManager.getKeyTruckAmount()) <= 0) {
-            // bTruck.setText("TRUCK :"+sessionManager.getKeyTruckAmount());
             bTruck.setVisibility(View.GONE);
         }
-
-
         bCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,7 +137,6 @@ public class PrintTicketFragment extends Fragment {
 
         return view;
     }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -168,11 +151,6 @@ public class PrintTicketFragment extends Fragment {
         getActivity().startService(newIntent);
     }
 
-
-//    public void onClick(View v) {
-//        Intent intent =new Intent(getContext(), TicketFormatActivity.class);
-//        startActivity(intent);
-//    }
 }
 
 

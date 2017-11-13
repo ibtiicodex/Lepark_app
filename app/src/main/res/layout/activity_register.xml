@@ -82,8 +82,6 @@
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
                 android:textColorHint="#FFF" />
-
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -125,7 +123,6 @@
                     android:inputType="number" />
 
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,7 +130,6 @@
                 android:imeOptions="actionNext"
                 android:orientation="horizontal"
                 android:weightSum="2">
-
                 <EditText
                     android:id="@+id/etVanAmount"
                     android:layout_width="130dp"
@@ -144,8 +140,6 @@
                     android:imeOptions="actionNext"
                     android:inputType="number"
                    android:background="#FFF" />
-
-
                 <EditText
                     android:id="@+id/etTruckAmount"
                     android:layout_width="130dp"
@@ -158,10 +152,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="number"
                    />
-
             </LinearLayout>
-
-
             <Button
                 android:id="@+id/btsignup"
                 android:layout_width="match_parent"
@@ -173,9 +164,6 @@
                 android:onClick="checkLogin"
                 android:text="Register?"
                 android:textColor="#000" />
-
-
         </LinearLayout>
     </LinearLayout>
-
 </ScrollView>

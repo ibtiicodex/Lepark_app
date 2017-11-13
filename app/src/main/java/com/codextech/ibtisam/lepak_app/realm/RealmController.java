@@ -19,11 +19,9 @@ public class RealmController {
 
     private static RealmController instance;
     private final Realm realm;
-
     public RealmController(Application application) {
         realm = Realm.getDefaultInstance();
     }
-
     public static RealmController with(Fragment fragment) {
 
         if (instance == null) {
@@ -67,7 +65,6 @@ public class RealmController {
     public LPLocation getLocationFromLocationName(String locationName) {
         return realm.where(LPLocation.class).equalTo("locationName", locationName).findFirst();
     }
-
     //clear all objects from LPTicket.class
     public void clearAll() {
 
@@ -75,16 +72,13 @@ public class RealmController {
         realm.clear(LPTicket.class);
         realm.commitTransaction();
     }
-
     //find all objects in the LPTicket.class
     public RealmResults<LPTicket> getTickets() {
         return realm.where(LPTicket.class).findAll();
     }
-
     public RealmResults<LPNfc> getNfcGet() {
         return realm.where(LPNfc.class).findAll();
     }
-
     //query a single item with the given id
     public LPTicket getTicket(String id) {
         return realm.where(LPTicket.class).equalTo("id", id).findFirst();
@@ -93,7 +87,6 @@ public class RealmController {
     public LPTicket getTicketFromNumber(String num) {
         return realm.where(LPTicket.class).equalTo("number", num).findFirst();
     }
-
     //isServiceRunning if LPTicket.class is empty
     public boolean hasTickets() {
         return !realm.allObjects(LPTicket.class).isEmpty();

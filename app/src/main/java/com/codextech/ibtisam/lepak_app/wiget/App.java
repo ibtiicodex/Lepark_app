@@ -8,7 +8,7 @@ import android.util.Log;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-
+//
 public class App extends Application {
 
 	public static final String DEVICE_MODEL_IMA3511 = "iMA3511";
@@ -19,9 +19,7 @@ public class App extends Application {
 	public static final String DEVICE_MODEL_IMA3512   = "iMA3512";
 	public static final String DEVICE_MODEL_A380LTE   = "iMA35S05";
 	public static final String DEVICE_MODEL_IMA35S09   = "3508";
-
 	private static String mCurDev1 = "";
-
 	static App instance = null;
 	//PosSDK mSDK = null;
 	static PosApi mPosApi = null;
@@ -30,21 +28,21 @@ public class App extends Application {
 		instance = this;
 	}
 
-	@Override
-	public void onCreate() {
-		// TODO Auto-generated method stub
-		super.onCreate();
-		Log.v("hello", "APP onCreate~~");
-//		mPosApi = PosApi.getInstance(this);
-//		init();
-		RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
-				.name(Realm.DEFAULT_REALM_NAME)
-				.schemaVersion(0)
-				.deleteRealmIfMigrationNeeded()
-				.build();
-		Realm.setDefaultConfiguration(realmConfiguration);
+    @Override
+    public void onCreate() {
+        // TODO Auto-generated method stub
+        super.onCreate();
+        Log.v("hello", "APP onCreate~~");
+        mPosApi = PosApi.getInstance(this);
+        init();
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
+                .name(Realm.DEFAULT_REALM_NAME)
+                .schemaVersion(0)
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(realmConfiguration);
 
-	}
+    }
 
 	public static void init(){
 		if (Build.MODEL.equalsIgnoreCase("3508")|| Build.MODEL.equalsIgnoreCase("403")) {
@@ -78,5 +76,4 @@ public class App extends Application {
 	public PosApi getPosApi(){
 		return mPosApi;
 	}
-
 }

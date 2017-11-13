@@ -1,36 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/showallnav"
+            android:title="Show All" />
 
+        <item
+            android:id="@+id/summarynav"
+            android:title="Summary" />
 
-        <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_refresh"
+            android:title="Refresh" />
 
+        <item
+            android:id="@+id/nav_NfcActvity"
+            android:title="NFC Detection" />
+    </group>
 
-            <!--android:icon="@drawable/ic_menu_camera"-->
-            <!--android:icon="@drawable/ic_menu_gallery"-->
-            <!--android:icon="@drawable/ic_menu_manage"-->
-            <!--android:icon="@drawable/ic_menu_share"-->
-
-            <item
-                android:id="@+id/showallnav"
-                android:title="Show All" />
-
-            <item
-                android:id="@+id/summarynav"
-                android:title="Summary" />
-
-            <item
-                android:id="@+id/nav_refresh"
-                android:title="Refresh" />
-
-            <item
-                android:id="@+id/nav_NfcActvity"
-                android:title="NFC Detection" />
-        </group>
-
-            <item
-                android:id="@+id/logoutnav"
-                android:title="Logout" />
-
-
-
+    <item
+        android:id="@+id/logoutnav"
+        android:title="Logout" />
 </menu>

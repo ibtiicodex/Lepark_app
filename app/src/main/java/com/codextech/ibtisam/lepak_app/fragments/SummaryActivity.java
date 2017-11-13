@@ -22,7 +22,7 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
-import static com.codextech.ibtisam.lepak_app.R.id.bPrintSummaryp;
+
 
 /**
  * Created by HP on 10/18/2017.
@@ -31,7 +31,7 @@ public class SummaryActivity extends AppCompatActivity {
 
     private Realm realm;
     private TextView tvTicketCount;
-    private TextView tvTicketTotal;
+    private TextView tvTotalTruck;
     public static final String TAG = "TicketFormatActivity";
     public static final String CAR_NUMBER = "car_number";
     private Button bPrintSummaryPa;
@@ -44,208 +44,211 @@ public class SummaryActivity extends AppCompatActivity {
     boolean isCanPrint = true;
     private PosApi mPosSDK;
     long count = 0;
-    private int sum=0;
-    private int sumCar=0;
-    private int sumBike=0;
-    private int sumVan=0;
-    private int sumTruck=0;
-    private int countCar=0;
-    private int countBike=0;
-    private int countVan=0;
-    private int countTruck=0;
+    private int sum = 0;
+    private int sumCar = 0;
+    private int sumBike = 0;
+    private int sumVan = 0;
+    private int sumTruck = 0;
+    private int countCar = 0;
+    private int countBike = 0;
+    private int countVan = 0;
+    private int countTruck = 0;
     private SessionManager sessionManager;
-    private TextView tvTicketcar;
-    private TextView tvTicketbike;
-    private TextView tvTicketvan;
+    private TextView tvTotalCar;
+    private TextView tvTotalBike;
+    private TextView tvTotalVan;
     private TextView tvTickettruck;
-
+    private TextView tvCountCar;
+    private TextView tvCountBike;
+    private TextView tvCountVan;
+    private TextView tvCountTruck;
+    private TextView tvFairCar;
+    private TextView tvFairBike;
+    private TextView tvFairVan;
+    private TextView tvFairTruck;
+    private TextView tvTotal;
+    private TextView tvCountTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.summaryclass);
-       // total();
+        // total();
         sessionManager = new SessionManager(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        bPrintSummaryPa = (Button) this.findViewById(bPrintSummaryp);
+      //  bPrintSummaryPa = (Button) this.findViewById(bPrintSummaryp);
         setSupportActionBar(toolbar);
         // add back arrow to toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+       // tvTicketCount = (TextView) findViewById(R.id.tvTicketCount);
 
-        tvTicketCount = (TextView) findViewById(R.id.tvTicketCount);
-        tvTicketcar = (TextView) findViewById(R.id.tvTicketcar);
-        tvTicketbike = (TextView) findViewById(R.id.tvTicketbike);
-        tvTicketvan = (TextView) findViewById(R.id.tvTicketvan);
-        tvTicketTotal = (TextView) findViewById(R.id.tvTicketTotal);
-        tvTickettruck = (TextView) findViewById(R.id.tvTickettruck);
+        ///////////////////Total prices////////////////////////
+        tvTotalCar = (TextView) findViewById(R.id.tvTotalCar);
+        tvTotalBike = (TextView) findViewById(R.id.tvTotalBike);
+        tvTotalVan = (TextView) findViewById(R.id.tvTotalVan);
+        tvTotalTruck = (TextView) findViewById(R.id.tvTotalTruck);
+
+
+        //////////////////counts vehichles//////////////////
+        tvCountCar = (TextView) findViewById(R.id.tvCountCar);
+        tvCountBike = (TextView) findViewById(R.id.tvCountBike);
+        tvCountVan = (TextView) findViewById(R.id.tvCountVan);
+        tvCountTruck = (TextView) findViewById(R.id.tvCountTruck);
+
+       //////////////////Fairs///////////////////////////
+
+
+        tvFairCar = (TextView) findViewById(R.id.tvFairCar);
+        tvFairBike = (TextView) findViewById(R.id.tvFairBike);
+        tvFairVan = (TextView) findViewById(R.id.tvFairVan);
+        tvFairTruck = (TextView) findViewById(R.id.tvFairTruck);
+
+        /////////////////////////////////////////////////////
+
+        tvTotal = (TextView) findViewById(R.id.tvTotal);
+        tvCountTotal = (TextView) findViewById(R.id.tvCountTotal);
+
+
 
         this.realm = RealmController.with(this).getRealm();
         count = realm.where(LPTicket.class).count();
-
-
         RealmConfiguration config = new RealmConfiguration.Builder(this).build();
         realm = Realm.getInstance(config);
         RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-        query.equalTo("siteName",sessionManager.getKeySiteName());
+        query.equalTo("siteName", sessionManager.getKeySiteName());
         RealmResults<LPTicket> manyLPTicket = query.findAll();
-        Log.d("","////////////////////////////////sdada///////////////////////////////");
-
+        Log.d("", "////////////////////////////////sdada///////////////////////////////");
         for (LPTicket oneLPTicket : manyLPTicket) {
-            sum = sum+Integer.parseInt(oneLPTicket.getPrice());
+            sum = sum + Integer.parseInt(oneLPTicket.getPrice());
             Log.d("  ", "____________________________________________________________________________________editTicketToServer: oneLPTicket " + oneLPTicket.getPrice());
-
-            Log.d("","------------------------------------------");
-            Log.d("","///////////////////////////////////////////////////////////////");
+            Log.d("", "------------------------------------------");
+            Log.d("", "///////////////////////////////////////////////////////////////");
 
         }
-
-
         RealmQuery<LPTicket> querycar = realm.where(LPTicket.class);
-        querycar.equalTo("siteName",sessionManager.getKeySiteName());
-        querycar.equalTo("vehicleType","Car");
+        querycar.equalTo("siteName", sessionManager.getKeySiteName());
+        querycar.equalTo("vehicleType", "Car");
         RealmResults<LPTicket> manyLPTicketcar = querycar.findAll();
-        Log.d("","////////////////////////////////sdada///////////////////////////////");
+        Log.d("", "////////////////////////////////sdada///////////////////////////////");
 
         for (LPTicket oneLPTicket : manyLPTicketcar) {
-            sumCar = sumCar+Integer.parseInt(oneLPTicket.getPrice());
+            sumCar = sumCar + Integer.parseInt(oneLPTicket.getPrice());
             Log.d("  ", "____________________________________________________________________________________Car " + oneLPTicket.getPrice());
-
-countCar++;
+            countCar++;
 
         }
         RealmQuery<LPTicket> querybike = realm.where(LPTicket.class);
-        querybike.equalTo("siteName",sessionManager.getKeySiteName());
-        querybike.equalTo("vehicleType","Bike");
+        querybike.equalTo("siteName", sessionManager.getKeySiteName());
+        querybike.equalTo("vehicleType", "Bike");
         RealmResults<LPTicket> manyLPTicketbike = querybike.findAll();
-        Log.d("","////////////////////////////////sdada///////////////////////////////");
+        Log.d("", "////////////////////////////////sdada///////////////////////////////");
 
         for (LPTicket oneLPTicket : manyLPTicketbike) {
-            sumBike = sumBike+Integer.parseInt(oneLPTicket.getPrice());
+            sumBike = sumBike + Integer.parseInt(oneLPTicket.getPrice());
             Log.d("  ", "____________________________________________________________________________________Bike " + oneLPTicket.getPrice());
-
-
             countBike++;
         }
         RealmQuery<LPTicket> queryvan = realm.where(LPTicket.class);
-        queryvan.equalTo("siteName",sessionManager.getKeySiteName());
-        queryvan.equalTo("vehicleType","Van");
+        queryvan.equalTo("siteName", sessionManager.getKeySiteName());
+        queryvan.equalTo("vehicleType", "Van");
         RealmResults<LPTicket> manyLPTicketvan = queryvan.findAll();
-        Log.d("","////////////////////////////////sdada///////////////////////////////");
+        Log.d("", "////////////////////////////////sdada///////////////////////////////");
 
         for (LPTicket oneLPTicket : manyLPTicketvan) {
-            sumVan = sumVan+Integer.parseInt(oneLPTicket.getPrice());
+            sumVan = sumVan + Integer.parseInt(oneLPTicket.getPrice());
             Log.d("  ", "____________________________________________________________________________________VAn" + oneLPTicket.getPrice());
             countVan++;
-
-
         }
 
         RealmQuery<LPTicket> querytruck = realm.where(LPTicket.class);
-        querytruck.equalTo("siteName",sessionManager.getKeySiteName());
-        querytruck.equalTo("vehicleType","Truck");
+        querytruck.equalTo("siteName", sessionManager.getKeySiteName());
+        querytruck.equalTo("vehicleType", "Truck");
         RealmResults<LPTicket> manyLPTickettruck = querytruck.findAll();
-        Log.d("","////////////////////////////////sdada///////////////////////////////");
+        Log.d("", "////////////////////////////////sdada///////////////////////////////");
 
         for (LPTicket oneLPTicket : manyLPTickettruck) {
-            sumTruck = sumTruck+Integer.parseInt(oneLPTicket.getPrice());
+            sumTruck = sumTruck + Integer.parseInt(oneLPTicket.getPrice());
             Log.d("  ", "____________________________________________________________________________________VAn" + oneLPTicket.getPrice());
-
             countTruck++;
 
         }
 
-        Log.d("              ", "totall:           "+sum);
-        Log.d("              ", "totall  CAR:           "+sumCar);
-        Log.d("              ", "totall  BIKE:           "+sumBike);
-        Log.d("              ", "totall  VAN:           "+sumVan);
+        Log.d("              ", "totall:           " + sum);
+        Log.d("              ", "totall  CAR:           " + sumCar);
+        Log.d("              ", "totall  BIKE:           " + sumBike);
+        Log.d("              ", "totall  VAN:           " + sumVan);
         Log.d(TAG, "saveTicket: COUNT: " + count);
-       tvTicketCount.setText(count + " ");
-       tvTicketTotal.setText(sum+"");
-        tvTicketcar.setText(sumCar+"Count Car:"+countCar);
-        tvTicketbike.setText(sumBike+"Count Bike:"+countBike);
-        tvTicketvan.setText(sumVan+"Count Van:"+countVan);
-        tvTickettruck.setText(sumTruck+"Count Truck:"+countTruck);
+        tvCountTotal.setText(count + " ");
+        tvTotal.setText(sum + "");
+       ///////////////////////// set totals/////////////////////////
+        tvTotalCar.setText(sumCar +"");
+        tvTotalBike.setText(sumBike +"");
+        tvTotalVan.setText(sumVan + "");
+        tvTotalTruck.setText(sumTruck + "");
+        //////////////////////set counts////////////////////////////
+        tvCountCar.setText(countCar+"");
+        tvCountBike.setText(countBike+"");
+        tvCountVan.setText(countVan+"");
+        tvCountTruck.setText(countTruck+"");
+        ///////////////////////set fairs///////////////////////////
+        tvFairCar.setText(sessionManager.getKeyCarAmount()+"");
+        tvFairBike.setText(sessionManager.getKeyBikeAmount()+"");
+        tvFairVan.setText(sessionManager.getKeyVanAmount()+"");
+        tvFairTruck.setText(sessionManager.getKeyTruckAmount()+"");
 
-     //   total();
 
 
     }
 
-     void total() {
-
-
+    void total() {
         RealmConfiguration config = new RealmConfiguration.Builder(this).build();
         realm = Realm.getInstance(config);
         RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-        query.equalTo("siteName",sessionManager.getKeySiteName());
+        query.equalTo("siteName", sessionManager.getKeySiteName());
         RealmResults<LPTicket> manyLPTicket = query.findAll();
-        Log.d("","////////////////////////////////sdada///////////////////////////////");
-
+        Log.d("", "////////////////////////////////sdada///////////////////////////////");
         for (LPTicket oneLPTicket : manyLPTicket) {
-            sum = sum+Integer.parseInt(oneLPTicket.getPrice());
+            sum = sum + Integer.parseInt(oneLPTicket.getPrice());
             Log.d("  ", "____________________________________________________________________________________editTicketToServer: oneLPTicket " + oneLPTicket.getPrice());
-
-            Log.d("","------------------------------------------");
-            Log.d("","///////////////////////////////////////////////////////////////");
-
         }
-
-
         RealmQuery<LPTicket> querycar = realm.where(LPTicket.class);
-        querycar.equalTo("siteName",sessionManager.getKeySiteName());
-        querycar.equalTo("vehicleType","Car");
+        querycar.equalTo("siteName", sessionManager.getKeySiteName());
+        querycar.equalTo("vehicleType", "Car");
         RealmResults<LPTicket> manyLPTicketcar = querycar.findAll();
-        Log.d("","////////////////////////////////sdada///////////////////////////////");
-
+        Log.d("", "////////////////////////////////sdada///////////////////////////////");
         for (LPTicket oneLPTicket : manyLPTicketcar) {
-            sumCar = sumCar+Integer.parseInt(oneLPTicket.getPrice());
+            sumCar = sumCar + Integer.parseInt(oneLPTicket.getPrice());
             Log.d("  ", "____________________________________________________________________________________Car " + oneLPTicket.getPrice());
-
-
-
         }
         RealmQuery<LPTicket> querybike = realm.where(LPTicket.class);
-        querybike.equalTo("siteName",sessionManager.getKeySiteName());
-        querybike.equalTo("vehicleType","Bike");
+        querybike.equalTo("siteName", sessionManager.getKeySiteName());
+        querybike.equalTo("vehicleType", "Bike");
         RealmResults<LPTicket> manyLPTicketbike = querybike.findAll();
-        Log.d("","////////////////////////////////sdada///////////////////////////////");
-
+        Log.d("", "////////////////////////////////sdada///////////////////////////////");
         for (LPTicket oneLPTicket : manyLPTicketbike) {
-            sumBike = sumBike+Integer.parseInt(oneLPTicket.getPrice());
+            sumBike = sumBike + Integer.parseInt(oneLPTicket.getPrice());
             Log.d("  ", "____________________________________________________________________________________Bike " + oneLPTicket.getPrice());
-
-
-
         }
         RealmQuery<LPTicket> queryvan = realm.where(LPTicket.class);
-        queryvan.equalTo("siteName",sessionManager.getKeySiteName());
-        queryvan.equalTo("vehicleType","Van");
+        queryvan.equalTo("siteName", sessionManager.getKeySiteName());
+        queryvan.equalTo("vehicleType", "Van");
         RealmResults<LPTicket> manyLPTicketvan = queryvan.findAll();
-        Log.d("","////////////////////////////////sdada///////////////////////////////");
-
+        Log.d("", "////////////////////////////////sdada///////////////////////////////");
         for (LPTicket oneLPTicket : manyLPTicketvan) {
-            sumVan = sumVan+Integer.parseInt(oneLPTicket.getPrice());
+            sumVan = sumVan + Integer.parseInt(oneLPTicket.getPrice());
             Log.d("  ", "____________________________________________________________________________________VAn" + oneLPTicket.getPrice());
-
-
-
         }
+        Log.d("              ", "totall:           " + sum);
+        Log.d("              ", "totall  CAR:           " + sumCar);
+        Log.d("              ", "totall  BIKE:           " + sumBike);
+        Log.d("              ", "totall  VAN:           " + sumVan);
 
-        Log.d("              ", "totall:           "+sum);
-        Log.d("              ", "totall  CAR:           "+sumCar);
-        Log.d("              ", "totall  BIKE:           "+sumBike);
-        Log.d("              ", "totall  VAN:           "+sumVan);
-
-       // tvTicketTotal = (TextView) findViewById(R.id.tvTicketTotal);
-       // tvTicketTotal.setText(sum);
     }
 
     @Override
-
-
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {

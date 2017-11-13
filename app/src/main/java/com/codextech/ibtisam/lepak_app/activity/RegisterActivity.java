@@ -26,21 +26,17 @@ import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.model.LPLocation;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.sync.MyUrls;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-
 import static com.codextech.ibtisam.lepak_app.sync.MyUrls.LocationUrl;
 import static java.lang.String.valueOf;
 
@@ -53,7 +49,6 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnSubmit;
     private RequestQueue queue;
     ProgressDialog pdLoading;
-    // private String jsonResponse;
     private TextView txtResponse;
     private String jsonResponse;
     List<String> listId;
@@ -66,8 +61,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etBikeAmount;
     private EditText etVanAmount;
     private EditText etTruckAmount;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,15 +74,12 @@ public class RegisterActivity extends AppCompatActivity {
         etTruckAmount = (EditText) findViewById(R.id.etTruckAmount);
         spCityId = (Spinner) findViewById(R.id.spLocation);
         spLocationNames = (Spinner) findViewById(R.id.spCityId);
-
         getAllLocationsFromServer();
         pdLoading = new ProgressDialog(this);
         pdLoading.setTitle("Loading data");
         pdLoading.setMessage("Please Wait...");
-
         listId = new ArrayList<String>();
         listLocations = new ArrayList<String>();
-
     }
 
     public void addItemsOnSpinner2(String id, String location) {
@@ -106,23 +96,11 @@ public class RegisterActivity extends AppCompatActivity {
         btsignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //city id  like 1 1 1  1
                 cityId = valueOf(spCityId.getSelectedItem());
-
-                //location names gulber, township ,iqbal town
                 locationName = String.valueOf(spLocationNames.getSelectedItem());
-
                 String locationId = RealmController.with(RegisterActivity.this).getLocationFromLocationName(locationName).getId();
                 Log.d(TAG, "onClick: locationId: " + locationId);
-
-
                 boolean isValid = true;
-//                boolean isSiteValid = true;
-//                boolean isCarAmountValid = true;
-//                boolean isBikeAmountSiteValid = true;
-//                boolean isVanAmountValid = true;
-//                boolean isTruckAmountValid = true;
                 String siteName = edSiteName.getText().toString();
                 String carAmount = etCarAmount.getText().toString();
                 String bikeAmount = etBikeAmount.getText().toString();
@@ -133,17 +111,14 @@ public class RegisterActivity extends AppCompatActivity {
                     isValid = false;
                     edSiteName.setError("Empty Field!");
                 }
-
                 if (carAmount.trim().length() < 1) {
                     isValid = false;
                     etCarAmount.setError("Empty Field!");
                 }
-
                 if (bikeAmount.trim().length() < 1) {
                     isValid = false;
                     etBikeAmount.setError("Empty Field!");
                 }
-
                 if (vanAmount.trim().length() < 1) {
                     isValid = false;
                     etVanAmount.setError("Empty Field!");
@@ -153,7 +128,6 @@ public class RegisterActivity extends AppCompatActivity {
                     isValid = false;
                     etTruckAmount.setError("Empty Field!");
                 }
-
                 if (isValid) {
                     makeSignupRequest(siteName, locationId, cityId, carAmount, bikeAmount, vanAmount, truckAmount);
                     Toast.makeText(RegisterActivity.this,
@@ -194,12 +168,10 @@ public class RegisterActivity extends AppCompatActivity {
                                 jsonResponse += "id: " + id + "\n\n";
                                 jsonResponse += "location: " + location + "\n\n";
                                 jsonResponse += "city_id: " + city_id + "\n\n";
-
                                 RealmQuery<LPLocation> query = realm.where(LPLocation.class);
                                 query.equalTo("id", id);
                                 RealmResults<LPLocation> allLocations = query.findAll();
                                 Log.d(TAG, "allLocations: " + allLocations.toString());
-
                                 // Duplication avoidance check
                                 if (allLocations.isEmpty()) {
                                     Log.d(TAG, "Location doesn't exist adding it.");
@@ -215,7 +187,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                             }
                             Log.d(TAGI, jsonResponse.toString());
-
                             RealmQuery<LPLocation> query = realm.where(LPLocation.class);
                             query.equalTo("cityId", "1");
                             RealmResults<LPLocation> allLocations = query.findAll();
@@ -232,9 +203,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-               // Log.e(TAG, "onErrorResponse:  " + error.networkResponse.statusCode);
-               // VolleyLog.d(TAG, "Error: " + error.getMessage());
-                //Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -258,18 +226,14 @@ public class RegisterActivity extends AppCompatActivity {
                                 String site_name = uniObject.getString("site_name");
                                 String site_email = uniObject.getString("site_email");
                                 String site_password = uniObject.getString("site_password");
-
                                 Log.d(TAG, "onResponse: site_name  :" + site_name);
                                 Log.d(TAG, "onResponse: site_email  :" + site_email);
                                 Log.d(TAG, "onResponse: site_password  :" + site_password);
-
                                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                 intent.putExtra(LoginActivity.LOGIN_EMAIL, site_email);
                                 intent.putExtra(LoginActivity.LOGIN_PASSWORD, site_password);
                                 startActivity(intent);
-
                                 Toast.makeText(RegisterActivity.this, "User Successfully Registered ", Toast.LENGTH_SHORT).show();
-
                                 if (pdLoading != null && pdLoading.isShowing()) {
                                     pdLoading.dismiss();
                                 }
@@ -305,8 +269,5 @@ public class RegisterActivity extends AppCompatActivity {
             }
         };
         queue.add(postRequest);
-
     }
-
-
 }

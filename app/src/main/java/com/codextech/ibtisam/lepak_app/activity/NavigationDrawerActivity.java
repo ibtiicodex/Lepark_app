@@ -30,22 +30,17 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     FragmentManager mFragmentManager;
     private ImageView ivProfileImgNavBar;
     SessionManager sessionManager;
-
     TextView datasetonheadedr;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         datasetonheadedr = (TextView) findViewById(R.id.tvSite);
         sessionManager = new SessionManager(NavigationDrawerActivity.this);
-
-
         if (!sessionManager.isSiteSignedIn()) {
             finish();
             startActivity(new Intent(NavigationDrawerActivity.this, LoginActivity.class));
         }
-
         Intent newIntent = new Intent(NavigationDrawerActivity.this, ScanService.class);
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         NavigationDrawerActivity.this.startService(newIntent);
@@ -64,13 +59,10 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 mDrawerLayout.closeDrawers();
                 if (menuItem.getItemId() == R.id.showallnav) {
-//                    FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-//                    fragmentTransaction.replace(R.id.containerView,new ReturnTicketFragment()).commit();
                     Intent intent = new Intent(getApplicationContext(), AllTicketsActivity.class);
                     startActivity(intent);
                 }
                 if (menuItem.getItemId() == R.id.summarynav) {
-
                     Intent intent = new Intent(getApplicationContext(), SummaryActivity.class);
                     startActivity(intent);
                 }
@@ -79,29 +71,15 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                     finish();
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
-
-//                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
-//                    xfragmentTransaction.replace(R.id.containerView,new TabFragment()).commit();
-//                    Intent intent = new Intent(getApplicationContext(), LogOut.class);
-//                    startActivity(intent);
                 }
                 if (menuItem.getItemId() == R.id.nav_NfcActvity) {
-                    //sessionManager.logoutSite();
-                    // finish();
                     Intent intent = new Intent(getApplicationContext(), NfcGetAllCoinsActivity.class);
                     startActivity(intent);
-
-//                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
-//                    xfragmentTransaction.replace(R.id.containerView,new TabFragment()).commit();
-//                    Intent intent = new Intent(getApplicationContext(), LogOut.class);
-//                    startActivity(intent);
                 }
                 if (menuItem.getItemId() == R.id.nav_refresh) {
-
                     DataSenderAsync dataSenderAsync = new DataSenderAsync(NavigationDrawerActivity.this);
                     dataSenderAsync.execute();
                     Toast.makeText(NavigationDrawerActivity.this, " Refreshed ", Toast.LENGTH_SHORT).show();
-
                 }
 
                 return false;

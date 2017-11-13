@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 
 public class StartReceiver extends BroadcastReceiver {
-
 	@Override
 	public void onReceive(Context context, Intent intent) {
 //		if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {

@@ -39,8 +39,6 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
     private String vehicle_no;
     private String serverid;
     RequestQueue queue;
-
-
     public DataSenderAsync(Context context) {
         this.context = context;
         sessionManager = new SessionManager(context);
@@ -56,21 +54,15 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-
     private void addTicketToServer() {
-
         realm = Realm.getDefaultInstance();
 //        RealmConfiguration config = new RealmConfiguration.Builder(context).build();
 //
 //        realm = Realm.getInstance(config);
         Log.d(TAG, "Site Id For Check " + sessionManager.getKeySiteId());
-
         RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-
         query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
-
         RealmResults<LPTicket> manyLPTicket = query.findAll();
-
 //        Log.d(TAG, "addTicketToServer: manyLPTicket: " + manyLPTicket.toString());
         Log.d(TAG, "addTicketToServer: count " + manyLPTicket.size());
         for (LPTicket oneLPTicket : manyLPTicket) {
@@ -145,7 +137,6 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                         }
                         Log.e(TAG, "onErrorResponse: addTicketToServerSync" + error);
                         Log.e(TAG, "onErrorResponse: Vehicle Number: " + veh_num);
-//                        Toast.makeText(context, "Error Syncing Ticket", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -153,7 +144,6 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
             protected Map<String, String> getParams() {
 
                 Map<String, String> params = new HashMap<String, String>();
-
                 params.put("site_id", sessionManager.getKeySiteId());
                 params.put("vehicle_no", veh_num);
                 params.put("vehicle_type", veh_type);
@@ -161,7 +151,6 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                 params.put("time_in", time_in);
                 params.put("time_out", time_out);
                 params.put("token", sessionManager.getLoginToken());
-
                 return params;
             }
         };
@@ -202,14 +191,12 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                                 String fee = uniObject.getString("fee");
                                 String time_in = uniObject.getString("time_in");
                                 String time_out = uniObject.getString("time_out");
-
                                 Log.d(TAG, "onResponse: serverid: " + serverid);
                                 Log.d(TAG, "onResponse: vehicle_no: " + vehicle_no);
                                 Log.d(TAG, "onResponse: vehicle_type: " + vehicle_type);
                                 Log.d(TAG, "onResponse: fee: " + fee);
                                 Log.d(TAG, "onResponse: time_in: " + time_in);
                                 Log.d(TAG, "onResponse: time_out: " + time_out);
-
                                 realm = Realm.getDefaultInstance();
 //                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
 //                                realm = Realm.getInstance(config);
@@ -289,33 +276,6 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                             int responseCode = obj.getInt("responseCode");
                            if (responseCode == 200) {
                                Toast.makeText(context, "Coin Synced", Toast.LENGTH_SHORT).show();
-//                                JSONObject uniObject = obj.getJSONObject("response");
-//                                //TODO  Save server_id of ticket in local db
-//                                String serverid = uniObject.getString("id");
-//                                String vehicle_no = uniObject.getString("vehicle_no");
-//                                String vehicle_type = uniObject.getString("vehicle_type");
-//                                String fee = uniObject.getString("fee");
-//                                String time_in = uniObject.getString("time_in");
-//                                String time_out = uniObject.getString("time_out");
-//
-//                                Log.d(TAG, "onResponse: serverid: " + serverid);
-//                                Log.d(TAG, "onResponse: vehicle_no: " + vehicle_no);
-//                                Log.d(TAG, "onResponse: vehicle_type: " + vehicle_type);
-//                                Log.d(TAG, "onResponse: fee: " + fee);
-//                                Log.d(TAG, "onResponse: time_in: " + time_in);
-//                                Log.d(TAG, "onResponse: time_out: " + time_out);
-//
-//                                realm = Realm.getDefaultInstance();
-////                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
-////                                realm = Realm.getInstance(config);
-//                                RealmQuery<LPCoin> query = realm.where(LPCoin.class);
-//                                query.equalTo("timeIn", time_in);
-//                                RealmResults<LPCoin> manyLPCoin = query.findAll();
-//                                realm.beginTransaction();
-//                                manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_SYNCED);
-////                                manyLPTicket.first().setServer_id(serverid);
-//                                realm.commitTransaction();
-//                                realm.close();
                               }
                         } catch (JSONException e) {
                             e.printStackTrace();

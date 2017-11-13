@@ -42,12 +42,10 @@ public class ReturnTicketFragment extends Fragment {
     String ticket_time_out;
     private Realm realm;
     private TextView tvTotallPrice;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.retrun_ticket_fragment, container, false);
-//        this.realm = RealmController.with(this).getRealm();
         realm = Realm.getInstance(getContext());
         RealmController.with(this).refresh();
         timeNowMillis = Calendar.getInstance().getTimeInMillis();
@@ -72,7 +70,6 @@ public class ReturnTicketFragment extends Fragment {
                     RealmResults<LPTicket> manyLPTicket = query.findAll();
                     Log.e(TAG, "onCreate: " + manyLPTicket.toString());
                     if (manyLPTicket.size() > 0) {
-                        // if(manyLPTicket.first().getTimeOut()=="") {
                         Log.d(TAG, "onClick: in   __________________________________________________________________________" + manyLPTicket.first().getTimeOut());
                         if (manyLPTicket.first().getTimeOut().equals("")) {
                             tvAgentName.setText(manyLPTicket.first().getSiteName());

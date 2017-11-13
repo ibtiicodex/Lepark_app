@@ -11,9 +11,7 @@ package com.codextech.ibtisam.lepak_app.adapters;
  */
 
 public class RealmTicketsAdapter extends RealmModelAdapter<LPTicket> {
-
     public RealmTicketsAdapter(Context context, RealmResults<LPTicket> realmResults, boolean automaticUpdate) {
-
         super(context, realmResults, automaticUpdate);
     }
 }

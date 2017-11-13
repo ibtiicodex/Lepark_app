@@ -6,7 +6,6 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:background="@color/pageback">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -86,20 +85,6 @@
 
             </LinearLayout>
 
-            <!--<Button-->
-            <!--android:id="@+id/btAllTickets"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/selector_xml_btn_yellow"-->
-            <!--android:text="@string/show_all" />-->
-
-            <!--<Button-->
-            <!--android:id="@+id/exit"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="21dp"-->
-            <!--android:background="@drawable/selector_xml_btn_yellow"-->
-            <!--android:text="Exit" />-->
         </LinearLayout>
 
     </ScrollView>

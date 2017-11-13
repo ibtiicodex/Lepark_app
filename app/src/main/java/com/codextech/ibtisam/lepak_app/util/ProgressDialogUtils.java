@@ -5,8 +5,6 @@ import android.content.Context;
 @Deprecated
 public class ProgressDialogUtils {
 	private static ProgressDialog mProgressDialog;
-
-	
 	public static void showProgressDialog(Context context, CharSequence message){
 		if(mProgressDialog == null){
 			mProgressDialog = ProgressDialog.show(context, "", message);
@@ -15,7 +13,6 @@ public class ProgressDialogUtils {
 			mProgressDialog.show();
 		}
 	}
-	
 	public static void dismissProgressDialog(){
 		if(mProgressDialog != null){
 			mProgressDialog.dismiss();
