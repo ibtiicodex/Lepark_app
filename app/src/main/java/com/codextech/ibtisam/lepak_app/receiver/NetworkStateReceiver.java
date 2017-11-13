@@ -14,9 +14,7 @@ import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
  */
 
 public class NetworkStateReceiver extends BroadcastReceiver {
-
     public static final String TAG = "NetworkStateReceiver";
-
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "Network connectivity change");
         if (intent.getExtras() != null) {

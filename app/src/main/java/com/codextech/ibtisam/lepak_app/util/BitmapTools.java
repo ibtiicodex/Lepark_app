@@ -16,7 +16,6 @@ public class BitmapTools {
 		int height = BitmapOrg.getHeight();
 		int newWidth = w;
 		int newHeight = h;
-
 		float scaleWidth = ((float) newWidth) / width;
 		float scaleHeight = ((float) newHeight) / height;
 		Matrix matrix = new Matrix();
@@ -31,12 +30,9 @@ public class BitmapTools {
 		int w = bitmapCode.getWidth();
 		int h = bitmapCode.getHeight();
 		//byte[] sendbuf = StartBmpToPrintCode(bitmapCode);
-
 		//write(sendbuf);
 
 	}
-
-
 	public static Bitmap convertToBlackWhite(Bitmap bmp) {
 		int width = bmp.getWidth(); // »ñÈ¡Î»Í¼µÄ¿í
 		int height = bmp.getHeight(); // »ñÈ¡Î»Í¼µÄ¸ß
@@ -47,11 +43,9 @@ public class BitmapTools {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				int grey = pixels[width * i + j];
-
 				int red = ((grey & 0x00FF0000) >> 16);
 				int green = ((grey & 0x0000FF00) >> 8);
 				int blue = (grey & 0x000000FF);
-
 				grey = (int) (red * 0.3 + green * 0.59 + blue * 0.11);
 				//grey = alpha | (grey << 16) | (grey << 8) | grey;
 				if ( grey < 128 ){
@@ -218,15 +212,11 @@ public class BitmapTools {
 		//image.setImageBitmap(temp);
 	}
 
-
-
 	public static void encodeYUV420SP(byte[] yuv420sp, int[] rgba, int width, int height){
 		int frameSize = width * height;
-
 		int[] U = new int[frameSize];
 		int[] V = new int[frameSize];
 		int uvwidth = width / 2;
-
 		int bits = 8;
 		int index = 0;
 		int f = 0;
@@ -239,33 +229,13 @@ public class BitmapTools {
 		int y = (66 * r + 129 * g + 25 * b + 128 >> 8) + 16;
 		int u = (-38 * r - 74 * g + 112 * b + 128 >> 8) + 128;
 		int v = (112 * r - 94 * g - 18 * b + 128 >> 8) + 128;
-
-		byte temp = (byte)(y > 255 ? 255 : y < 0 ? 0 : y);
+				byte temp = (byte)(y > 255 ? 255 : y < 0 ? 0 : y);
 		yuv420sp[(index++)] = (byte) (temp > 0 ? 1 : 0);
-
-
-		//				{
-		//					if (f == 0) {
-		//						yuv420sp[index++] = 0;
-		//						f = 1;
-		//					} else {
-		//						yuv420sp[index++] = 1;
-		//						f = 0;
-		//					}
-		//				}
-
 			}
-
 		}
 
 		f = 0;
 	}
-
-
-
-
-
-
 	public  static  byte[] bitmap2PrinterBytes (Bitmap bitmap){
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
@@ -328,8 +298,4 @@ public class BitmapTools {
 
 		return mData;
 	}
-
-
-
-
 }

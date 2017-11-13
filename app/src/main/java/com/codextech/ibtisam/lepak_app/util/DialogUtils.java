@@ -8,7 +8,6 @@ import com.codextech.ibtisam.lepak_app.R;
 
 
 public class DialogUtils {
-
     public static void showTipDialog(Context context, CharSequence message){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(""+message);

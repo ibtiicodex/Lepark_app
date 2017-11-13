@@ -21,37 +21,27 @@ import io.realm.RealmResults;
 
 public class AllTicketsActivity extends AppCompatActivity {
     private final static String TAG = "AllTicketsActivity";
-
     public TicketsAdapter adapter;
-
     private Realm realm;
-
     public RecyclerView recycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_all_tickets);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // add back arrow to toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         }
-
         recycler = (RecyclerView) findViewById(R.id.recycler);
         //get realm instance
         this.realm = RealmController.with(this).getRealm();
         //set toolbar
         setSupportActionBar(toolbar);
-
         setupRecycler();
-
         if (!Prefs.with(this).getPreLoad()) {
 
             setRealmData();
@@ -67,12 +57,9 @@ public class AllTicketsActivity extends AppCompatActivity {
     }
 
     public void setRealmAdapter(RealmResults<LPTicket> LPTickets) {
-
-
         RealmTicketsAdapter realmAdapter = new RealmTicketsAdapter(this.getApplicationContext(), LPTickets, true);
         // Set the data and tell the RecyclerView to draw
         adapter.setRealmAdapter(realmAdapter);
-
         adapter.notifyDataSetChanged();
     }
 
@@ -82,29 +69,20 @@ public class AllTicketsActivity extends AppCompatActivity {
         recycler.setHasFixedSize(true);
         // use a linear layout manager since the cards are vertically scrollable
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
         layoutManager.setReverseLayout(false);
-
         recycler.setLayoutManager(layoutManager);
         // create an empty adapter and add it to the recycler view
         adapter = new TicketsAdapter(this);
-
         recycler.setAdapter(adapter);
     }
 
     private void setRealmData() {
         ArrayList<LPTicket> LPTickets = new ArrayList<>();
-
         for (LPTicket b : LPTickets) {
             // Persist your data easily
-
-
             realm.beginTransaction();
-
             realm.copyToRealm(b);
-
             realm.commitTransaction();
         }
 
@@ -118,7 +96,6 @@ public class AllTicketsActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             finish(); // close this activity and return to preview activity (if there is any)
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

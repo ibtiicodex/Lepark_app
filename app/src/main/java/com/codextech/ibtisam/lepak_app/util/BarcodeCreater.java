@@ -161,17 +161,4 @@ public abstract class BarcodeCreater {
 		return null;
 	}
 
-//	public static boolean saveBitmap2file(Bitmap bmp, String filename) {
-//		CompressFormat format = Bitmap.CompressFormat.JPEG;
-//		int quality = 100;
-//		OutputStream stream = null;
-//		try {
-//			stream = new FileOutputStream("/sdcard/" + filename);
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//		return bmp.compress(format, quality, stream);
-//	}
 }

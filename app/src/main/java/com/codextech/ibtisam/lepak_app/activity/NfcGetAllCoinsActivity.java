@@ -17,7 +17,9 @@ import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -50,7 +52,6 @@ import static android.R.attr.id;
 
 public class NfcGetAllCoinsActivity extends AppCompatActivity {
     // list of NFC technologies detected:
-
     private RequestQueue queue;
     private String jsonResponse;
     private String TAGI = "NfcGetAllCoinsActivity";
@@ -61,7 +62,6 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
     private String coin_vehicle;
     private long idserver;
     String coinget;
-
     TextView tvCoinID;
     private final String[][] techList = new String[][]{
             new String[]{
@@ -82,12 +82,18 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc_get_all_coins);
-//        getAllLocationsFromServer();
         tvCoinID = (TextView) findViewById(R.id.text);
         tvAmountNfc = (TextView) findViewById(R.id.tvAmountNfc);
         tvVehicleNfc = (TextView) findViewById(R.id.tvVehicleNfc);
         btDetecta = (Button) findViewById(R.id.btDetecta);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+        setSupportActionBar(toolbar);
         queue = Volley.newRequestQueue(NfcGetAllCoinsActivity.this, new HurlStack());
         getAllLocationsFromServer();
         WifiManager manager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -100,15 +106,19 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // creating pending intent:
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        // creating intent receiver for NFC events:
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(NfcAdapter.ACTION_TAG_DISCOVERED);
-        filter.addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        filter.addAction(NfcAdapter.ACTION_TECH_DISCOVERED);
-        // enabling foreground dispatch for getting intent from NFC event:
-        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, new IntentFilter[]{filter}, this.techList);
+        try {
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+            // creating intent receiver for NFC events:
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(NfcAdapter.ACTION_TAG_DISCOVERED);
+            filter.addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
+            filter.addAction(NfcAdapter.ACTION_TECH_DISCOVERED);
+            // enabling foreground dispatch for getting intent from NFC event:
+            NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+            nfcAdapter.enableForegroundDispatch(this, pendingIntent, new IntentFilter[]{filter}, this.techList);
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
@@ -208,24 +218,6 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
                                     Log.d(TAG, "Already Exists");
                                 }
 
-//                                RealmQuery<LPLocation> query = realm.where(LPLocation.class);
-//                                query.equalTo("id", id);
-//                                RealmResults<LPLocation> allLocations = query.findAll();
-//                                Log.d(TAG, "allLocations: " + allLocations.toString());
-//
-//                                // Duplication avoidance check
-//                                if (allLocations.isEmpty()) {
-//                                    Log.d(TAG, "Location doesn't exist adding it.");
-//                                    LPLocation lpLocation = new LPLocation();
-//                                    lpLocation.setId(id);
-//                                    lpLocation.setLocationName(location);
-//                                    lpLocation.setCityId(city_id);
-//                                    realm.beginTransaction();
-//                                    realm.copyToRealm(lpLocation);
-//                                    realm.commitTransaction();
-//                                } else {
-//                                    Log.d(TAG, "Already Exists");
-//                                }
                             }
                             Log.d(TAGI, jsonResponse.toString());
                             RealmQuery<LPNfc> query = realm.where(LPNfc.class);
@@ -258,7 +250,6 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
         queue.add(req);
     }
 
-
     private void dataenter() {
 
         btDetecta.setOnClickListener(new View.OnClickListener() {
@@ -267,6 +258,15 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

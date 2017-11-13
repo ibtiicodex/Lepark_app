@@ -24,11 +24,9 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<LPTicket> {
     private final Context context;
     private Realm realm;
     private LayoutInflater inflater;
-
     public TicketsAdapter(Context context) {
         this.context = context;
     }
-
     // create new views (invoked by the layout manager)
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,7 +34,6 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<LPTicket> {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tickets, parent, false);
         return new CardViewHolder(view);
     }
-
     // replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
@@ -87,7 +84,6 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<LPTicket> {
         });
 
     }
-
     public int getItemCount() {
 
         if (getRealmAdapter() != null) {
@@ -95,9 +91,7 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<LPTicket> {
         }
         return 0;
     }
-
     private static class CardViewHolder extends RecyclerView.ViewHolder {
-
         private CardView card_ticket;
         private TextView tvSiteName;
         private TextView textTimeOut;
@@ -108,7 +102,6 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<LPTicket> {
         private TextView textVehicalType;
         private TextView textServerId;
         public TextView syncStatus;
-
         //  public ImageView imageBackground;
         private CardViewHolder(View itemView) {
             // standard view holder pattern with Butterknife view injection

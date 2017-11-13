@@ -11,10 +11,7 @@ public class LPLocation extends RealmObject {
 private String id;
 private String locationName;
 private String cityId;
-//private String cityName;
-
-
-    public String getId() {
+   public String getId() {
         return id;
     }
 
@@ -38,11 +35,4 @@ private String cityId;
         this.cityId = cityId;
     }
 
-//    public String getCityName() {
-//        return cityName;
-//    }
-//
-//    public void setCityName(String cityName) {
-//        this.cityName = cityName;
-//    }
 }

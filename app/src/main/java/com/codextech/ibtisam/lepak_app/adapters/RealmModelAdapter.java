@@ -18,7 +18,6 @@ public class RealmModelAdapter<T extends RealmObject> extends RealmBaseAdapter<T
 
         super(context, realmResults, automaticUpdate);
     }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

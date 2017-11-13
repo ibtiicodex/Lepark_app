@@ -5,7 +5,6 @@
     <string name="enter_number">Enter Number</string>
     <string name="bike">Bike</string>
     <string name="show_all">Show All</string>
-
     <string-array name="psam_slot">
         <item>psam1</item>
         <item>psam2</item>
@@ -27,8 +26,6 @@
         <item>76800</item>
         <item>115200</item>
     </string-array>
-
-
     <string-array name="can_baudrate">
         <item>25K</item>
         <item>50K</item>
@@ -58,7 +55,6 @@
         <item>One-dimensional bar code</item>
         <item>Two-dimensional bar code</item>
     </string-array>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="sdk_version">SDK Version</string>
@@ -200,22 +196,17 @@
         <item>Always bright</item>
 
     </string-array>
-
-
     <string name="print_complete">Print complete</string>
     <string name="barcode_scan_dev_model">Scan head model</string>
     <string name="barcode_scan_dev_model_tips">Choose to use the scanning device</string>
     <string name="light_mode">Lighting mode</string>
     <string name="title_activity_pay">PayActivity</string>
-
     <string name="reset">Device reset</string>
     <string name="state">device status</string>
     <string name="psam_card">psam card</string>
-
     <string name="serial_port">Extended serial port</string>
     <string name="bar_scan">Barcode scanning</string>
     <string name="ex_io">ex I</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

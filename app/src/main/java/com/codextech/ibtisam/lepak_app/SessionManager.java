@@ -12,7 +12,6 @@ import java.util.Calendar;
 
 public class SessionManager {
     public static final String TAG = "SessionManager";
-
     private static final String KEY_SITE_ID = "site_login_id";
     private static final String KEY_SITE_NAME = "site_login_name";
     private static final String KEY_LOGIN_TOKEN = "user_login_token";
@@ -21,8 +20,6 @@ public class SessionManager {
     private static final String KEY_BIKE_AMOUNT = "user_bike_amount";
     private static final String KEY_VAN_AMOUNT = "user_van_amount";
     private static final String KEY_TRUCK_AMOUNT = "user_truck_amount";
-
-
     // Sharedpref file name
     private static final String PREF_NAME = "ProjectLastingSalesPreffs";
     // Shared Preferences
@@ -33,15 +30,12 @@ public class SessionManager {
     Context _context;
     // Shared pref mode
     int PRIVATE_MODE = 0;
-
     // Constructor
     public SessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
-
-
     public Boolean isSiteSignedIn() {
         if (getLoginToken().equals("")) {
             return false;
@@ -57,7 +51,6 @@ public class SessionManager {
         }
         return true;
     }
-
     public void loginSite(String id, String name, String token, Long timeStamp, String car, String bike, String van, String truck) {
         Log.d(TAG, "loginSite: ");
 //        deleteDataIfDifferentUser();
@@ -69,14 +62,12 @@ public class SessionManager {
         setKeyBikeAmount(bike);
         setKeyVanAmount(van);
         setKeyTruckAmount(truck);
-
         editor.commit();
     }
 
     private void deleteDataIfDifferentUser(String number) {
         //TODO implement
     }
-
     public void logoutSite() {
         deleteAllUserData();
         setKeySiteId("");

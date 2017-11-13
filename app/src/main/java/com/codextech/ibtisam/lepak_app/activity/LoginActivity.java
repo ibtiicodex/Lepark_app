@@ -61,9 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         pdLoading = new ProgressDialog(this);
         pdLoading.setTitle("Loading data");
         pdLoading.setMessage("Please Wait...");
-//        Intent intent=new Intent(getApplicationContext(),NfcGetAllCoinsActivity.class);
-//        startActivity(intent);
-
         sessionManager = new SessionManager(LoginActivity.this);
         queue = Volley.newRequestQueue(LoginActivity.this, new HurlStack());
         btRegister.setOnClickListener(new View.OnClickListener() {
@@ -90,16 +87,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (isValidEmail(email) && isValidPassword(pass)) {
                     loginRequest(email, pass);
                     pdLoading.show();
-//                    Intent intent = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
-//                    startActivity(intent);
-//                    finish();
+
                 }
             }
         });
     }
-
-
-    // validating email id
     private boolean isValidEmail(String email) {
         String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                 + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -107,7 +99,6 @@ public class LoginActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
-
     // validating password
     private boolean isValidPassword(String pass) {
         if (pass != null && pass.length() >= 4) {
@@ -189,8 +180,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
         queue.add(postRequest);
-//        Intent intent=new Intent(getApplicationContext(),NfcGetAllCoinsActivity.class);
-//        startActivity(intent);
     }
 
     @Override
