@@ -70,8 +70,10 @@ public class AllTicketsActivity extends AppCompatActivity {
         // use a linear layout manager since the cards are vertically scrollable
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        layoutManager.setReverseLayout(false);
+        layoutManager.setReverseLayout(true);
         recycler.setLayoutManager(layoutManager);
+        recycler.smoothScrollToPosition(0);
+
         // create an empty adapter and add it to the recycler view
         adapter = new TicketsAdapter(this);
         recycler.setAdapter(adapter);

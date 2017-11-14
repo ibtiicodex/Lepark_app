@@ -30,12 +30,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     FragmentManager mFragmentManager;
     private ImageView ivProfileImgNavBar;
     SessionManager sessionManager;
-    TextView datasetonheadedr;
+    TextView setOnProfile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        datasetonheadedr = (TextView) findViewById(R.id.tvSite);
+
         sessionManager = new SessionManager(NavigationDrawerActivity.this);
 
         if (!sessionManager.isSiteSignedIn()) {

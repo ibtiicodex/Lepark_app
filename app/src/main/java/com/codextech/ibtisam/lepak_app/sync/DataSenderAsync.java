@@ -39,6 +39,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
     private String vehicle_no;
     private String serverid;
     RequestQueue queue;
+
     public DataSenderAsync(Context context) {
         this.context = context;
         sessionManager = new SessionManager(context);
@@ -200,14 +201,17 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                                 realm = Realm.getDefaultInstance();
 //                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
 //                                realm = Realm.getInstance(config);
-                                RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-                                query.equalTo("timeIn", time_in);
-                                RealmResults<LPTicket> manyLPTicket = query.findAll();
-                                realm.beginTransaction();
-                                manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_SYNCED);
+
+                                    RealmQuery<LPTicket> query = realm.where(LPTicket.class);
+                                    query.equalTo("number", vehicle_no
+                                    );
+                                    RealmResults<LPTicket> manyLPTicket = query.findAll();
+                                    realm.beginTransaction();
+                                    manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_SYNCED); //TODO crash here on exiting ticket which was synced on adding
 //                                manyLPTicket.first().setServer_id(serverid);
-                                realm.commitTransaction();
-                                realm.close();
+                                    realm.commitTransaction();
+                                  //  realm.close();
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -236,8 +240,8 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 //                params.put("id", 5 + "");
-                    params.put("time_out", timeOut);
-                    params.put("token", sessionManager.getLoginToken());
+                params.put("time_out", timeOut);
+                params.put("token", sessionManager.getLoginToken());
                 params.put("time_out", "2017-11-03 01:42:06");
 //
                 return params;
@@ -257,7 +261,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
         RealmResults<LPNfc> manyLPCoin = query.findAll();
         Log.d(TAG, "editCoinToServer: count " + manyLPCoin.size());
         for (LPNfc oneLPCoin : manyLPCoin) {
-        Log.d(TAG, "editCoinToServer: oneLPCoin " + oneLPCoin);
+            Log.d(TAG, "editCoinToServer: oneLPCoin " + oneLPCoin);
 
             editCoinToServerSync(oneLPCoin.getCoinId(), oneLPCoin.getCoinVehicle(), oneLPCoin.getCoinAmount());
         }
@@ -274,9 +278,9 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                         try {
                             JSONObject obj = new JSONObject(response);
                             int responseCode = obj.getInt("responseCode");
-                           if (responseCode == 200) {
-                               Toast.makeText(context, "Coin Synced", Toast.LENGTH_SHORT).show();
-                              }
+                            if (responseCode == 200) {
+                                Toast.makeText(context, "Coin Synced", Toast.LENGTH_SHORT).show();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d(TAG, "onResponse: JSONException: " + e);

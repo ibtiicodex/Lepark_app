@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        RegisterActivity obj=new RegisterActivity();
         String email = getIntent().getStringExtra(LoginActivity.LOGIN_EMAIL);
         String password = getIntent().getStringExtra(LoginActivity.LOGIN_PASSWORD);
         btLogin = (Button) findViewById(R.id.btLogin);
@@ -127,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.d(TAG, "onResponse: site_id  :" + site_id);
                                 Log.d(TAG, "onResponse: site_name  :" + site_name);
                                 Log.d(TAG, "onResponse: token  :" + token);
-                                sessionManager.loginSite(site_id, site_name, token, Calendar.getInstance().getTimeInMillis(), car_fare, bike_fare, van_fare, truck_fare);
+                                sessionManager.loginSite(site_id, site_name, token, Calendar.getInstance().getTimeInMillis(), car_fare, bike_fare, van_fare, truck_fare,RegisterActivity.areaName);
                                 Intent intent = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
                                 intent.putExtra("hello", site_name);
                                 startActivity(intent);

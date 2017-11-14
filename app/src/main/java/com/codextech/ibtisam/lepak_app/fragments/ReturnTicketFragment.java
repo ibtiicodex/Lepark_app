@@ -42,6 +42,7 @@ public class ReturnTicketFragment extends Fragment {
     String ticket_time_out;
     private Realm realm;
     private TextView tvTotallPrice;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -148,7 +149,11 @@ public class ReturnTicketFragment extends Fragment {
         different = different % minutesInMilli;
         long elapsedSeconds = different / secondsInMilli;
         long price = Long.parseLong(fee);
-        tvTotallPrice.setText("" + elapsedHours * price);
+        if (elapsedHours == 0 && elapsedHours <= 1) {
+            tvTotallPrice.setText(price + "");
+        } else {
+            tvTotallPrice.setText("" + elapsedHours * price);
+        }
         tvTimeDifference.setText(elapsedHours + " h - " + elapsedMinutes + " m");
     }
 }

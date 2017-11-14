@@ -124,7 +124,7 @@ public class TicketFormatActivity extends AppCompatActivity {
         tvNumber.setText(veh_number);
         tvVehicleType.setText(veh_type);
         tvPrice.setText(fee);
-        tvLocation.setText(device_location);
+        tvLocation.setText( sessionManager.getKeyAreanmae());
         Toast.makeText(this, "  " + veh_number + " ", Toast.LENGTH_SHORT).show();
 
         btnPrintMix.setOnClickListener(new OnClickListener() {
@@ -209,7 +209,7 @@ public class TicketFormatActivity extends AppCompatActivity {
         LPTicket.setNumber(veh_number);
         LPTicket.setVehicleType(veh_type);
         LPTicket.setPrice(fee);
-        LPTicket.setLocation(device_location);
+        LPTicket.setLocation( sessionManager.getKeyAreanmae());
         LPTicket.setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
         realm.beginTransaction();
         realm.copyToRealm(LPTicket);
@@ -317,7 +317,7 @@ public class TicketFormatActivity extends AppCompatActivity {
             sb.append("\n");
             sb.append("Fee:        " + fee);
             sb.append("\n");
-            sb.append("Location:   " + device_location);
+            sb.append("Location:   " + sessionManager.getKeyAreanmae());
             sb.append("\n");
             sb.append("--------------------------------");
             sb.append("   Parking at your own risk");

@@ -20,12 +20,15 @@ public class SessionManager {
     private static final String KEY_BIKE_AMOUNT = "user_bike_amount";
     private static final String KEY_VAN_AMOUNT = "user_van_amount";
     private static final String KEY_TRUCK_AMOUNT = "user_truck_amount";
+    private static final String KEY_AREANMAE = "key_area_name";
     // Sharedpref file name
     private static final String PREF_NAME = "ProjectLastingSalesPreffs";
     // Shared Preferences
     SharedPreferences pref;
     // Editor for Shared preferences
     SharedPreferences.Editor editor;
+
+
     // Context
     Context _context;
     // Shared pref mode
@@ -51,7 +54,7 @@ public class SessionManager {
         }
         return true;
     }
-    public void loginSite(String id, String name, String token, Long timeStamp, String car, String bike, String van, String truck) {
+    public void loginSite(String id, String name, String token, Long timeStamp, String car, String bike, String van, String truck ,String areaName) {
         Log.d(TAG, "loginSite: ");
 //        deleteDataIfDifferentUser();
         setKeySiteId(id);
@@ -62,6 +65,7 @@ public class SessionManager {
         setKeyBikeAmount(bike);
         setKeyVanAmount(van);
         setKeyTruckAmount(truck);
+        setKeyAreanmae(areaName);
         editor.commit();
     }
 
@@ -77,6 +81,7 @@ public class SessionManager {
         setKeyBikeAmount("");
         setKeyVanAmount("");
         setKeyTruckAmount("");
+        setKeyAreanmae("");
         editor.commit();
     }
 
@@ -158,4 +163,12 @@ public class SessionManager {
         editor.commit();
     }
 
+    public  String getKeyAreanmae()  {
+        return pref.getString(KEY_AREANMAE, "");
+    }
+
+    public void setKeyAreanmae(String name) {
+        editor.putString(KEY_AREANMAE, name);
+        editor.commit();
+    }
 }

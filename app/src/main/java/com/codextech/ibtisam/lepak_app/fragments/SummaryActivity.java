@@ -181,6 +181,9 @@ public class SummaryActivity extends AppCompatActivity {
         Log.d("              ", "totall  BIKE:           " + sumBike);
         Log.d("              ", "totall  VAN:           " + sumVan);
         Log.d(TAG, "saveTicket: COUNT: " + count);
+
+        count=countCar+countBike+countTruck+countVan;
+
         tvCountTotal.setText(count + " ");
         tvTotal.setText(sum + "");
        ///////////////////////// set totals/////////////////////////

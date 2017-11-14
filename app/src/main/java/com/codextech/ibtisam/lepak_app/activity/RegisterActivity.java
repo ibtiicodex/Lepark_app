@@ -26,17 +26,21 @@ import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.model.LPLocation;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.sync.MyUrls;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+
 import static com.codextech.ibtisam.lepak_app.sync.MyUrls.LocationUrl;
 import static java.lang.String.valueOf;
 
@@ -55,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
     List<String> listLocations;
     String cityId;
     String locationName;
+    public static String areaName;
     private int count = 0;
     private Realm realm;
     private EditText etCarAmount;
@@ -130,10 +135,12 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 if (isValid) {
                     makeSignupRequest(siteName, locationId, cityId, carAmount, bikeAmount, vanAmount, truckAmount);
+
+                     areaName=valueOf(spLocationNames.getSelectedItem());
                     Toast.makeText(RegisterActivity.this,
                             "OnClickListener : "
                                     + "\nSpinner 2 : " + valueOf(spCityId.getSelectedItem())
-                                    + "\nSpinner 1 : " + valueOf(spLocationNames.getSelectedItem()),
+                                    + "\nSpinner 1 : " + valueOf(spLocationNames.getSelectedItem())+"  "+areaName,
                             Toast.LENGTH_SHORT).show();
                 }
             }
