@@ -80,6 +80,7 @@ public class ReturnTicketFragment extends Fragment {
                             tvPrice.setText(manyLPTicket.first().getPrice());
                             realm.beginTransaction();
                             manyLPTicket.first().setTimeOut(ticket_time_out);
+                            //  manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED);
                             if (manyLPTicket.first().getSyncStatus() != null) {
                                 if (manyLPTicket.first().getSyncStatus().equals(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED)) {
                                     manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED);

@@ -15,6 +15,7 @@ import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.model.LPNfc;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
+import com.codextech.ibtisam.lepak_app.receiver.NetworkStateReceiver;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,10 +49,17 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
-        addTicketToServer();
-        editTicketToServer();
-        editCoinsToServer();
+        if (NetworkStateReceiver.isNetworkAvailable(context)) {
+            Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
+
+            addTicketToServer();
+            editTicketToServer();
+            editCoinsToServer();
+
+        } else {
+
+            Log.d(TAG, "doInBackground: "+"************************ NO INTERNET CONNECTIVITY****************************");
+        }
         return null;
     }
 
@@ -90,7 +98,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                                 //TODO  Save server_id of ticket in local db
                                 serverid = uniObject.getString("id");
                                 vehicle_no = uniObject.getString("vehicle_no");
-                                String time_in = uniObject.getString("time_in");
+//                                String time_in = uniObject.getString("time_in");
                                 realm = Realm.getDefaultInstance();
 //                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
 //                                realm = Realm.getInstance(config);
@@ -172,7 +180,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    private void editTicketToServerSync(String number, String vehicleType, String price, String timeIn, final String timeOut, String serverId) {
+    private void editTicketToServerSync(final String number, final String vehicleType, final String price, final String timeIn, final String timeOut, final String serverId) {
 
         RequestQueue queue = Volley.newRequestQueue(context, new HurlStack());
         StringRequest putRequest = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/ticket/timeout/" + serverId,
@@ -202,15 +210,14 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
 //                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
 //                                realm = Realm.getInstance(config);
 
-                                    RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-                                    query.equalTo("number", vehicle_no
-                                    );
-                                    RealmResults<LPTicket> manyLPTicket = query.findAll();
-                                    realm.beginTransaction();
-                                    manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_SYNCED); //TODO crash here on exiting ticket which was synced on adding
+                                RealmQuery<LPTicket> query = realm.where(LPTicket.class);
+                                query.equalTo("timeIn", timeIn);
+                                RealmResults<LPTicket> manyLPTicket = query.findAll();
+                                realm.beginTransaction();
+                                manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_SYNCED); //TODO crash here on exiting ticket which was synced on adding
 //                                manyLPTicket.first().setServer_id(serverid);
-                                    realm.commitTransaction();
-                                  //  realm.close();
+                                realm.commitTransaction();
+                                //  realm.close();
 
                             }
                         } catch (JSONException e) {
