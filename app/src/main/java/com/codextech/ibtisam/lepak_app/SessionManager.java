@@ -21,6 +21,11 @@ public class SessionManager {
     private static final String KEY_VAN_AMOUNT = "user_van_amount";
     private static final String KEY_TRUCK_AMOUNT = "user_truck_amount";
     private static final String KEY_AREANMAE = "key_area_name";
+    private static final String KEY_MAC = "key_mac";
+
+
+
+    private static final String KEY_IMAGE = "key_image";
     // Sharedpref file name
     private static final String PREF_NAME = "ProjectLastingSalesPreffs";
     // Shared Preferences
@@ -54,11 +59,13 @@ public class SessionManager {
         }
         return true;
     }
-    public void loginSite(String id, String name, String token, Long timeStamp, String car, String bike, String van, String truck ,String areaName) {
+    public void loginSite(String id, String name, String token, Long timeStamp, String car, String bike, String van, String truck ,String areaName,String macAddress,String img) {
         Log.d(TAG, "loginSite: ");
 //        deleteDataIfDifferentUser();
         setKeySiteId(id);
+        setKeyMac(macAddress);
         setKeySiteName(name);
+        setKeyImage(img);
         setLoginTimestamp(timeStamp);
         setLoginToken(token);
         setKeyCarAmount(car);
@@ -75,8 +82,10 @@ public class SessionManager {
     public void logoutSite() {
         deleteAllUserData();
         setKeySiteId("");
+        setKeyImage("");
         setLoginTimestamp(00L);
         setLoginToken("");
+        setKeyMac("");
         setKeyCarAmount("");
         setKeyBikeAmount("");
         setKeyVanAmount("");
@@ -169,6 +178,24 @@ public class SessionManager {
 
     public void setKeyAreanmae(String name) {
         editor.putString(KEY_AREANMAE, name);
+        editor.commit();
+    }
+
+    public String getKeyMac()  {
+        return pref.getString(KEY_MAC, "");
+    }
+
+    public void setKeyMac(String name) {
+        editor.putString(KEY_MAC, name);
+        editor.commit();
+    }
+
+    public  String getKeyImage()  {
+        return pref.getString(KEY_IMAGE, "");
+    }
+
+    public void setKeyImage(String name) {
+        editor.putString(KEY_IMAGE, name);
         editor.commit();
     }
 }

@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,7 +36,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         sessionManager = new SessionManager(NavigationDrawerActivity.this);
 
         if (!sessionManager.isSiteSignedIn()) {
@@ -47,10 +47,17 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         NavigationDrawerActivity.this.startService(newIntent);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mNavigationView = (NavigationView) findViewById(R.id.shitstuff);
+
+        View header=mNavigationView.getHeaderView(0);
+/*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+        setOnProfile = (TextView)header.findViewById(R.id.tvSite);
+        setOnProfile.setText(sessionManager.getKeySiteName());
+
+
         LinearLayout headerLayout = (LinearLayout) mNavigationView.getHeaderView(0);
         ivProfileImgNavBar = (ImageView) headerLayout.findViewById(R.id.ivProfileImgNavBar);
         Glide.with(NavigationDrawerActivity.this)
-                .load("https://scontent.fkhi10-1.fna.fbcdn.net/v/t31.0-8/18518369_1478734302201566_2146160655778083392_o.jpg?oh=8a7cbc129e4cc3bc87d13f6200882df5&oe=5A6F9CC4")
+                .load(sessionManager.getKeyImage())
                 .into(ivProfileImgNavBar);
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();

@@ -17,8 +17,8 @@ import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
-import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -49,8 +49,16 @@ public class ReturnTicketFragment extends Fragment {
         View view = inflater.inflate(R.layout.retrun_ticket_fragment, container, false);
         realm = Realm.getInstance(getContext());
         RealmController.with(this).refresh();
-        timeNowMillis = Calendar.getInstance().getTimeInMillis();
-        ticket_time_out = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
+//        timeNowMillis = Calendar.getInstance().getTimeInMillis();
+//        ticket_time_out = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
+
+
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        ticket_time_out=dateFormat.format(cal.getTime());
+
+
         etCarNumber = (EditText) view.findViewById(R.id.etCarNumber);
         btnPrintMix = (Button) view.findViewById(R.id.btnPrintMix);
         tvAgentName = (TextView) view.findViewById(R.id.tvAgentName);

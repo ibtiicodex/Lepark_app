@@ -160,6 +160,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                 params.put("time_in", time_in);
                 params.put("time_out", time_out);
                 params.put("token", sessionManager.getLoginToken());
+                params.put("mac", sessionManager.getKeyMac());
                 return params;
             }
         };

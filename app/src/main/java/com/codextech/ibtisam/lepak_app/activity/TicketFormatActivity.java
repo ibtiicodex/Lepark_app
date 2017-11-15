@@ -28,9 +28,10 @@ import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
-import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import io.realm.Realm;
@@ -114,10 +115,20 @@ public class TicketFormatActivity extends AppCompatActivity {
                 }
             }
         }
-
-        long timeNowMillis = Calendar.getInstance().getTimeInMillis();
-        ticket_time_in = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
+//
+//        long timeNowMillis = Calendar.getInstance().getTimeInMillis();
+//       = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
 //        ticket_time_in = DateFormat.getDateTimeInstance().format(new Date());
+
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        ticket_time_in=dateFormat.format(cal.getTime());
+      //  return dateFormat.format(cal.getTime());
+
+
+
+
         site_name = sessionManager.getKeySiteName();
         tvSiteName.setText(site_name);
         tvTimeIn.setText(ticket_time_in);

@@ -66,6 +66,9 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etBikeAmount;
     private EditText etVanAmount;
     private EditText etTruckAmount;
+    private EditText edSitePass;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +80,10 @@ public class RegisterActivity extends AppCompatActivity {
         etBikeAmount = (EditText) findViewById(R.id.etBikeAmount);
         etVanAmount = (EditText) findViewById(R.id.etVanAmount);
         etTruckAmount = (EditText) findViewById(R.id.etTruckAmount);
+        edSitePass = (EditText) findViewById(R.id.edSitePass);
         spCityId = (Spinner) findViewById(R.id.spLocation);
         spLocationNames = (Spinner) findViewById(R.id.spCityId);
+
         getAllLocationsFromServer();
         pdLoading = new ProgressDialog(this);
         pdLoading.setTitle("Loading data");
@@ -111,6 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String bikeAmount = etBikeAmount.getText().toString();
                 String vanAmount = etVanAmount.getText().toString();
                 String truckAmount = etTruckAmount.getText().toString();
+                String password=edSitePass.getText().toString();
 
                 if (siteName.trim().length() < 3) {
                     isValid = false;
@@ -134,7 +140,7 @@ public class RegisterActivity extends AppCompatActivity {
                     etTruckAmount.setError("Empty Field!");
                 }
                 if (isValid) {
-                    makeSignupRequest(siteName, locationId, cityId, carAmount, bikeAmount, vanAmount, truckAmount);
+                    makeSignupRequest(siteName,password ,locationId, cityId, carAmount, bikeAmount, vanAmount, truckAmount);
 
                      areaName=valueOf(spLocationNames.getSelectedItem());
                     Toast.makeText(RegisterActivity.this,
@@ -220,7 +226,7 @@ public class RegisterActivity extends AppCompatActivity {
         queue.add(req);
     }
 
-    public void makeSignupRequest(final String sitename, final String locations, final String id, final String carAmount, final String bikeAmount, final String vanAmount, final String truckAmount) {
+    public void makeSignupRequest(final String sitename,final String password , final String locations, final String id, final String carAmount, final String bikeAmount, final String vanAmount, final String truckAmount) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.Register,
                 new Response.Listener<String>() {
                     @Override
@@ -231,10 +237,10 @@ public class RegisterActivity extends AppCompatActivity {
                             if (responseCode == 200) {
                                 JSONObject uniObject = obj.getJSONObject("response");
                                 String site_name = uniObject.getString("site_name");
-                                String site_email = uniObject.getString("site_email");
+                                String site_email = uniObject.getString("username");
                                 String site_password = uniObject.getString("site_password");
                                 Log.d(TAG, "onResponse: site_name  :" + site_name);
-                                Log.d(TAG, "onResponse: site_email  :" + site_email);
+                                Log.d(TAG, "onResponse: username  :" + site_email);
                                 Log.d(TAG, "onResponse: site_password  :" + site_password);
                                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                 intent.putExtra(LoginActivity.LOGIN_EMAIL, site_email);
@@ -271,6 +277,7 @@ public class RegisterActivity extends AppCompatActivity {
                 params.put("bike", bikeAmount);
                 params.put("truck", vanAmount);
                 params.put("van", truckAmount);
+                params.put("password", password);
                 // Log.d(TAGX, "getParams: " +siteName+"  "+cityId+"  "+locationName+"  ");
                 return params;
             }

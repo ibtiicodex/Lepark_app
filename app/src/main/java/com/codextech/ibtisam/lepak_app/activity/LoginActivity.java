@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.sync.MyUrls;
+import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,8 +29,6 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -44,11 +43,13 @@ public class LoginActivity extends AppCompatActivity {
     private Button btLogin;
     private SessionManager sessionManager;
     private RequestQueue queue;
+    String macAddtress="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        macAddtress= SyncStatus.getMacAddr();
         RegisterActivity obj=new RegisterActivity();
         String email = getIntent().getStringExtra(LoginActivity.LOGIN_EMAIL);
         String password = getIntent().getStringExtra(LoginActivity.LOGIN_PASSWORD);
@@ -76,16 +77,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final String email = emailEditText.getText().toString();
-                if (!isValidEmail(email)) {
-                    //Set error message for email field
-                    emailEditText.setError("Invalid Email");
-                }
+
                 final String pass = passEditText.getText().toString();
                 if (!isValidPassword(pass)) {
                     //Set error message for password field
                     passEditText.setError("Password cannot be empty");
                 }
-                if (isValidEmail(email) && isValidPassword(pass)) {
+                if (isValidPassword(pass)) {
                     loginRequest(email, pass);
                     pdLoading.show();
 
@@ -93,13 +91,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    private boolean isValidEmail(String email) {
-        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
+
     // validating password
     private boolean isValidPassword(String pass) {
         if (pass != null && pass.length() >= 4) {
@@ -125,10 +117,12 @@ public class LoginActivity extends AppCompatActivity {
                                 String bike_fare = uniObject.getString("bike_fare");
                                 String van_fare = uniObject.getString("van_fare");
                                 String truck_fare = uniObject.getString("truck_fare");
+                                String image_url = uniObject.getString("image_url");
                                 Log.d(TAG, "onResponse: site_id  :" + site_id);
                                 Log.d(TAG, "onResponse: site_name  :" + site_name);
                                 Log.d(TAG, "onResponse: token  :" + token);
-                                sessionManager.loginSite(site_id, site_name, token, Calendar.getInstance().getTimeInMillis(), car_fare, bike_fare, van_fare, truck_fare,RegisterActivity.areaName);
+                                Log.d(TAG, "onResponse: image_url  :" + image_url);
+                                sessionManager.loginSite(site_id, site_name, token, Calendar.getInstance().getTimeInMillis(), car_fare, bike_fare, van_fare, truck_fare,RegisterActivity.areaName,macAddtress,image_url);
                                 Intent intent = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
                                 intent.putExtra("hello", site_name);
                                 startActivity(intent);
@@ -175,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("email", email);
+                params.put("username", email);
                 params.put("password", password);
                 return params;
             }
