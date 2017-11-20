@@ -64,7 +64,15 @@ public class PrintTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // vehNumber = edenternumber.getText().toString();
-                vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+                if (enterYear.getText().toString().equals("") || enterYear.getText().toString().equals(" ")) {
+
+                    vehNumber = enterAlpha.getText().toString() + " " + edenternumber.getText().toString();
+                } else {
+
+                    vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+
+                }
+
                 if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
@@ -84,7 +92,14 @@ public class PrintTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //vehNumber = edenternumber.getText().toString();
-                vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+                if (enterYear.getText().toString().equals("") || enterYear.getText().toString().equals(" ")) {
+
+                    vehNumber = enterAlpha.getText().toString() + " " + edenternumber.getText().toString();
+                } else {
+
+                    vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+
+                }
                 if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
@@ -104,7 +119,14 @@ public class PrintTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // vehNumber = edenternumber.getText().toString();
-                vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+                if (enterYear.getText().toString().equals("") || enterYear.getText().toString().equals(" ")) {
+
+                    vehNumber = enterAlpha.getText().toString() + " " + edenternumber.getText().toString();
+                } else {
+
+                    vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+
+                }
                 if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
@@ -126,7 +148,14 @@ public class PrintTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // vehNumber = edenternumber.getText().toString();
-                vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+                if (enterYear.getText().toString().equals("") || enterYear.getText().toString().equals(" ")) {
+
+                    vehNumber = enterAlpha.getText().toString() + " " + edenternumber.getText().toString();
+                } else {
+
+                    vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+
+                }
                 if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
