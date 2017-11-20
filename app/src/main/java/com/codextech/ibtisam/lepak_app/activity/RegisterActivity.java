@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.model.LPLocation;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
+import com.codextech.ibtisam.lepak_app.receiver.NetworkStateReceiver;
 import com.codextech.ibtisam.lepak_app.sync.MyUrls;
 
 import org.json.JSONArray;
@@ -49,24 +50,26 @@ public class RegisterActivity extends AppCompatActivity {
     private static final String TAGI = "RegisterActivity";
     EditText edSiteName;
     Button btsignup;
+    Button btnSubmit;
     private Spinner spLocationNames, spCityId;
-    private Button btnSubmit;
-    private RequestQueue queue;
-    ProgressDialog pdLoading;
-    private TextView txtResponse;
-    private String jsonResponse;
-    List<String> listId;
-    List<String> listLocations;
-    String cityId;
-    String locationName;
-    public static String areaName;
-    private int count = 0;
-    private Realm realm;
     private EditText etCarAmount;
     private EditText etBikeAmount;
     private EditText etVanAmount;
     private EditText etTruckAmount;
     private EditText edSitePass;
+    private RequestQueue queue;
+    private TextView txtResponse;
+    ProgressDialog pdLoading;
+    List<String> listLocations;
+    List<String> listId;
+    String cityId;
+    String jsonResponse;
+    String locationName;
+    String cityNameIs;
+    int check = 0;
+    public static String areaName;
+    private int count = 0;
+    private Realm realm;
 
 
     @Override
@@ -83,8 +86,15 @@ public class RegisterActivity extends AppCompatActivity {
         edSitePass = (EditText) findViewById(R.id.edSitePass);
         spCityId = (Spinner) findViewById(R.id.spLocation);
         spLocationNames = (Spinner) findViewById(R.id.spCityId);
+        if (NetworkStateReceiver.isNetworkAvailable(getApplicationContext())) {
+            // Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
+            getAllLocationsFromServer();
 
-        getAllLocationsFromServer();
+        } else {
+            Toast.makeText(this, "No InterNet", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "doInBackground: " + "************************ NO INTERNET CONNECTIVITY****************************");
+        }
+
         pdLoading = new ProgressDialog(this);
         pdLoading.setTitle("Loading data");
         pdLoading.setMessage("Please Wait...");
@@ -92,9 +102,12 @@ public class RegisterActivity extends AppCompatActivity {
         listLocations = new ArrayList<String>();
     }
 
-    public void addItemsOnSpinner2(String id, String location) {
+    public void addItemsOnSpinner2(String cityName, String location) {
         Log.d(TAG, "addItemsOnSpinner2: Adding Items in Spinner");
-        listId.add(id);
+        if (check == 0) {
+            listId.add(cityName);
+        }
+        check++;
         listLocations.add(location);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listId);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -102,13 +115,14 @@ public class RegisterActivity extends AppCompatActivity {
         ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listLocations);
         dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spLocationNames.setAdapter(dataAdapter2);
-
         btsignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cityId = valueOf(spCityId.getSelectedItem());
+                // cityId = valueOf(spCityId.getSelectedItem());
                 locationName = String.valueOf(spLocationNames.getSelectedItem());
+                cityNameIs = String.valueOf(spCityId.getSelectedItem());
                 String locationId = RealmController.with(RegisterActivity.this).getLocationFromLocationName(locationName).getId();
+                String cityId = RealmController.with(RegisterActivity.this).getCityFromCityName(cityNameIs).getId();
                 Log.d(TAG, "onClick: locationId: " + locationId);
                 boolean isValid = true;
                 String siteName = edSiteName.getText().toString();
@@ -116,8 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String bikeAmount = etBikeAmount.getText().toString();
                 String vanAmount = etVanAmount.getText().toString();
                 String truckAmount = etTruckAmount.getText().toString();
-                String password=edSitePass.getText().toString();
-
+                String password = edSitePass.getText().toString();
                 if (siteName.trim().length() < 3) {
                     isValid = false;
                     edSiteName.setError("Empty Field!");
@@ -140,13 +153,13 @@ public class RegisterActivity extends AppCompatActivity {
                     etTruckAmount.setError("Empty Field!");
                 }
                 if (isValid) {
-                    makeSignupRequest(siteName,password ,locationId, cityId, carAmount, bikeAmount, vanAmount, truckAmount);
+                    makeSignupRequest(siteName, password, locationId, cityId, carAmount, bikeAmount, vanAmount, truckAmount);
 
-                     areaName=valueOf(spLocationNames.getSelectedItem());
+                    //  areaName=valueOf(spLocationNames.getSelectedItem());
                     Toast.makeText(RegisterActivity.this,
                             "OnClickListener : "
                                     + "\nSpinner 2 : " + valueOf(spCityId.getSelectedItem())
-                                    + "\nSpinner 1 : " + valueOf(spLocationNames.getSelectedItem())+"  "+areaName,
+                                    + "\nSpinner 1 : " + valueOf(spLocationNames.getSelectedItem()) + "  " + areaName,
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -178,6 +191,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 String id = obj.getString("id");
                                 String location = obj.getString("location");
                                 String city_id = obj.getString("city_id");
+                                String city_name = obj.getString("city_name");
                                 jsonResponse += "id: " + id + "\n\n";
                                 jsonResponse += "location: " + location + "\n\n";
                                 jsonResponse += "city_id: " + city_id + "\n\n";
@@ -192,6 +206,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     lpLocation.setId(id);
                                     lpLocation.setLocationName(location);
                                     lpLocation.setCityId(city_id);
+                                    lpLocation.setCityName(city_name);
                                     realm.beginTransaction();
                                     realm.copyToRealm(lpLocation);
                                     realm.commitTransaction();
@@ -206,7 +221,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.d(TAG, "allLocationsFromDB: " + allLocations.toString());
                             Log.d(TAG, "allLocationsFromDB: SIZE: " + allLocations.size());
                             for (LPLocation oneLocation : allLocations) {
-                                addItemsOnSpinner2(oneLocation.getCityId(), oneLocation.getLocationName());
+                                addItemsOnSpinner2(oneLocation.getCityName(), oneLocation.getLocationName());
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -226,7 +241,7 @@ public class RegisterActivity extends AppCompatActivity {
         queue.add(req);
     }
 
-    public void makeSignupRequest(final String sitename,final String password , final String locations, final String id, final String carAmount, final String bikeAmount, final String vanAmount, final String truckAmount) {
+    public void makeSignupRequest(final String sitename, final String password, final String locations, final String id, final String carAmount, final String bikeAmount, final String vanAmount, final String truckAmount) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.Register,
                 new Response.Listener<String>() {
                     @Override

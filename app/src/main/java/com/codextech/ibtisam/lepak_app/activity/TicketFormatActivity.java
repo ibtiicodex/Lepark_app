@@ -38,7 +38,6 @@ import io.realm.Realm;
 
 public class TicketFormatActivity extends AppCompatActivity {
     public static final String TAG = "test";
-
     public static final String KEY_VEHICLE_TYPE = "key_vehicle_type";
     public static final String VEHICLE_TYPE_CAR = "vehicle_type_car";
     public static final String VEHICLE_TYPE_BIKE = "vehicle_type_bike";
@@ -102,40 +101,48 @@ public class TicketFormatActivity extends AppCompatActivity {
             if (veh_type != null) {
                 if (veh_type.equals(TicketFormatActivity.VEHICLE_TYPE_CAR)) {
                     veh_type = "Car";
+
                     fee = sessionManager.getKeyCarAmount();
+                    if (fee.equals("0") || fee.equals("00")) {
+                        fee = "0";
+                    }
+
                 } else if (veh_type.equals(TicketFormatActivity.VEHICLE_TYPE_BIKE)) {
                     veh_type = "Bike";
                     fee = sessionManager.getKeyBikeAmount();
+                    if (fee.equals("0") || fee.equals("00")) {
+                        fee = "0";
+                    }
+
                 } else if (veh_type.equals(TicketFormatActivity.VEHICLE_TYPE_VAN)) {
                     veh_type = "Van";
                     fee = sessionManager.getKeyVanAmount();
+                    if (fee.equals("0") || fee.equals("00")) {
+                        fee = "0";
+                    }
+
                 } else if (veh_type.equals(TicketFormatActivity.VEHICLE_TYPE_TRUCK)) {
                     veh_type = "Truck";
                     fee = sessionManager.getKeyTruckAmount();
+                    if (fee.equals("0") || fee.equals("00")) {
+                        fee = "0";
+                    }
+
                 }
             }
         }
-//
-//        long timeNowMillis = Calendar.getInstance().getTimeInMillis();
-//       = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
-//        ticket_time_in = DateFormat.getDateTimeInstance().format(new Date());
-
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
         Calendar cal = Calendar.getInstance();
-        ticket_time_in=dateFormat.format(cal.getTime());
-      //  return dateFormat.format(cal.getTime());
-
-
-
-
+        ticket_time_in = dateFormat.format(cal.getTime());
+        //  return dateFormat.format(cal.getTime());
         site_name = sessionManager.getKeySiteName();
         tvSiteName.setText(site_name);
         tvTimeIn.setText(ticket_time_in);
         tvNumber.setText(veh_number);
         tvVehicleType.setText(veh_type);
         tvPrice.setText(fee);
-        tvLocation.setText( sessionManager.getKeyAreanmae());
+        tvLocation.setText(sessionManager.getKeyAreanmae());
         Toast.makeText(this, "  " + veh_number + " ", Toast.LENGTH_SHORT).show();
 
         btnPrintMix.setOnClickListener(new OnClickListener() {
@@ -212,7 +219,7 @@ public class TicketFormatActivity extends AppCompatActivity {
 
         Realm realm = Realm.getDefaultInstance();
         LPTicket LPTicket = new LPTicket();
-//                  LPTicket.setId(RealmController.getInstance().getTickets().size() + System.currentTimeMillis());
+//      LPTicket.setId(RealmController.getInstance().getTickets().size() + System.currentTimeMillis());
         LPTicket.setId(System.currentTimeMillis());
         LPTicket.setSiteName(sessionManager.getKeySiteName());
         LPTicket.setTimeIn(ticket_time_in);
@@ -220,7 +227,7 @@ public class TicketFormatActivity extends AppCompatActivity {
         LPTicket.setNumber(veh_number);
         LPTicket.setVehicleType(veh_type);
         LPTicket.setPrice(fee);
-        LPTicket.setLocation( sessionManager.getKeyAreanmae());
+        LPTicket.setLocation(sessionManager.getKeyAreanmae());
         LPTicket.setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
         realm.beginTransaction();
         realm.copyToRealm(LPTicket);
@@ -318,25 +325,43 @@ public class TicketFormatActivity extends AppCompatActivity {
             sb.append("\n");
             sb.append("        PARKING TICKET     ");
             sb.append("\n");
-            sb.append("Site:       " + site_name);
+            sb.append("Site Name:  " + site_name);
             sb.append("\n");
             sb.append("Time:       " + ticket_time_in);
             sb.append("\n");
-            sb.append("Number:     " + veh_number);
+            sb.append("No. Plate:  " + veh_number);
             sb.append("\n");
             sb.append("Type:       " + veh_type);
             sb.append("\n");
-            sb.append("Fee:        " + fee);
+            if(fee.equals("0")) {
+                sb.append("Fee:        " + "Free Parking");
+            }
+            else
+            {
+                sb.append("Fee:        " +fee);
+
+            }
             sb.append("\n");
-            sb.append("Location:   " + sessionManager.getKeyAreanmae());
+            sb.append("Zone:       " + sessionManager.getKeyAreanmae());
             sb.append("\n");
-            sb.append("--------------------------------");
+            sb.append("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             sb.append("   Parking at your own risk");
             sb.append("\n");
             sb.append("Parking company is not liable");
             sb.append("\n");
             sb.append("for any loss");
             sb.append("\n");
+            sb.append("Complaint No:    " + "042-35116657");
+            sb.append("\n");
+            sb.append("\n");
+            sb.append("----POWERED BY OUTSTART TECH----");
+            //sb.append("\n");
+            sb.append("**************END***************");
+            sb.append("\n");
+            sb.append("\n");
+            sb.append("\n");
+            sb.append("\n");
+
             byte[] text = null;
             text = sb.toString().getBytes("GBK");
             addPrintTextWithSize(1, concentration, text);
@@ -378,8 +403,6 @@ public class TicketFormatActivity extends AppCompatActivity {
         super.onPause();
         closeDevice();
     }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

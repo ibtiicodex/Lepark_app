@@ -30,41 +30,42 @@ public class PrintTicketFragment extends Fragment {
     private EditText edenternumber;
     private String vehNumber;
     private SessionManager sessionManager;
+    private EditText enterAlpha;
+    private EditText enterYear;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: PrintTicketFragment");
         View view = inflater.inflate(R.layout.print_ticket_fragment, container, false);
         edenternumber = (EditText) view.findViewById(R.id.enterNum);
+        enterAlpha = (EditText) view.findViewById(R.id.enterAlpha);
+        enterYear = (EditText) view.findViewById(R.id.enterYear);
         bCar = (Button) view.findViewById(R.id.bCar);
         bBike = (Button) view.findViewById(R.id.bBike);
         bVan = (Button) view.findViewById(R.id.bVan);
         bTruck = (Button) view.findViewById(R.id.bTruck);
         sessionManager = new SessionManager(getActivity());
-//        bCar.setText("CAR :"+sessionManager.getKeyCarAmount());
-//        bBike.setText("BIKE :"+sessionManager.getKeyBikeAmount());
-//        bVan.setText("VAN :"+sessionManager.getKeyVanAmount());
-//        bTruck.setText("TRUCK :"+sessionManager.getKeyTruckAmount());
 
         if (Integer.parseInt(sessionManager.getKeyCarAmount()) <= 0) {
-            bCar.setVisibility(View.GONE);
+            // bCar.setVisibility(View.GONE);
         }
         if (Integer.parseInt(sessionManager.getKeyBikeAmount()) <= 0) {
-            bBike.setVisibility(View.GONE);
+            // bBike.setVisibility(View.GONE);
         }
 
         if (Integer.parseInt(sessionManager.getKeyVanAmount()) <= 0) {
-            bVan.setVisibility(View.GONE);
+            //bVan.setVisibility(View.GONE);
         }
 
         if (Integer.parseInt(sessionManager.getKeyTruckAmount()) <= 0) {
-            bTruck.setVisibility(View.GONE);
+            //bTruck.setVisibility(View.GONE);
         }
         bCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vehNumber = edenternumber.getText().toString();
-                if (vehNumber.trim().length() >= 1 && vehNumber != null&&vehNumber.trim().length() <= 5) {
+                // vehNumber = edenternumber.getText().toString();
+                vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+                if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
                         Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
@@ -82,8 +83,9 @@ public class PrintTicketFragment extends Fragment {
         bBike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vehNumber = edenternumber.getText().toString();
-                if (vehNumber.trim().length() >= 1 && vehNumber != null&&vehNumber.trim().length() <= 5) {
+                //vehNumber = edenternumber.getText().toString();
+                vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+                if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
                         Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
@@ -101,8 +103,9 @@ public class PrintTicketFragment extends Fragment {
         bVan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vehNumber = edenternumber.getText().toString();
-                if (vehNumber.trim().length() >= 1 && vehNumber != null&&vehNumber.trim().length() <= 5) {
+                // vehNumber = edenternumber.getText().toString();
+                vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+                if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
                         Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
@@ -122,8 +125,9 @@ public class PrintTicketFragment extends Fragment {
         {
             @Override
             public void onClick(View view) {
-                vehNumber = edenternumber.getText().toString();
-                if (vehNumber.trim().length() >= 1 && vehNumber != null&&vehNumber.trim().length() <= 5) {
+                // vehNumber = edenternumber.getText().toString();
+                vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+                if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
                         Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
@@ -141,6 +145,7 @@ public class PrintTicketFragment extends Fragment {
 
         return view;
     }
+
     @Override
     public void onResume() {
         super.onResume();

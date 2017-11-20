@@ -65,6 +65,11 @@ public class RealmController {
     public LPLocation getLocationFromLocationName(String locationName) {
         return realm.where(LPLocation.class).equalTo("locationName", locationName).findFirst();
     }
+
+    public LPLocation getCityFromCityName(String cityname) {
+        return realm.where(LPLocation.class).equalTo("cityName", cityname).findFirst();
+    }
+
     //clear all objects from LPTicket.class
     public void clearAll() {
 

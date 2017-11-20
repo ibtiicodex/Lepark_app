@@ -8,10 +8,21 @@ import io.realm.RealmObject;
 
 public class LPLocation extends RealmObject {
 
-private String id;
-private String locationName;
-private String cityId;
-   public String getId() {
+    private String id;
+    private String locationName;
+    private String cityId;
+
+    private String cityName;
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getId() {
         return id;
     }
 
@@ -24,6 +35,7 @@ private String cityId;
     }
 
     public void setLocationName(String locationName) {
+
         this.locationName = locationName;
     }
 
