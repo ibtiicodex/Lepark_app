@@ -13,7 +13,7 @@ android {
 
         ndk {
             abiFilters "armeabi"
-            abiFilters "armeabi", "armeabi-v7a", "x86"
+//            abiFilters "armeabi", "armeabi-v7a", "x86"
         }
     }
     buildTypes {

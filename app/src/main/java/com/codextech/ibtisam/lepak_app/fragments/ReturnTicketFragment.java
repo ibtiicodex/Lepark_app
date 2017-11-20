@@ -65,7 +65,16 @@ public class ReturnTicketFragment extends Fragment {
         btnPrintMix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String carNum =edAlpha.getText().toString()+ "-" +edYear.getText().toString()+ "-"+etCarNumber.getText().toString();
+                String carNum;
+                if (edYear.getText().toString().equals("")) {
+
+                    carNum = edAlpha.getText().toString() + " " + etCarNumber.getText().toString();
+
+                } else {
+
+
+                    carNum = edAlpha.getText().toString() + "-" + edYear.getText().toString() + "-" + etCarNumber.getText().toString();
+                }
                 if (isValidCarNumber(carNum)) {
                     RealmQuery<LPTicket> query = realm.where(LPTicket.class);
                     query.equalTo("number", carNum);
@@ -78,7 +87,7 @@ public class ReturnTicketFragment extends Fragment {
                             tvTimeIn.setText(manyLPTicket.first().getTimeIn());
                             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
                             Calendar cal = Calendar.getInstance();
-                            ticket_time_out=dateFormat.format(cal.getTime());
+                            ticket_time_out = dateFormat.format(cal.getTime());
                             tvTimeOut.setText(ticket_time_out);
                             tvNumber.setText(manyLPTicket.first().getNumber());
                             tvPrice.setText(manyLPTicket.first().getPrice());
