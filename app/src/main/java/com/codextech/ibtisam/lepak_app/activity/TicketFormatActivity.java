@@ -37,7 +37,7 @@ import java.util.Calendar;
 import io.realm.Realm;
 
 public class TicketFormatActivity extends AppCompatActivity {
-    public static final String TAG = "test";
+    public static final String TAG = "TicketFormatActivity";
     public static final String KEY_VEHICLE_TYPE = "key_vehicle_type";
     public static final String VEHICLE_TYPE_CAR = "vehicle_type_car";
     public static final String VEHICLE_TYPE_BIKE = "vehicle_type_bike";

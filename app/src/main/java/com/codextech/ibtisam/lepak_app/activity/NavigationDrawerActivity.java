@@ -18,10 +18,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
+import com.codextech.ibtisam.lepak_app.app.MixpanelConfig;
 import com.codextech.ibtisam.lepak_app.fragments.SummaryActivity;
 import com.codextech.ibtisam.lepak_app.fragments.TabFragment;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+import org.json.JSONObject;
 
 //import com.codextech.ibtisam.lepak_app.service.ScanService;
 public class NavigationDrawerActivity extends AppCompatActivity {
@@ -87,6 +91,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 if (menuItem.getItemId() == R.id.nav_refresh) {
                     DataSenderAsync dataSenderAsync = new DataSenderAsync(NavigationDrawerActivity.this);
                     dataSenderAsync.execute();
+                    String projectToken = MixpanelConfig.projectToken;
+                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(NavigationDrawerActivity.this, projectToken);
+                    mixpanel.track("Refreshed");
                     Toast.makeText(NavigationDrawerActivity.this, " Refreshed ", Toast.LENGTH_SHORT).show();
                 }
 
