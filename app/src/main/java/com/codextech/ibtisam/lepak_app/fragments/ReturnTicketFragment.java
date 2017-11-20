@@ -38,10 +38,11 @@ public class ReturnTicketFragment extends Fragment {
     Button btnPrintMix;
     private TextView tvTimeIn;
     private TextView tvTimeDifference;
-    private long timeNowMillis;
     String ticket_time_out;
     private Realm realm;
     private TextView tvTotallPrice;
+    private EditText edAlpha;
+    private EditText edYear;
 
     @Nullable
     @Override
@@ -49,9 +50,9 @@ public class ReturnTicketFragment extends Fragment {
         View view = inflater.inflate(R.layout.retrun_ticket_fragment, container, false);
         realm = Realm.getInstance(getContext());
         RealmController.with(this).refresh();
-//        timeNowMillis = Calendar.getInstance().getTimeInMillis();
-//        ticket_time_out = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
-        etCarNumber = (EditText) view.findViewById(R.id.etCarNumber);
+        etCarNumber = (EditText) view.findViewById(R.id.edNum);
+        edAlpha = (EditText) view.findViewById(R.id.edAlpha);
+        edYear = (EditText) view.findViewById(R.id.edYear);
         btnPrintMix = (Button) view.findViewById(R.id.btnPrintMix);
         tvAgentName = (TextView) view.findViewById(R.id.tvAgentName);
         tvTimeIn = (TextView) view.findViewById(R.id.tvTimeIn);
@@ -64,7 +65,7 @@ public class ReturnTicketFragment extends Fragment {
         btnPrintMix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String carNum = etCarNumber.getText().toString();
+                String carNum =edAlpha.getText().toString()+ "-" +edYear.getText().toString()+ "-"+etCarNumber.getText().toString();
                 if (isValidCarNumber(carNum)) {
                     RealmQuery<LPTicket> query = realm.where(LPTicket.class);
                     query.equalTo("number", carNum);
@@ -73,12 +74,11 @@ public class ReturnTicketFragment extends Fragment {
                     if (manyLPTicket.size() > 0) {
                         Log.d(TAG, "onClick: in   __________________________________________________________________________" + manyLPTicket.first().getTimeOut());
                         if (manyLPTicket.first().getTimeOut().equals("")) {
-                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
-                            Calendar cal = Calendar.getInstance();
-                            ticket_time_out = dateFormat.format(cal.getTime());
-
                             tvAgentName.setText(manyLPTicket.first().getSiteName());
                             tvTimeIn.setText(manyLPTicket.first().getTimeIn());
+                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+                            Calendar cal = Calendar.getInstance();
+                            ticket_time_out=dateFormat.format(cal.getTime());
                             tvTimeOut.setText(ticket_time_out);
                             tvNumber.setText(manyLPTicket.first().getNumber());
                             tvPrice.setText(manyLPTicket.first().getPrice());

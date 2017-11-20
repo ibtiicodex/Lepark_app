@@ -14,14 +14,38 @@
         android:padding="10dp">
 
         <EditText
-            android:id="@+id/enterNum"
-            android:layout_width="match_parent"
+            android:id="@+id/enterAlpha"
+            android:layout_width="80dp"
             android:layout_height="50dp"
             android:background="#FFF"
             android:ems="10"
             android:gravity="center"
-            android:hint="@string/enter_number"
+            android:hint="LWZ"
+           android:inputType="textCapCharacters"
+            android:textColorHint="#FFC9CACA"
+            android:textSize="30dp" />
+        <EditText
+            android:id="@+id/enterYear"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:background="#FFF"
+            android:ems="10"
+           android:inputType="text"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:hint="17A"
+            android:textColorHint="#FFC9CACA"
+            android:textSize="30dp" />
+        <EditText
+            android:id="@+id/enterNum"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="#FFF"
+            android:ems="10"
             android:inputType="number"
+            android:gravity="center"
+            android:hint="999"
             android:textColorHint="#FFC9CACA"
             android:textSize="30dp" />
     </LinearLayout>

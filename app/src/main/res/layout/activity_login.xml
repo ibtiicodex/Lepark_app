@@ -30,8 +30,35 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageViewTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/areaicon" />
+
+                <Spinner
+                    android:id="@+id/spAllSites"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#29568f"
+                    android:imeOptions="actionNext" />
+            </LinearLayout>
 
 
+<Button
+    android:layout_width="285dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="17dp"
+    android:id="@+id/btok"
+    android:background="#29568f"
+    android:textColor="#FFF"
+    android:text="Select User Name"/>
             <EditText
                 android:id="@+id/edSiteName"
                 android:layout_width="match_parent"
@@ -72,27 +99,27 @@
                 android:textColor="#000" />
 
 
-            <TextView
-                android:id="@+id/tvsignup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:text="Forget your password ?"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#FFF"
-                android:textSize="13dp" />
+            <!--<TextView-->
+                <!--android:id="@+id/tvsignup"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:text="Forget your password ?"-->
+                <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                <!--android:textColor="#FFF"-->
+                <!--android:textSize="13dp" />-->
 
-            <Button
-                android:id="@+id/btRegister"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:background="#fbd022"
-                android:imeOptions="actionGo"
-                android:text="Register"
-                android:textColor="#000" />
+            <!--<Button-->
+                <!--android:id="@+id/btRegister"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:background="#fbd022"-->
+                <!--android:imeOptions="actionGo"-->
+                <!--android:text="Register"-->
+                <!--android:textColor="#000" />-->
         </LinearLayout>
     </LinearLayout>
 </ScrollView><!--Yellow : fbd022--><!--Blue: 29568f--><!--Dark Grey: 171717-->

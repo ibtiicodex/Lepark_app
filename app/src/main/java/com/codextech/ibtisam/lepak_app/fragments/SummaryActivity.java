@@ -23,7 +23,6 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 
-
 /**
  * Created by HP on 10/18/2017.
  */
@@ -76,14 +75,14 @@ public class SummaryActivity extends AppCompatActivity {
         // total();
         sessionManager = new SessionManager(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-      //  bPrintSummaryPa = (Button) this.findViewById(bPrintSummaryp);
+        //  bPrintSummaryPa = (Button) this.findViewById(bPrintSummaryp);
         setSupportActionBar(toolbar);
         // add back arrow to toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-       // tvTicketCount = (TextView) findViewById(R.id.tvTicketCount);
+
 
         ///////////////////Total prices////////////////////////
         tvTotalCar = (TextView) findViewById(R.id.tvTotalCar);
@@ -98,7 +97,7 @@ public class SummaryActivity extends AppCompatActivity {
         tvCountVan = (TextView) findViewById(R.id.tvCountVan);
         tvCountTruck = (TextView) findViewById(R.id.tvCountTruck);
 
-       //////////////////Fairs///////////////////////////
+        //////////////////Fairs///////////////////////////
 
 
         tvFairCar = (TextView) findViewById(R.id.tvFairCar);
@@ -112,7 +111,6 @@ public class SummaryActivity extends AppCompatActivity {
         tvCountTotal = (TextView) findViewById(R.id.tvCountTotal);
 
 
-
         this.realm = RealmController.with(this).getRealm();
         count = realm.where(LPTicket.class).count();
         RealmConfiguration config = new RealmConfiguration.Builder(this).build();
@@ -120,13 +118,15 @@ public class SummaryActivity extends AppCompatActivity {
         RealmQuery<LPTicket> query = realm.where(LPTicket.class);
         query.equalTo("siteName", sessionManager.getKeySiteName());
         RealmResults<LPTicket> manyLPTicket = query.findAll();
-        Log.d("", "////////////////////////////////sdada///////////////////////////////");
         for (LPTicket oneLPTicket : manyLPTicket) {
-            sum = sum + Integer.parseInt(oneLPTicket.getPrice());
-            Log.d("  ", "____________________________________________________________________________________editTicketToServer: oneLPTicket " + oneLPTicket.getPrice());
-            Log.d("", "------------------------------------------");
-            Log.d("", "///////////////////////////////////////////////////////////////");
 
+            if (oneLPTicket.getPrice().equals("0")) {
+                sum = sum + 0;
+                Log.d("  ", "____________________________________________________________________________________editTicketToServer: oneLPTicket " + oneLPTicket.getPrice());
+
+            } else {
+                sum = sum + Integer.parseInt(oneLPTicket.getPrice());
+            }
         }
         RealmQuery<LPTicket> querycar = realm.where(LPTicket.class);
         querycar.equalTo("siteName", sessionManager.getKeySiteName());
@@ -135,10 +135,18 @@ public class SummaryActivity extends AppCompatActivity {
         Log.d("", "////////////////////////////////sdada///////////////////////////////");
 
         for (LPTicket oneLPTicket : manyLPTicketcar) {
-            sumCar = sumCar + Integer.parseInt(oneLPTicket.getPrice());
-            Log.d("  ", "____________________________________________________________________________________Car " + oneLPTicket.getPrice());
-            countCar++;
 
+            if (oneLPTicket.getPrice().equals("0")) {
+                sumCar = sumCar + 0;
+                Log.d("  ", "____________________________________________________________________________________editTicketToServer: oneLPTicket " + oneLPTicket.getPrice());
+                Log.d("", "------------------------------------------");
+                Log.d("", "///////////////////////////////////////////////////////////////");
+                countCar++;
+            } else {
+                sumCar = sumCar + Integer.parseInt(oneLPTicket.getPrice());
+                Log.d("  ", "____________________________________________________________________________________Car " + oneLPTicket.getPrice());
+                countCar++;
+            }
         }
         RealmQuery<LPTicket> querybike = realm.where(LPTicket.class);
         querybike.equalTo("siteName", sessionManager.getKeySiteName());
@@ -147,9 +155,15 @@ public class SummaryActivity extends AppCompatActivity {
         Log.d("", "////////////////////////////////sdada///////////////////////////////");
 
         for (LPTicket oneLPTicket : manyLPTicketbike) {
-            sumBike = sumBike + Integer.parseInt(oneLPTicket.getPrice());
-            Log.d("  ", "____________________________________________________________________________________Bike " + oneLPTicket.getPrice());
-            countBike++;
+            if (oneLPTicket.getPrice().equals("0")) {
+                sumBike = sumBike + 0;
+                Log.d("  ", "____________________________________________________________________________________editTicketToServer: oneLPTicket " + oneLPTicket.getPrice());
+                countBike++;
+            } else {
+                sumBike = sumBike + Integer.parseInt(oneLPTicket.getPrice());
+                Log.d("  ", "____________________________________________________________________________________bike " + oneLPTicket.getPrice());
+                countBike++;
+            }
         }
         RealmQuery<LPTicket> queryvan = realm.where(LPTicket.class);
         queryvan.equalTo("siteName", sessionManager.getKeySiteName());
@@ -158,9 +172,15 @@ public class SummaryActivity extends AppCompatActivity {
         Log.d("", "////////////////////////////////sdada///////////////////////////////");
 
         for (LPTicket oneLPTicket : manyLPTicketvan) {
-            sumVan = sumVan + Integer.parseInt(oneLPTicket.getPrice());
-            Log.d("  ", "____________________________________________________________________________________VAn" + oneLPTicket.getPrice());
-            countVan++;
+            if (oneLPTicket.getPrice().equals("0")) {
+                sumVan = sumVan + 0;
+                Log.d("  ", "____________________________________________________________________________________editTicketToServer: oneLPTicket " + oneLPTicket.getPrice());
+                countVan++;
+            } else {
+                sumVan = sumVan + Integer.parseInt(oneLPTicket.getPrice());
+                Log.d("  ", "____________________________________________________________________________________bike " + oneLPTicket.getPrice());
+                countVan++;
+            }
         }
 
         RealmQuery<LPTicket> querytruck = realm.where(LPTicket.class);
@@ -170,9 +190,15 @@ public class SummaryActivity extends AppCompatActivity {
         Log.d("", "////////////////////////////////sdada///////////////////////////////");
 
         for (LPTicket oneLPTicket : manyLPTickettruck) {
-            sumTruck = sumTruck + Integer.parseInt(oneLPTicket.getPrice());
-            Log.d("  ", "____________________________________________________________________________________VAn" + oneLPTicket.getPrice());
-            countTruck++;
+            if (oneLPTicket.getPrice().equals("0")) {
+                sumTruck = sumTruck + 0;
+                Log.d("  ", "____________________________________________________________________________________editTicketToServer: oneLPTicket " + oneLPTicket.getPrice());
+                countTruck++;
+            } else {
+                sumTruck = sumTruck + Integer.parseInt(oneLPTicket.getPrice());
+                Log.d("  ", "____________________________________________________________________________________bike " + oneLPTicket.getPrice());
+                countTruck++;
+            }
 
         }
 
@@ -182,72 +208,26 @@ public class SummaryActivity extends AppCompatActivity {
         Log.d("              ", "totall  VAN:           " + sumVan);
         Log.d(TAG, "saveTicket: COUNT: " + count);
 
-        count=countCar+countBike+countTruck+countVan;
+        count = countCar + countBike + countTruck + countVan;
 
         tvCountTotal.setText(count + " ");
         tvTotal.setText(sum + "");
-       ///////////////////////// set totals/////////////////////////
-        tvTotalCar.setText(sumCar +"");
-        tvTotalBike.setText(sumBike +"");
+        ///////////////////////// set totals/////////////////////////
+        tvTotalCar.setText(sumCar + "");
+        tvTotalBike.setText(sumBike + "");
         tvTotalVan.setText(sumVan + "");
         tvTotalTruck.setText(sumTruck + "");
         //////////////////////set counts////////////////////////////
-        tvCountCar.setText(countCar+"");
-        tvCountBike.setText(countBike+"");
-        tvCountVan.setText(countVan+"");
-        tvCountTruck.setText(countTruck+"");
+        tvCountCar.setText(countCar + "");
+        tvCountBike.setText(countBike + "");
+        tvCountVan.setText(countVan + "");
+        tvCountTruck.setText(countTruck + "");
         ///////////////////////set fairs///////////////////////////
-        tvFairCar.setText(sessionManager.getKeyCarAmount()+"");
-        tvFairBike.setText(sessionManager.getKeyBikeAmount()+"");
-        tvFairVan.setText(sessionManager.getKeyVanAmount()+"");
-        tvFairTruck.setText(sessionManager.getKeyTruckAmount()+"");
+        tvFairCar.setText(sessionManager.getKeyCarAmount() + "");
+        tvFairBike.setText(sessionManager.getKeyBikeAmount() + "");
+        tvFairVan.setText(sessionManager.getKeyVanAmount() + "");
+        tvFairTruck.setText(sessionManager.getKeyTruckAmount() + "");
 
-
-
-    }
-
-    void total() {
-        RealmConfiguration config = new RealmConfiguration.Builder(this).build();
-        realm = Realm.getInstance(config);
-        RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-        query.equalTo("siteName", sessionManager.getKeySiteName());
-        RealmResults<LPTicket> manyLPTicket = query.findAll();
-        Log.d("", "////////////////////////////////sdada///////////////////////////////");
-        for (LPTicket oneLPTicket : manyLPTicket) {
-            sum = sum + Integer.parseInt(oneLPTicket.getPrice());
-            Log.d("  ", "____________________________________________________________________________________editTicketToServer: oneLPTicket " + oneLPTicket.getPrice());
-        }
-        RealmQuery<LPTicket> querycar = realm.where(LPTicket.class);
-        querycar.equalTo("siteName", sessionManager.getKeySiteName());
-        querycar.equalTo("vehicleType", "Car");
-        RealmResults<LPTicket> manyLPTicketcar = querycar.findAll();
-        Log.d("", "////////////////////////////////sdada///////////////////////////////");
-        for (LPTicket oneLPTicket : manyLPTicketcar) {
-            sumCar = sumCar + Integer.parseInt(oneLPTicket.getPrice());
-            Log.d("  ", "____________________________________________________________________________________Car " + oneLPTicket.getPrice());
-        }
-        RealmQuery<LPTicket> querybike = realm.where(LPTicket.class);
-        querybike.equalTo("siteName", sessionManager.getKeySiteName());
-        querybike.equalTo("vehicleType", "Bike");
-        RealmResults<LPTicket> manyLPTicketbike = querybike.findAll();
-        Log.d("", "////////////////////////////////sdada///////////////////////////////");
-        for (LPTicket oneLPTicket : manyLPTicketbike) {
-            sumBike = sumBike + Integer.parseInt(oneLPTicket.getPrice());
-            Log.d("  ", "____________________________________________________________________________________Bike " + oneLPTicket.getPrice());
-        }
-        RealmQuery<LPTicket> queryvan = realm.where(LPTicket.class);
-        queryvan.equalTo("siteName", sessionManager.getKeySiteName());
-        queryvan.equalTo("vehicleType", "Van");
-        RealmResults<LPTicket> manyLPTicketvan = queryvan.findAll();
-        Log.d("", "////////////////////////////////sdada///////////////////////////////");
-        for (LPTicket oneLPTicket : manyLPTicketvan) {
-            sumVan = sumVan + Integer.parseInt(oneLPTicket.getPrice());
-            Log.d("  ", "____________________________________________________________________________________VAn" + oneLPTicket.getPrice());
-        }
-        Log.d("              ", "totall:           " + sum);
-        Log.d("              ", "totall  CAR:           " + sumCar);
-        Log.d("              ", "totall  BIKE:           " + sumBike);
-        Log.d("              ", "totall  VAN:           " + sumVan);
 
     }
 
