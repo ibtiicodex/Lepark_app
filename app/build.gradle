@@ -13,7 +13,7 @@ android {
 
         ndk {
             abiFilters "armeabi"
-//            abiFilters "armeabi", "armeabi-v7a", "x86"
+            abiFilters "armeabi", "armeabi-v7a", "x86"
         }
     }
     buildTypes {
@@ -42,4 +42,8 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     testCompile 'junit:junit:4.12'
+    compile 'com.mixpanel.android:mixpanel-android:5.+'
+    compile 'com.google.android.gms:play-services-gcm:11.0.4'
+
+
 }

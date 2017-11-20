@@ -51,14 +51,6 @@ public class ReturnTicketFragment extends Fragment {
         RealmController.with(this).refresh();
 //        timeNowMillis = Calendar.getInstance().getTimeInMillis();
 //        ticket_time_out = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
-
-
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
-        Calendar cal = Calendar.getInstance();
-        ticket_time_out=dateFormat.format(cal.getTime());
-
-
         etCarNumber = (EditText) view.findViewById(R.id.etCarNumber);
         btnPrintMix = (Button) view.findViewById(R.id.btnPrintMix);
         tvAgentName = (TextView) view.findViewById(R.id.tvAgentName);
@@ -81,6 +73,10 @@ public class ReturnTicketFragment extends Fragment {
                     if (manyLPTicket.size() > 0) {
                         Log.d(TAG, "onClick: in   __________________________________________________________________________" + manyLPTicket.first().getTimeOut());
                         if (manyLPTicket.first().getTimeOut().equals("")) {
+                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+                            Calendar cal = Calendar.getInstance();
+                            ticket_time_out = dateFormat.format(cal.getTime());
+
                             tvAgentName.setText(manyLPTicket.first().getSiteName());
                             tvTimeIn.setText(manyLPTicket.first().getTimeIn());
                             tvTimeOut.setText(ticket_time_out);
@@ -88,7 +84,6 @@ public class ReturnTicketFragment extends Fragment {
                             tvPrice.setText(manyLPTicket.first().getPrice());
                             realm.beginTransaction();
                             manyLPTicket.first().setTimeOut(ticket_time_out);
-                            //  manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED);
                             if (manyLPTicket.first().getSyncStatus() != null) {
                                 if (manyLPTicket.first().getSyncStatus().equals(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED)) {
                                     manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED);
@@ -98,7 +93,6 @@ public class ReturnTicketFragment extends Fragment {
                             }
                             realm.commitTransaction();
                             timeDifference(manyLPTicket.first().getTimeIn(), manyLPTicket.first().getTimeOut(), manyLPTicket.first().getPrice());
-                            realm.commitTransaction();
                             DataSenderAsync dataSenderAsync = new DataSenderAsync(getActivity());
                             dataSenderAsync.execute();
                         } else {

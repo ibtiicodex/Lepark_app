@@ -74,7 +74,8 @@ public class RealmController {
     }
     //find all objects in the LPTicket.class
     public RealmResults<LPTicket> getTickets() {
-        return realm.where(LPTicket.class).findAll();
+        RealmResults<LPTicket> results = realm.where(LPTicket.class).findAllSorted("id", false);
+        return results;
     }
     public RealmResults<LPNfc> getNfcGet() {
         return realm.where(LPNfc.class).findAll();

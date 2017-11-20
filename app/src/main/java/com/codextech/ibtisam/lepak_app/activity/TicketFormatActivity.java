@@ -120,14 +120,10 @@ public class TicketFormatActivity extends AppCompatActivity {
 //       = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeNowMillis, "yyyy-MM-dd kk:mm:ss");
 //        ticket_time_in = DateFormat.getDateTimeInstance().format(new Date());
 
-
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
         Calendar cal = Calendar.getInstance();
-        ticket_time_in=dateFormat.format(cal.getTime());
-      //  return dateFormat.format(cal.getTime());
-
-
-
+        ticket_time_in = dateFormat.format(cal.getTime());
+        //  return dateFormat.format(cal.getTime());
 
         site_name = sessionManager.getKeySiteName();
         tvSiteName.setText(site_name);
@@ -135,7 +131,7 @@ public class TicketFormatActivity extends AppCompatActivity {
         tvNumber.setText(veh_number);
         tvVehicleType.setText(veh_type);
         tvPrice.setText(fee);
-        tvLocation.setText( sessionManager.getKeyAreanmae());
+        tvLocation.setText(sessionManager.getKeyAreanmae());
         Toast.makeText(this, "  " + veh_number + " ", Toast.LENGTH_SHORT).show();
 
         btnPrintMix.setOnClickListener(new OnClickListener() {
@@ -171,15 +167,19 @@ public class TicketFormatActivity extends AppCompatActivity {
                 switch (state) {
                     case PosApi.ERR_POS_PRINT_NO_PAPER:
                         showTip(getString(R.string.print_no_paper));
+                        player.start();
                         break;
                     case PosApi.ERR_POS_PRINT_FAILED:
                         showTip(getString(R.string.print_failed));
+                        player.start();
                         break;
                     case PosApi.ERR_POS_PRINT_VOLTAGE_LOW:
                         showTip(getString(R.string.print_voltate_low));
+                        player.start();
                         break;
                     case PosApi.ERR_POS_PRINT_VOLTAGE_HIGH:
                         showTip(getString(R.string.print_voltate_high));
+                        player.start();
                         break;
                 }
             }
@@ -220,7 +220,7 @@ public class TicketFormatActivity extends AppCompatActivity {
         LPTicket.setNumber(veh_number);
         LPTicket.setVehicleType(veh_type);
         LPTicket.setPrice(fee);
-        LPTicket.setLocation( sessionManager.getKeyAreanmae());
+        LPTicket.setLocation(sessionManager.getKeyAreanmae());
         LPTicket.setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
         realm.beginTransaction();
         realm.copyToRealm(LPTicket);
@@ -250,6 +250,7 @@ public class TicketFormatActivity extends AppCompatActivity {
                         } else {
                             // ed_str.setText("open fail\n");
                             Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show();
+                            player.start();
                         }
                         break;
                     case PosApi.POS_EXPAND_SERIAL3:
@@ -352,17 +353,16 @@ public class TicketFormatActivity extends AppCompatActivity {
         }
     }
 
-
     private void showTip(String msg) {
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.tips))
                 .setMessage(msg)
                 .setNegativeButton(getString(R.string.close),
                         new DialogInterface.OnClickListener() {
-
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                finish();
                             }
                         }).show();
     }

@@ -55,7 +55,7 @@ public class ScanService extends Service {
 //        IntentFilter intentFilter = new IntentFilter();
 //        intentFilter.addAction("ismart.intent.scandown");
 
-//        player = MediaPlayer.create(getApplicationContext(), R.raw.beep);
+        player = MediaPlayer.create(getApplicationContext(), R.raw.beep);
 
         super.onCreate();
 
@@ -64,7 +64,6 @@ public class ScanService extends Service {
     public static void init() {
         Log.d(TAG, "init: ");
         mApi = App.getInstance().getPosApi();
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -139,6 +138,14 @@ public class ScanService extends Service {
         // TODO Auto-generated method stub
         mApi.closeDev();
         super.onDestroy();
+    }
+
+    private void stopPlaying() {
+        if (player != null) {
+            player.stop();
+            player.release();
+            player = null;
+        }
     }
 
 }

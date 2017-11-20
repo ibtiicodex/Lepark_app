@@ -9,8 +9,7 @@ import io.realm.RealmObject;
  * Created by HP on 9/27/2017.
  */
 
-public abstract class
-RealmRecyclerViewAdapter<T extends RealmObject> extends RecyclerView.Adapter {
+public abstract class RealmRecyclerViewAdapter<T extends RealmObject> extends RecyclerView.Adapter {
     private RealmBaseAdapter<T> realmBaseAdapter;
 
     public T getItem(int position) {
