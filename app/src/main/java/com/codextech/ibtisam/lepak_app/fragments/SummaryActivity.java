@@ -423,9 +423,9 @@ public class SummaryActivity extends AppCompatActivity {
 
             sb.append("\n");
             sb.append("\n");
-            sb.append("Veh   Count   Fair   Total");
+            sb.append("Veh   Count   Fare   Total");
             sb.append("\n");
-            sb.append("Car    "+countCar+"      "+sessionManager.getKeyCarAmount()+"    "+sumCar);
+            sb.append("Car    "+countCar+"      "+sessionManager.getKeyCarAmount()+"     "+sumCar);
             sb.append("\n");
             sb.append("Bike   "+countBike+"       "+sessionManager.getKeyBikeAmount()+"     "+sumBike);
             sb.append("\n");

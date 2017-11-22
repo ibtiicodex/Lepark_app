@@ -352,7 +352,7 @@ public class TicketFormatActivity extends AppCompatActivity {
             sb.append("\n");
             sb.append("for any loss");
             sb.append("\n");
-            sb.append("Complaint No:    " + "042-35116657");
+            sb.append("Help Line  :    " + "042-35116657");
             sb.append("\n");
             sb.append("----POWERED BY OUTSTART TECH----");
             sb.append("\n");

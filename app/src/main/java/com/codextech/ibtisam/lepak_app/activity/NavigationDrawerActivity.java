@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,19 +23,17 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.codextech.ibtisam.lepak_app.BlackList;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.app.MixpanelConfig;
 import com.codextech.ibtisam.lepak_app.fragments.SummaryActivity;
 import com.codextech.ibtisam.lepak_app.fragments.TabFragment;
+import com.codextech.ibtisam.lepak_app.receiver.NetworkStateReceiver;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
-import org.json.JSONObject;
 import com.codextech.ibtisam.lepak_app.sync.MyUrls;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,7 +52,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
     private RequestQueue queue;
     TextView setOnProfile;
-    private String TAG = "NavigationActivity";
+    private String TAG = "NavigationDrawerActivity";
     private String siteId;
 
     @Override
@@ -105,62 +102,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 }
                 if (menuItem.getItemId() == R.id.logoutnav) {
 
-
-                    StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.LOGOUT,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try {
-                                        Log.d(TAG, "*********************************onResponse:" + response);
-                                        JSONObject obj = new JSONObject(response);
-                                        int responseCode = obj.getInt("responseCode");
-                                        if (responseCode == 200) {
-
-                                            Toast.makeText(NavigationDrawerActivity.this, "Okay Send Data ", Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-
-                                    }
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    error.printStackTrace();
-                                    try {
-                                        Log.d(TAG, "*********************************onResponse:" + error);
-                                        if (error.networkResponse != null) {
-                                            if (error.networkResponse.statusCode == 401) {
-                                                JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                                                int responseCode = jObj.getInt("responseCode");
-
-                                            }
-                                        } else {
-
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                    ) {
-                        @Override
-                        protected Map<String, String> getParams() {
-                            Map<String, String> params = new HashMap<String, String>();
-                            params.put("site_id", siteId);
-                            params.put("mac", SyncStatus.getMacAddr());
-                            return params;
-                        }
-                    };
-                    queue.add(postRequest);
-
-
-                    sessionManager.logoutSite();
-                    finish();
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
+                    logoutManager();
                 }
                 if (menuItem.getItemId() == R.id.nav_NfcActvity) {
                     Intent intent = new Intent(getApplicationContext(), NfcGetAllCoinsActivity.class);
@@ -175,10 +117,10 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                     Toast.makeText(NavigationDrawerActivity.this, " Refreshed ", Toast.LENGTH_SHORT).show();
                 }
 
-                if (menuItem.getItemId() == R.id.nav_BlockUser) {
-                    Intent intent = new Intent(getApplicationContext(), BlackList.class);
-                    startActivity(intent);
-                }
+//                if (menuItem.getItemId() == R.id.nav_BlockUser) {
+//                    Intent intent = new Intent(getApplicationContext(), BlackList.class);
+//                    startActivity(intent);
+//                }
 
                 return false;
             }
@@ -190,6 +132,72 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
+    }
+
+    private void logoutManager() {
+
+
+        if (NetworkStateReceiver.isNetworkAvailable(getApplicationContext())) {
+            // Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
+            StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.LOGOUT,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                //  Log.d(TAG, "****onResponse:" + response);
+                                JSONObject obj = new JSONObject(response);
+                                int responseCode = obj.getInt("responseCode");
+                                if (responseCode == 200) {
+
+                                    sessionManager.logoutSite();
+                                    finish();
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                    startActivity(intent);
+                                    Toast.makeText(NavigationDrawerActivity.this, "Okay Send Data ", Toast.LENGTH_SHORT).show();
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                            try {
+                                //Log.d(TAG, "**onResponse:" + error);
+                                if (error.networkResponse != null) {
+                                    if (error.networkResponse.statusCode == 401) {
+                                        JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                        int responseCode = jObj.getInt("responseCode");
+
+                                    }
+                                } else {
+
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            ) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("site_id", siteId);
+                    params.put("mac", SyncStatus.getMacAddr());
+                    return params;
+                }
+            };
+            queue.add(postRequest);
+
+
+        } else {
+            Toast.makeText(NavigationDrawerActivity.this, "No Internet", Toast.LENGTH_LONG).show();
+            //  Log.d(TAG, "doInBackground: " + "************************ NO INTERNET CONNECTIVITY****************************");
+        }
     }
 
 }
