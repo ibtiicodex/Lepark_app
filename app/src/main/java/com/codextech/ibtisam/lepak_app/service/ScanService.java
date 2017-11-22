@@ -17,7 +17,7 @@ import com.codextech.ibtisam.lepak_app.wiget.App;
 import java.io.UnsupportedEncodingException;
 
 public class ScanService extends Service {
-    public static final String TAG = "test";
+    public static final String TAG = "ScanService";
 
     private boolean isOpen = false;
     private int mComFd = -1;

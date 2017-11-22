@@ -23,8 +23,6 @@ public class SessionManager {
     private static final String KEY_AREANMAE = "key_area_name";
     private static final String KEY_MAC = "key_mac";
 
-
-
     private static final String KEY_IMAGE = "key_image";
     // Sharedpref file name
     private static final String PREF_NAME = "ProjectLastingSalesPreffs";
@@ -33,17 +31,18 @@ public class SessionManager {
     // Editor for Shared preferences
     SharedPreferences.Editor editor;
 
-
     // Context
     Context _context;
     // Shared pref mode
     int PRIVATE_MODE = 0;
+
     // Constructor
     public SessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
+
     public Boolean isSiteSignedIn() {
         if (getLoginToken().equals("")) {
             return false;
@@ -59,7 +58,8 @@ public class SessionManager {
         }
         return true;
     }
-    public void loginSite(String id, String name, String token, Long timeStamp, String car, String bike, String van, String truck ,String areaName,String macAddress,String img) {
+
+    public void loginSite(String id, String name, String token, Long timeStamp, String car, String bike, String van, String truck, String areaName, String macAddress, String img) {
         Log.d(TAG, "loginSite: ");
 //        deleteDataIfDifferentUser();
         setKeySiteId(id);
@@ -79,6 +79,7 @@ public class SessionManager {
     private void deleteDataIfDifferentUser(String number) {
         //TODO implement
     }
+
     public void logoutSite() {
         deleteAllUserData();
         setKeySiteId("");
@@ -172,7 +173,7 @@ public class SessionManager {
         editor.commit();
     }
 
-    public  String getKeyAreanmae()  {
+    public String getKeyAreanmae() {
         return pref.getString(KEY_AREANMAE, "");
     }
 
@@ -181,7 +182,7 @@ public class SessionManager {
         editor.commit();
     }
 
-    public String getKeyMac()  {
+    public String getKeyMac() {
         return pref.getString(KEY_MAC, "");
     }
 
@@ -190,7 +191,7 @@ public class SessionManager {
         editor.commit();
     }
 
-    public  String getKeyImage()  {
+    public String getKeyImage() {
         return pref.getString(KEY_IMAGE, "");
     }
 

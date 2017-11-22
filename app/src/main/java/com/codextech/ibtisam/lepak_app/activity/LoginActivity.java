@@ -24,10 +24,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
+import com.codextech.ibtisam.lepak_app.app.MixpanelConfig;
 import com.codextech.ibtisam.lepak_app.model.AllSites;
 import com.codextech.ibtisam.lepak_app.receiver.NetworkStateReceiver;
 import com.codextech.ibtisam.lepak_app.sync.MyUrls;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -115,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String email = emailEditText.getText().toString();
+                final String site = emailEditText.getText().toString();
 
                 final String pass = passEditText.getText().toString();
                 if (!isValidPassword(pass)) {
@@ -128,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
                     // Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
 
                     if (isValidPassword(pass)) {
-                        loginRequest(email, pass);
+                        loginRequest(site, pass);
                         pdLoading.show();
 
                     }
@@ -151,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
-    void loginRequest(final String email, final String password) {
+    void loginRequest(final String site, final String password) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.LOGIN,
                 new Response.Listener<String>() {
                     @Override
@@ -186,6 +188,27 @@ public class LoginActivity extends AppCompatActivity {
                                 if (pdLoading != null && pdLoading.isShowing()) {
                                     pdLoading.dismiss();
                                 }
+
+                                String projectToken = MixpanelConfig.projectToken;
+                                MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
+                                MixpanelAPI.People people = mixpanel.getPeople();
+                                people.identify(site_id);
+//                                people.initPushHandling("44843550731");
+//                                mixpanel.getPeople().identify(site_id);
+
+                                JSONObject props = new JSONObject();
+
+                                props.put("$site_name", "" + site);
+                                props.put("$area_name", "" + areaName);
+                                props.put("car_fare", "" + car_fare);
+                                props.put("bike_fare", "" + bike_fare);
+                                props.put("van_fare", "" + van_fare);
+                                props.put("truck_fare", "" + truck_fare);
+//                                props.put("activated", "yes");
+
+                                mixpanel.getPeople().set(props);
+
+                                mixpanel.track("User Logged in", props);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -223,7 +246,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("username", email);
+                params.put("username", site);
                 params.put("password", password);
                 params.put("mac", SyncStatus.getMacAddr());
                 return params;
