@@ -15,6 +15,7 @@ import com.codextech.ibtisam.lepak_app.app.Prefs;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
+import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -48,8 +49,13 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<LPTicket> {
         // set the title and the snippet
         holder.tvSiteName.setText(LPTicket.getSiteName());
         holder.textVehicalType.setText(LPTicket.getVehicleType());
-        holder.tvTimeIn.setText(LPTicket.getTimeIn());
-        holder.textTimeOut.setText(LPTicket.getTimeOut());
+        holder.tvTimeIn.setText(DateAndTimeUtils.getDateTimeStringFromMiliseconds(LPTicket.getTimeIn(), "yyyy-MM-dd kk:mm:ss"));
+        if(LPTicket.getTimeOut() != 0L){
+            holder.textTimeOut.setText(DateAndTimeUtils.getDateTimeStringFromMiliseconds(LPTicket.getTimeOut(), "yyyy-MM-dd kk:mm:ss"));
+        }else {
+            holder.textTimeOut.setText("");
+        }
+
         holder.textNumber.setText(LPTicket.getNumber());
         holder.textPrice.setText(LPTicket.getPrice());
         holder.textLocation.setText(LPTicket.getLocation());

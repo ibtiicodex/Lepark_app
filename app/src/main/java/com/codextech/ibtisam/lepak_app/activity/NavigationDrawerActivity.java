@@ -15,17 +15,31 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.app.MixpanelConfig;
 import com.codextech.ibtisam.lepak_app.fragments.SummaryActivity;
 import com.codextech.ibtisam.lepak_app.fragments.TabFragment;
+import com.codextech.ibtisam.lepak_app.receiver.NetworkStateReceiver;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
+import com.codextech.ibtisam.lepak_app.sync.MyUrls;
+import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 //import com.codextech.ibtisam.lepak_app.service.ScanService;
 public class NavigationDrawerActivity extends AppCompatActivity {
@@ -35,13 +49,21 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     FragmentManager mFragmentManager;
     private ImageView ivProfileImgNavBar;
     SessionManager sessionManager;
+
+    private RequestQueue queue;
     TextView setOnProfile;
+    private String TAG = "NavigationDrawerActivity";
+    private String siteId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sessionManager = new SessionManager(NavigationDrawerActivity.this);
+        queue = Volley.newRequestQueue(NavigationDrawerActivity.this, new HurlStack());
 
+
+        sessionManager = new SessionManager(NavigationDrawerActivity.this);
+        siteId = sessionManager.getKeySiteId();
         if (!sessionManager.isSiteSignedIn()) {
             startActivity(new Intent(NavigationDrawerActivity.this, LoginActivity.class));
             finish();
@@ -52,9 +74,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mNavigationView = (NavigationView) findViewById(R.id.shitstuff);
 
-        View header=mNavigationView.getHeaderView(0);
+        View header = mNavigationView.getHeaderView(0);
 /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
-        setOnProfile = (TextView)header.findViewById(R.id.tvSite);
+        setOnProfile = (TextView) header.findViewById(R.id.tvSite);
         setOnProfile.setText(sessionManager.getKeySiteName());
 
 
@@ -79,10 +101,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 if (menuItem.getItemId() == R.id.logoutnav) {
-                    sessionManager.logoutSite();
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
-                    finish();
+                    logoutManager();
                 }
                 if (menuItem.getItemId() == R.id.nav_NfcActvity) {
                     Intent intent = new Intent(getApplicationContext(), NfcGetAllCoinsActivity.class);
@@ -97,6 +116,11 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                     Toast.makeText(NavigationDrawerActivity.this, " Refreshed ", Toast.LENGTH_SHORT).show();
                 }
 
+//                if (menuItem.getItemId() == R.id.nav_BlockUser) {
+//                    Intent intent = new Intent(getApplicationContext(), BlackList.class);
+//                    startActivity(intent);
+//                }
+
                 return false;
             }
 
@@ -107,6 +131,72 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
+    }
+
+    private void logoutManager() {
+
+
+        if (NetworkStateReceiver.isNetworkAvailable(getApplicationContext())) {
+            // Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
+            StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.LOGOUT,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                //  Log.d(TAG, "****onResponse:" + response);
+                                JSONObject obj = new JSONObject(response);
+                                int responseCode = obj.getInt("responseCode");
+                                if (responseCode == 200) {
+
+                                    sessionManager.logoutSite();
+                                    finish();
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                    startActivity(intent);
+                                    Toast.makeText(NavigationDrawerActivity.this, "Okay Send Data ", Toast.LENGTH_SHORT).show();
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                            try {
+                                //Log.d(TAG, "**onResponse:" + error);
+                                if (error.networkResponse != null) {
+                                    if (error.networkResponse.statusCode == 401) {
+                                        JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
+                                        int responseCode = jObj.getInt("responseCode");
+
+                                    }
+                                } else {
+
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            ) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("site_id", siteId);
+                    params.put("mac", SyncStatus.getMacAddr());
+                    return params;
+                }
+            };
+            queue.add(postRequest);
+
+
+        } else {
+            Toast.makeText(NavigationDrawerActivity.this, "No Internet", Toast.LENGTH_LONG).show();
+            //  Log.d(TAG, "doInBackground: " + "************************ NO INTERNET CONNECTIVITY****************************");
+        }
     }
 
 }

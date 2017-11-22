@@ -175,11 +175,8 @@ public class PrintTicketFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        edenternumber.setText("");
-    }
+
+
 }
 
 

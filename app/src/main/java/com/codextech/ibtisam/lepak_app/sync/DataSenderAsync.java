@@ -16,6 +16,7 @@ import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.model.LPNfc;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.receiver.NetworkStateReceiver;
+import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,12 +78,12 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
         for (LPTicket oneLPTicket : manyLPTicket) {
             Log.d(TAG, "addTicketToServer: oneLPTicket " + oneLPTicket);
             Log.d(TAG, "addTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
-            addTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn(), oneLPTicket.getTimeOut());
+            addTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn(), DateAndTimeUtils.getDateTimeStringFromMiliseconds(oneLPTicket.getTimeOut(),"yyyy-MM-dd kk:mm:ss"));
         }
         realm.close();
     }
 
-    private void addTicketToServerSync(final String veh_num, final String veh_type, final String fee, final String time_in, final String time_out) {
+    private void addTicketToServerSync(final String veh_num, final String veh_type, final String fee, final long time_in, final String time_out) {
         queue = Volley.newRequestQueue(context, new HurlStack());
         StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.TICKET_SEND,
 
@@ -157,7 +158,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                 params.put("vehicle_no", veh_num);
                 params.put("vehicle_type", veh_type);
                 params.put("fee", fee);
-                params.put("time_in", time_in);
+                params.put("time_in", DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_in, "yyyy-MM-dd kk:mm:ss"));
                 params.put("time_out", time_out);
                 params.put("token", sessionManager.getLoginToken());
                 params.put("mac", sessionManager.getKeyMac());
@@ -177,7 +178,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
         for (LPTicket oneLPTicket : manyLPTicket) {
             Log.d(TAG, "editTicketToServer: oneLPTicket " + oneLPTicket);
             Log.d(TAG, "editTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
-            editTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn(), oneLPTicket.getTimeOut(), oneLPTicket.getServer_id());
+            editTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), DateAndTimeUtils.getDateTimeStringFromMiliseconds(oneLPTicket.getTimeIn(), "yyyy-MM-dd kk:mm:ss"), DateAndTimeUtils.getDateTimeStringFromMiliseconds(oneLPTicket.getTimeOut(), "yyyy-MM-dd kk:mm:ss"), oneLPTicket.getServer_id());
         }
     }
 

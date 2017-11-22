@@ -75,9 +75,15 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        realm = Realm.getInstance(getApplicationContext());
         queue = Volley.newRequestQueue(LoginActivity.this, new HurlStack());
         all_location = new ArrayList<String>();
         macAddtress = SyncStatus.getMacAddr();
+        spAllSites = (Spinner) findViewById(R.id.spAllSites);
+        btLogin = (Button) findViewById(R.id.btLogin);
+        btok = (Button) findViewById(R.id.btok);
+        emailEditText = (EditText) findViewById(edSiteName);
+        passEditText = (EditText) findViewById(R.id.password);
 
         if (sessionManager.isSiteSignedIn()) {
             startActivity(new Intent(getApplicationContext(), NavigationDrawerActivity.class));
@@ -93,24 +99,23 @@ public class LoginActivity extends AppCompatActivity {
             Log.d(TAG, "doInBackground: " + "************************ NO INTERNET CONNECTIVITY****************************");
         }
 
-//        getAllLocationsFromServer();
         RegisterActivity obj = new RegisterActivity();
-        spAllSites = (Spinner) findViewById(R.id.spAllSites);
         String email = getIntent().getStringExtra(LoginActivity.LOGIN_EMAIL);
         String password = getIntent().getStringExtra(LoginActivity.LOGIN_PASSWORD);
-        btLogin = (Button) findViewById(R.id.btLogin);
-        //btRegister = (Button) findViewById(R.id.btRegister);
-        btok = (Button) findViewById(R.id.btok);
-        emailEditText = (EditText) findViewById(edSiteName);
-        //emailEditText.setText(email);
-        passEditText = (EditText) findViewById(R.id.password);
         passEditText.setText(password);
-        //  tvsignup = (TextView) findViewById(R.id.tvsignup);
         pdLoading = new ProgressDialog(this);
         pdLoading.setTitle("Loading data");
         pdLoading.setMessage("Please Wait...");
         sessionManager = new SessionManager(LoginActivity.this);
         queue = Volley.newRequestQueue(LoginActivity.this, new HurlStack());
+        RealmQuery<AllSites> query = realm.where(AllSites.class);
+        // query.equalTo("id",1);
+        RealmResults<AllSites> allSitesNames = query.findAll();
+        Log.d(TAG, "allLocationsFromDB: *************" + allSitesNames.toString());
+        Log.d(TAG, "allLocationsFromDB: SIZE:*********** " + allSitesNames.size());
+        for (AllSites oneLocation : allSitesNames) {
+            showAllSitesInSpinner(oneLocation.getSite_name());
+        }
 //        btRegister.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -253,6 +258,7 @@ public class LoginActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", site);
                 params.put("password", password);
+                params.put("mac", SyncStatus.getMacAddr());
                 return params;
             }
         };
@@ -303,14 +309,13 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }
                             Log.d(TAG, jsonResponse.toString());
-                            RealmQuery<AllSites> query = realm.where(AllSites.class);
-                            // query.equalTo("id",1);
-                            RealmResults<AllSites> allSitesNames = query.findAll();
-                            Log.d(TAG, "allLocationsFromDB: " + allSitesNames.toString());
-                            Log.d(TAG, "allLocationsFromDB: SIZE: " + allSitesNames.size());
-                            for (AllSites oneLocation : allSitesNames) {
-                                showAllSitesInSpinner(oneLocation.getSite_name());
-                            }
+//                            RealmQuery<AllSites> query = realm.where(AllSites.class);
+//                           // query.equalTo("id",1);
+//                            RealmResults<AllSites> allSitesNames = query.findAll();
+//                            Log.d(TAG, "allLocationsFromDB: " + allSitesNames.toString());
+//                            Log.d(TAG, "allLocationsFromDB: SIZE: " + allSitesNames.size());
+//                            for (AllSites oneLocation : allSitesNames) {
+//                                //showAllSitesInSpinner(oneLocation.getSite_name());                         }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.e(TAG, "onResponse: JSONException");

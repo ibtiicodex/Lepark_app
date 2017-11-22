@@ -17,6 +17,7 @@ import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
 import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
+import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -38,7 +39,7 @@ public class ReturnTicketFragment extends Fragment {
     Button btnPrintMix;
     private TextView tvTimeIn;
     private TextView tvTimeDifference;
-    String ticket_time_out;
+    long ticket_time_out;
     private Realm realm;
     private TextView tvTotallPrice;
     private EditText edAlpha;
@@ -82,13 +83,14 @@ public class ReturnTicketFragment extends Fragment {
                     Log.e(TAG, "onCreate: " + manyLPTicket.toString());
                     if (manyLPTicket.size() > 0) {
                         Log.d(TAG, "onClick: in   __________________________________________________________________________" + manyLPTicket.first().getTimeOut());
-                        if (manyLPTicket.first().getTimeOut().equals("")) {
+                        if (manyLPTicket.first().getTimeOut() == 00L) {
                             tvAgentName.setText(manyLPTicket.first().getSiteName());
-                            tvTimeIn.setText(manyLPTicket.first().getTimeIn());
+                            tvTimeIn.setText(DateAndTimeUtils.getDateTimeStringFromMiliseconds(manyLPTicket.first().getTimeIn(), "yyyy-MM-dd kk:mm:ss"));
                             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
                             Calendar cal = Calendar.getInstance();
-                            ticket_time_out = dateFormat.format(cal.getTime());
-                            tvTimeOut.setText(ticket_time_out);
+                            ticket_time_out = Calendar.getInstance().getTimeInMillis();
+//                            ticket_time_out = dateFormat.format(cal.getTime());
+                            tvTimeOut.setText(DateAndTimeUtils.getDateTimeStringFromMiliseconds(ticket_time_out, "yyyy-MM-dd kk:mm:ss"));
                             tvNumber.setText(manyLPTicket.first().getNumber());
                             tvPrice.setText(manyLPTicket.first().getPrice());
                             realm.beginTransaction();
@@ -101,7 +103,7 @@ public class ReturnTicketFragment extends Fragment {
                                 manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED);
                             }
                             realm.commitTransaction();
-                            timeDifference(manyLPTicket.first().getTimeIn(), manyLPTicket.first().getTimeOut(), manyLPTicket.first().getPrice());
+                            timeDifference(DateAndTimeUtils.getDateTimeStringFromMiliseconds(manyLPTicket.first().getTimeIn(), "yyyy-MM-dd kk:mm:ss"), DateAndTimeUtils.getDateTimeStringFromMiliseconds(manyLPTicket.first().getTimeOut(), "yyyy-MM-dd kk:mm:ss"), manyLPTicket.first().getPrice());
                             DataSenderAsync dataSenderAsync = new DataSenderAsync(getActivity());
                             dataSenderAsync.execute();
                         } else {
