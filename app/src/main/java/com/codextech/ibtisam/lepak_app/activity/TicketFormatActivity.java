@@ -28,10 +28,9 @@ import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
+import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import io.realm.Realm;
@@ -59,12 +58,11 @@ public class TicketFormatActivity extends AppCompatActivity {
     private TextView tvPrice;
     private TextView tvLocation;
     String site_name = "";
-    String ticket_time_in = "";
-    String ticket_time_out = "";
+    long ticket_time_in = 0L;
+    long ticket_time_out = 0L;
     String veh_number = "";
     String veh_type = "";
     String fee = "";
-    String device_location = "31.51,74.34";
     SessionManager sessionManager;
 
     @Override
@@ -132,13 +130,13 @@ public class TicketFormatActivity extends AppCompatActivity {
             }
         }
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
-        Calendar cal = Calendar.getInstance();
-        ticket_time_in = dateFormat.format(cal.getTime());
-        //  return dateFormat.format(cal.getTime());
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+//        Calendar cal = Calendar.getInstance();
+        ticket_time_in = Calendar.getInstance().getTimeInMillis();
+//        ticket_time_in = dateFormat.format(cal.getTime());
         site_name = sessionManager.getKeySiteName();
         tvSiteName.setText(site_name);
-        tvTimeIn.setText(ticket_time_in);
+        tvTimeIn.setText(DateAndTimeUtils.getDateTimeStringFromMiliseconds(ticket_time_in, "yyyy-MM-dd kk:mm:ss"));
         tvNumber.setText(veh_number);
         tvVehicleType.setText(veh_type);
         tvPrice.setText(fee);
@@ -227,7 +225,7 @@ public class TicketFormatActivity extends AppCompatActivity {
         LPTicket.setId(System.currentTimeMillis());
         LPTicket.setSiteName(sessionManager.getKeySiteName());
         LPTicket.setTimeIn(ticket_time_in);
-        LPTicket.setTimeOut("");
+        LPTicket.setTimeOut(ticket_time_out);
         LPTicket.setNumber(veh_number);
         LPTicket.setVehicleType(veh_type);
         LPTicket.setPrice(fee);
@@ -332,18 +330,16 @@ public class TicketFormatActivity extends AppCompatActivity {
             sb.append("\n");
             sb.append("Site Name:  " + site_name);
             sb.append("\n");
-            sb.append("Time:       " + ticket_time_in);
-            sb.append("\n");
+            sb.append("Time:       " + DateAndTimeUtils.getDateTimeStringFromMiliseconds(ticket_time_in, "MMM dd,yyyy hh:mm a"));
+
             sb.append("No. Plate:  " + veh_number);
             sb.append("\n");
             sb.append("Type:       " + veh_type);
             sb.append("\n");
-            if(fee.equals("0")) {
+            if (fee.equals("0")) {
                 sb.append("Fee:        " + "Free Parking");
-            }
-            else
-            {
-                sb.append("Fee:        " +fee);
+            } else {
+                sb.append("Fee:        " + "Rs. " + fee);
 
             }
             sb.append("\n");
@@ -358,15 +354,10 @@ public class TicketFormatActivity extends AppCompatActivity {
             sb.append("\n");
             sb.append("Complaint No:    " + "042-35116657");
             sb.append("\n");
-            sb.append("\n");
             sb.append("----POWERED BY OUTSTART TECH----");
-            //sb.append("\n");
-            sb.append("**************END***************");
             sb.append("\n");
+            sb.append("                                                                                                       ");
             sb.append("\n");
-            sb.append("\n");
-            sb.append("\n");
-
             byte[] text = null;
             text = sb.toString().getBytes("GBK");
             addPrintTextWithSize(1, concentration, text);
@@ -407,6 +398,7 @@ public class TicketFormatActivity extends AppCompatActivity {
         super.onPause();
         closeDevice();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

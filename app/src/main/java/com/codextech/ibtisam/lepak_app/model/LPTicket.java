@@ -15,11 +15,15 @@ public class LPTicket extends RealmObject {
     private String number;
     private String price;
     private String location;
-    private String timeIn;
-    private String timeOut;
+    private long timeIn;
+    //in the memories of timeIn which was deleted
+    private long timeOut;
     private String syncStatus;
     private String vehicleType;
     private String server_id;
+
+
+    private String blockUser;
 
     public String getNumber() {
         return number;
@@ -61,19 +65,27 @@ public class LPTicket extends RealmObject {
         this.siteName = name;
     }
 
-    public String getTimeIn() {
+    public long getTimeIn() {
         return timeIn;
     }
 
-    public void setTimeIn(String timeIn) {
+    public void setTimeIn(long timeIn) {
         this.timeIn = timeIn;
     }
 
-    public String getTimeOut() {
+    //    public String getTimeIn() {
+//        return timeIn;
+//    }
+//
+//    public void setTimeIn(String timeIn) {
+//        this.timeIn = timeIn;
+//    }
+
+    public long getTimeOut() {
         return timeOut;
     }
 
-    public void setTimeOut(String timeOut) {
+    public void setTimeOut(long timeOut) {
         this.timeOut = timeOut;
     }
 
@@ -100,4 +112,13 @@ public class LPTicket extends RealmObject {
     public void setServer_id(String server_id) {
         this.server_id = server_id;
     }
+
+    public String getBlockUser() {
+        return blockUser;
+    }
+
+    public void setBlockUser(String blockUser) {
+        this.blockUser = blockUser;
+    }
+
 }

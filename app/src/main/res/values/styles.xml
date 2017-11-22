@@ -6,10 +6,12 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@color/selected</item>
     </style>
+
     <style name="AppTheme.Card.Margins" parent="CardView">
         <item name="android:layout_marginTop">@dimen/margin_normal</item>
         <item name="android:layout_marginBottom">@dimen/margin_normal</item>
@@ -22,13 +24,16 @@
         <item name="cardPreventCornerOverlap">false</item>
         <item name="cardBackgroundColor">@android:color/white</item>
     </style>
+
     <style name="ToolBarStyle" parent="Theme.AppCompat">
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="actionMenuTextColor">@android:color/white</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

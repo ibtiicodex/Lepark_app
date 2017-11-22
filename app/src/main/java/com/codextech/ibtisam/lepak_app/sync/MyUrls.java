@@ -11,4 +11,5 @@ public class MyUrls {
     public static final String Register = "http://34.215.56.25/apiLepak/public/api/sites/registration";
     public static final String LocationUrl = "http://34.215.56.25/apiLepak/public/api/sites/locations";
     public static final String AllSitesNames = "http://34.215.56.25/apiLepak/public/api/sites/allsites";
+    public static final String LOGOUT = "http://34.215.56.25/apiLepak/public/api/sites/logout";
 }

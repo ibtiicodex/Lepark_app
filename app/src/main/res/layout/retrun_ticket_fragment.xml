@@ -18,8 +18,9 @@
         android:background="#FFF"
         android:ems="10"
         android:gravity="center"
+        android:imeOptions="actionNext"
         android:hint="LWZ"
-        android:inputType="textCapCharacters"
+        android:inputType="textCapWords"
         android:textColorHint="#FFC9CACA"
         android:textSize="30dp" />
     <EditText
@@ -29,6 +30,7 @@
         android:background="#FFF"
         android:ems="10"
         android:inputType="text"
+        android:imeOptions="actionNext"
         android:gravity="center"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -40,6 +42,7 @@
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:background="#FFF"
+        android:imeOptions="actionNext"
         android:ems="10"
         android:inputType="number"
         android:gravity="center"

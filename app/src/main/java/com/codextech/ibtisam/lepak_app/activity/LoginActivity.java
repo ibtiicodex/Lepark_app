@@ -225,6 +225,7 @@ public class LoginActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", email);
                 params.put("password", password);
+                params.put("mac", SyncStatus.getMacAddr());
                 return params;
             }
         };
