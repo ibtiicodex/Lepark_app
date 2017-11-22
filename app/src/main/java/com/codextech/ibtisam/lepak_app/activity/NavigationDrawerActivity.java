@@ -43,8 +43,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         sessionManager = new SessionManager(NavigationDrawerActivity.this);
 
         if (!sessionManager.isSiteSignedIn()) {
-            finish();
             startActivity(new Intent(NavigationDrawerActivity.this, LoginActivity.class));
+            finish();
         }
         Intent newIntent = new Intent(NavigationDrawerActivity.this, ScanService.class);
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -80,9 +80,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 }
                 if (menuItem.getItemId() == R.id.logoutnav) {
                     sessionManager.logoutSite();
-                    finish();
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                 if (menuItem.getItemId() == R.id.nav_NfcActvity) {
                     Intent intent = new Intent(getApplicationContext(), NfcGetAllCoinsActivity.class);

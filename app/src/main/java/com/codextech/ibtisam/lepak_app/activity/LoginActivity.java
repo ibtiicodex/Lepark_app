@@ -79,6 +79,11 @@ public class LoginActivity extends AppCompatActivity {
         all_location = new ArrayList<String>();
         macAddtress = SyncStatus.getMacAddr();
 
+        if (sessionManager.isSiteSignedIn()) {
+            startActivity(new Intent(getApplicationContext(), NavigationDrawerActivity.class));
+            finish();
+        }
+
         if (NetworkStateReceiver.isNetworkAvailable(getApplicationContext())) {
             // Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
             getAllLocationsFromServer();
@@ -162,6 +167,9 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject obj = new JSONObject(response);
                             int responseCode = obj.getInt("responseCode");
                             if (responseCode == 200) {
+                                if (pdLoading != null && pdLoading.isShowing()) {
+                                    pdLoading.dismiss();
+                                }
                                 JSONObject uniObject = obj.getJSONObject("response");
                                 String site_id = uniObject.getString("site_id");
                                 site_name = uniObject.getString("site_name");
@@ -185,9 +193,6 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                                 Toast.makeText(LoginActivity.this, "User Successfully Login ", Toast.LENGTH_SHORT).show();
                                 Toast.makeText(LoginActivity.this, sessionManager.getKeySiteId(), Toast.LENGTH_SHORT).show();
-                                if (pdLoading != null && pdLoading.isShowing()) {
-                                    pdLoading.dismiss();
-                                }
 
                                 String projectToken = MixpanelConfig.projectToken;
                                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
