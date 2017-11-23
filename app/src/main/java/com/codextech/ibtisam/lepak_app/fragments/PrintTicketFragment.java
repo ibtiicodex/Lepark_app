@@ -26,6 +26,7 @@ public class PrintTicketFragment extends Fragment {
     private Button bCar;
     private Button bBike;
     private Button bVan;
+
     private Button bTruck;
     private EditText edenternumber;
     private String vehNumber;
@@ -33,10 +34,12 @@ public class PrintTicketFragment extends Fragment {
     private EditText enterAlpha;
     private EditText enterYear;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: PrintTicketFragment");
         View view = inflater.inflate(R.layout.print_ticket_fragment, container, false);
+
         edenternumber = (EditText) view.findViewById(R.id.enterNum);
         enterAlpha = (EditText) view.findViewById(R.id.enterAlpha);
         enterYear = (EditText) view.findViewById(R.id.enterYear);
@@ -60,16 +63,20 @@ public class PrintTicketFragment extends Fragment {
         if (Integer.parseInt(sessionManager.getKeyTruckAmount()) <= 0) {
             //bTruck.setVisibility(View.GONE);
         }
+
+
         bCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 // vehNumber = edenternumber.getText().toString();
                 if (enterYear.getText().toString().equals("") || enterYear.getText().toString().equals(" ")) {
 
-                    vehNumber = enterAlpha.getText().toString() + " " + edenternumber.getText().toString();
+                    vehNumber = enterAlpha.getText().toString().toUpperCase() + " " + edenternumber.getText().toString();
                 } else {
 
-                    vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+                    vehNumber = enterAlpha.getText().toString().toUpperCase() + "-" + enterYear.getText().toString().toUpperCase() + "-" + edenternumber.getText().toString();
 
                 }
 
@@ -94,10 +101,10 @@ public class PrintTicketFragment extends Fragment {
                 //vehNumber = edenternumber.getText().toString();
                 if (enterYear.getText().toString().equals("") || enterYear.getText().toString().equals(" ")) {
 
-                    vehNumber = enterAlpha.getText().toString() + " " + edenternumber.getText().toString();
+                    vehNumber = enterAlpha.getText().toString().toUpperCase() + " " + edenternumber.getText().toString();
                 } else {
 
-                    vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+                    vehNumber = enterAlpha.getText().toString().toUpperCase() + "-" + enterYear.getText().toString().toUpperCase() + "-" + edenternumber.getText().toString();
 
                 }
                 if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
@@ -121,10 +128,10 @@ public class PrintTicketFragment extends Fragment {
                 // vehNumber = edenternumber.getText().toString();
                 if (enterYear.getText().toString().equals("") || enterYear.getText().toString().equals(" ")) {
 
-                    vehNumber = enterAlpha.getText().toString() + " " + edenternumber.getText().toString();
+                    vehNumber = enterAlpha.getText().toString().toUpperCase() + " " + edenternumber.getText().toString();
                 } else {
 
-                    vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+                    vehNumber = enterAlpha.getText().toString().toUpperCase() + "-" + enterYear.getText().toString().toUpperCase() + "-" + edenternumber.getText().toString();
 
                 }
                 if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
@@ -150,10 +157,10 @@ public class PrintTicketFragment extends Fragment {
                 // vehNumber = edenternumber.getText().toString();
                 if (enterYear.getText().toString().equals("") || enterYear.getText().toString().equals(" ")) {
 
-                    vehNumber = enterAlpha.getText().toString() + " " + edenternumber.getText().toString();
+                    vehNumber = enterAlpha.getText().toString().toUpperCase() + " " + edenternumber.getText().toString();
                 } else {
 
-                    vehNumber = enterAlpha.getText().toString() + "-" + enterYear.getText().toString() + "-" + edenternumber.getText().toString();
+                    vehNumber = enterAlpha.getText().toString().toUpperCase() + "-" + enterYear.getText().toString().toUpperCase() + "-" + edenternumber.getText().toString();
 
                 }
                 if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
@@ -173,8 +180,8 @@ public class PrintTicketFragment extends Fragment {
         });
 
         return view;
-    }
 
+    }
 
 
 }

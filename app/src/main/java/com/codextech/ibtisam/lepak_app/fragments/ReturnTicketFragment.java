@@ -69,12 +69,14 @@ public class ReturnTicketFragment extends Fragment {
                 String carNum;
                 if (edYear.getText().toString().equals("")) {
 
-                    carNum = edAlpha.getText().toString() + " " + etCarNumber.getText().toString();
+                    carNum = edAlpha.getText().toString().toUpperCase() + " " + etCarNumber.getText().toString();
+
+
 
                 } else {
 
 
-                    carNum = edAlpha.getText().toString() + "-" + edYear.getText().toString() + "-" + etCarNumber.getText().toString();
+                    carNum = edAlpha.getText().toString().toUpperCase() + "-" + edYear.getText().toString().toUpperCase() + "-" + etCarNumber.getText().toString();
                 }
                 if (isValidCarNumber(carNum)) {
                     RealmQuery<LPTicket> query = realm.where(LPTicket.class);
@@ -170,4 +172,5 @@ public class ReturnTicketFragment extends Fragment {
         }
         tvTimeDifference.setText(elapsedHours + " h - " + elapsedMinutes + " m");
     }
+
 }

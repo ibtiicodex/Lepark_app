@@ -420,18 +420,17 @@ public class SummaryActivity extends AppCompatActivity {
             sb.append("\n");
             sb.append("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             sb.append( "     "+DateAndTimeUtils.getDateTimeStringFromMiliseconds(loginTimeStampLong, "MMM dd,yyyy hh:mm a")+"       ");
-
             sb.append("\n");
             sb.append("\n");
             sb.append("Veh   Count   Fare   Total");
             sb.append("\n");
-            sb.append("Car    "+countCar+"      "+sessionManager.getKeyCarAmount()+"     "+sumCar);
+              sb.append("Car    "+countCar+ "       "+  sessionManager.getKeyCarAmount()+"     "+sumCar);
+             sb.append("\n");
+              sb.append("Bike   "+countBike+"       "+ sessionManager.getKeyBikeAmount()+"     "+sumBike);
             sb.append("\n");
-            sb.append("Bike   "+countBike+"       "+sessionManager.getKeyBikeAmount()+"     "+sumBike);
+              sb.append("Van    "+countVan+ "       "  +sessionManager.getKeyVanAmount()+"     "+sumVan);
             sb.append("\n");
-            sb.append("Van    "+countVan+"       "+sessionManager.getKeyVanAmount()+"    "+sumVan);
-            sb.append("\n");
-            sb.append("Truck  "+countTruck+"       "+sessionManager.getKeyTruckAmount()+"     "+sumTruck);
+            sb.append("Truck  "  +countTruck+ "       "+sessionManager.getKeyTruckAmount()+"     "+sumTruck);
             sb.append("\n");
             sb.append("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             sb.append("Total  "+count+"              "+sum);

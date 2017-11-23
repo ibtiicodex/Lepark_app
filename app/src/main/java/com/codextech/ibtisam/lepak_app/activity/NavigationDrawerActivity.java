@@ -1,5 +1,6 @@
 package com.codextech.ibtisam.lepak_app.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -92,15 +94,95 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 mDrawerLayout.closeDrawers();
+
+                TelephonyManager telMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                int simState = telMgr.getSimState();
+
+
                 if (menuItem.getItemId() == R.id.showallnav) {
+                    switch (simState) {
+                        case TelephonyManager.SIM_STATE_ABSENT:
+                            Toast.makeText(NavigationDrawerActivity.this, "Sim Is Absent", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_NETWORK_LOCKED:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_NETWORK_LOCKED  ", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_PIN_REQUIRED:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_PIN_REQUIRED ", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_PUK_REQUIRED:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_PUK_REQUIRED", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_READY:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_READY", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_UNKNOWN:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_UNKNOWN", Toast.LENGTH_LONG).show();
+                            break;
+                    }
                     Intent intent = new Intent(getApplicationContext(), AllTicketsActivity.class);
                     startActivity(intent);
                 }
                 if (menuItem.getItemId() == R.id.summarynav) {
+                    switch (simState) {
+                        case TelephonyManager.SIM_STATE_ABSENT:
+                            Toast.makeText(NavigationDrawerActivity.this, "Sim Is Absent", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_NETWORK_LOCKED:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_NETWORK_LOCKED  ", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_PIN_REQUIRED:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_PIN_REQUIRED ", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_PUK_REQUIRED:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_PUK_REQUIRED", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_READY:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_READY", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_UNKNOWN:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_UNKNOWN", Toast.LENGTH_LONG).show();
+                            break;
+                    }
                     Intent intent = new Intent(getApplicationContext(), SummaryActivity.class);
                     startActivity(intent);
                 }
                 if (menuItem.getItemId() == R.id.logoutnav) {
+                    switch (simState) {
+                        case TelephonyManager.SIM_STATE_ABSENT:
+                            Toast.makeText(NavigationDrawerActivity.this, "Sim Is Absent", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_NETWORK_LOCKED:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_NETWORK_LOCKED  ", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_PIN_REQUIRED:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_PIN_REQUIRED ", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_PUK_REQUIRED:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_PUK_REQUIRED", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_READY:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_READY", Toast.LENGTH_LONG).show();
+                            break;
+                        case TelephonyManager.SIM_STATE_UNKNOWN:
+                            // do something
+                            Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_UNKNOWN", Toast.LENGTH_LONG).show();
+                            break;
+                    }
 
                     logoutManager();
                 }

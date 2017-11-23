@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,7 +46,6 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
-import static com.codextech.ibtisam.lepak_app.R.id.edSiteName;
 import static com.codextech.ibtisam.lepak_app.activity.RegisterActivity.areaName;
 import static com.codextech.ibtisam.lepak_app.sync.MyUrls.AllSitesNames;
 
@@ -53,14 +53,14 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     public static final String LOGIN_EMAIL = "login_email";
     public static final String LOGIN_PASSWORD = "login_password";
-    private EditText emailEditText;
+  //  private EditText emailEditText;
     private EditText passEditText;
     private static String TAGA = "LoginActivity";
     Button btRegister;
     TextView tvsignup;
     ProgressDialog pdLoading;
     private Button btLogin;
-    private Button btok;
+  //  private Button btok;
     private SessionManager sessionManager;
     Realm realm;
     private String jsonResponse;
@@ -81,8 +81,8 @@ public class LoginActivity extends AppCompatActivity {
         macAddtress = SyncStatus.getMacAddr();
         spAllSites = (Spinner) findViewById(R.id.spAllSites);
         btLogin = (Button) findViewById(R.id.btLogin);
-        btok = (Button) findViewById(R.id.btok);
-        emailEditText = (EditText) findViewById(edSiteName);
+      //  btok = (Button) findViewById(R.id.btok);
+        //emailEditText = (EditText) findViewById(edSiteName);
         passEditText = (EditText) findViewById(R.id.password);
 
         if (NetworkStateReceiver.isNetworkAvailable(getApplicationContext())) {
@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String site = emailEditText.getText().toString();
+                final String site = site_name;
 
                 final String pass = passEditText.getText().toString();
                 if (!isValidPassword(pass)) {
@@ -329,7 +329,7 @@ public class LoginActivity extends AppCompatActivity {
         queue.add(req);
     }
 
-    public void showAllSitesInSpinner(String siteName) {
+    public void showAllSitesInSpinner(final String siteName) {
         Log.d(TAG, "addItemsOnSpinner2: Adding Items in Spinner");
         all_location.add(siteName);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, all_location);
@@ -340,17 +340,37 @@ public class LoginActivity extends AppCompatActivity {
 //            spAllSites.setSelection(spinnerPosition);
 //        }
 
-        btok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                site_name = String.valueOf(spAllSites.getSelectedItem());
-                emailEditText.setText(site_name);
-            }
-        });
+
+//        btok.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                site_name = String.valueOf(spAllSites.getSelectedItem());
+//                emailEditText.setText(site_name);
+//            }
+//        });
 //        site_name=String.valueOf(spAllSites.getSelectedItem());
 //        emailEditText.setText(site_name);
 
+
+        spAllSites.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View view, int arg2, long arg3) {
+
+                site_name = String.valueOf(spAllSites.getSelectedItem());
+               // emailEditText.setText(site_name);
+                Toast.makeText(getApplicationContext(), site_name,
+                        Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+
     }
 
-
 }
+
+
+
