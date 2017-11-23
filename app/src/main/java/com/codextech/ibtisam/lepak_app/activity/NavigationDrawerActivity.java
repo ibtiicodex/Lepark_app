@@ -69,6 +69,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         if (!sessionManager.isSiteSignedIn()) {
             finish();
             startActivity(new Intent(NavigationDrawerActivity.this, LoginActivity.class));
+            finish();
         }
         Intent newIntent = new Intent(NavigationDrawerActivity.this, ScanService.class);
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
