@@ -38,7 +38,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.TicketFormatActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoDisplay"/>
         <activity
             android:name=".activity.AllTicketsActivity"
             android:screenOrientation="portrait" />

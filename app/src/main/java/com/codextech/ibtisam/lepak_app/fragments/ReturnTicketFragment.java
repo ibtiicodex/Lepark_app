@@ -62,6 +62,7 @@ public class ReturnTicketFragment extends Fragment {
         tvPrice = (TextView) view.findViewById(R.id.tvPrice);
         tvTimeDifference = (TextView) view.findViewById(R.id.tvTotalHours);
         tvTotallPrice = (TextView) view.findViewById(R.id.tvTotallPrice);
+        etCarNumber.setText("");
 
         btnPrintMix.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,8 +101,10 @@ public class ReturnTicketFragment extends Fragment {
                             timeDifference(DateAndTimeUtils.getDateTimeStringFromMiliseconds(manyLPTicket.first().getTimeIn(), "yyyy-MM-dd kk:mm:ss"), DateAndTimeUtils.getDateTimeStringFromMiliseconds(manyLPTicket.first().getTimeOut(), "yyyy-MM-dd kk:mm:ss"), manyLPTicket.first().getPrice());
                             DataSenderAsync dataSenderAsync = new DataSenderAsync(getActivity());
                             dataSenderAsync.execute();
+                            etCarNumber.setText("");
                         } else {
                             Toast.makeText(getActivity(), "Already Exit ", Toast.LENGTH_SHORT).show();
+                            etCarNumber.setText("");
                         }
                     } else {
                         Toast.makeText(getActivity(), "vehicle doesn't exist", Toast.LENGTH_SHORT).show();

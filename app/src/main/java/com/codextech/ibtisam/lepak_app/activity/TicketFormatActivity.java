@@ -1,5 +1,6 @@
 package com.codextech.ibtisam.lepak_app.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,14 +13,8 @@ import android.os.Bundle;
 import android.posapi.PosApi;
 import android.posapi.PrintQueue;
 import android.posapi.PrintQueue.OnPrintListener;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codextech.ibtisam.lepak_app.R;
@@ -35,7 +30,7 @@ import java.util.Calendar;
 
 import io.realm.Realm;
 
-public class TicketFormatActivity extends AppCompatActivity {
+public class TicketFormatActivity extends Activity {
     public static final String TAG = "TicketFormatActivity";
     public static final String KEY_VEHICLE_TYPE = "key_vehicle_type";
     public static final String VEHICLE_TYPE_CAR = "vehicle_type_car";
@@ -43,7 +38,6 @@ public class TicketFormatActivity extends AppCompatActivity {
     public static final String VEHICLE_TYPE_VAN = "vehicle_type_van";
     public static final String VEHICLE_TYPE_TRUCK = "vehicle_type_truck";
     public static final String KEY_VEHICLE_NUMBER = "key_vehicle_num";
-    private Button btnPrintMix;
     private Bitmap mBitmap = null;
     private PrintQueue mPrintQueue = null;
     private byte mGpioPower = 0x1E;// PB14
@@ -51,12 +45,13 @@ public class TicketFormatActivity extends AppCompatActivity {
     private int mBaudrate = 4; // 9600
     MediaPlayer player;
     boolean isCanPrint = true;
-    private TextView tvSiteName;
-    private TextView tvTimeIn;
-    private TextView tvNumber;
-    private TextView tvVehicleType;
-    private TextView tvPrice;
-    private TextView tvLocation;
+//    private Button btnPrintMix;
+    //    private TextView tvSiteName;
+//    private TextView tvTimeIn;
+//    private TextView tvNumber;
+//    private TextView tvVehicleType;
+//    private TextView tvPrice;
+//    private TextView tvLocation;
     String site_name = "";
     long ticket_time_in = 0L;
     long ticket_time_out = 0L;
@@ -70,22 +65,22 @@ public class TicketFormatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         sessionManager = new SessionManager(TicketFormatActivity.this);
         Log.d(TAG, "onCreate: TicketFormatActivity");
-        setContentView(R.layout.activity_ticket);
-        tvSiteName = (TextView) findViewById(R.id.tvSiteName);
-        tvTimeIn = (TextView) findViewById(R.id.Dtime);
-        tvNumber = (TextView) findViewById(R.id.Dnumber);
-        tvVehicleType = (TextView) findViewById(R.id.tvVehicleType);
-        tvPrice = (TextView) findViewById(R.id.Dprice);
-        tvLocation = (TextView) findViewById(R.id.Dlocation);
-        btnPrintMix = (Button) this.findViewById(R.id.btnPrintMix);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // add back arrow to toolbar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        }
+//        setContentView(R.layout.activity_ticket);
+//        tvSiteName = (TextView) findViewById(R.id.tvSiteName);
+//        tvTimeIn = (TextView) findViewById(R.id.Dtime);
+//        tvNumber = (TextView) findViewById(R.id.Dnumber);
+//        tvVehicleType = (TextView) findViewById(R.id.tvVehicleType);
+//        tvPrice = (TextView) findViewById(R.id.Dprice);
+//        tvLocation = (TextView) findViewById(R.id.Dlocation);
+//        btnPrintMix = (Button) this.findViewById(R.id.btnPrintMix);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        // add back arrow to toolbar
+//        if (getSupportActionBar() != null) {
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setDisplayShowHomeEnabled(true);
+//
+//        }
 
         IntentFilter mFilter = new IntentFilter();
         mFilter.addAction(PosApi.ACTION_POS_COMM_STATUS);
@@ -135,22 +130,22 @@ public class TicketFormatActivity extends AppCompatActivity {
         ticket_time_in = Calendar.getInstance().getTimeInMillis();
 //        ticket_time_in = dateFormat.format(cal.getTime());
         site_name = sessionManager.getKeySiteName();
-        tvSiteName.setText(site_name);
-        tvTimeIn.setText(DateAndTimeUtils.getDateTimeStringFromMiliseconds(ticket_time_in, "yyyy-MM-dd kk:mm:ss"));
-        tvNumber.setText(veh_number);
-        tvVehicleType.setText(veh_type);
-        tvPrice.setText(fee);
-        tvLocation.setText(sessionManager.getKeyAreanmae());
+//        tvSiteName.setText(site_name);
+//        tvTimeIn.setText(DateAndTimeUtils.getDateTimeStringFromMiliseconds(ticket_time_in, "yyyy-MM-dd kk:mm:ss"));
+//        tvNumber.setText(veh_number);
+//        tvVehicleType.setText(veh_type);
+//        tvPrice.setText(fee);
+//        tvLocation.setText(sessionManager.getKeyAreanmae());
         Toast.makeText(this, "  " + veh_number + " ", Toast.LENGTH_SHORT).show();
 
-        btnPrintMix.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnPrintMix.setVisibility(View.GONE);
-                printMix();
-//                storeTicketInRealm();
-            }
-        });
+//        btnPrintMix.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                btnPrintMix.setVisibility(View.GONE);
+//                printMix();
+////                storeTicketInRealm();
+//            }
+//        });
         mPrintQueue = new PrintQueue(this, ScanService.mApi);
         mPrintQueue.init();
         mPrintQueue.setOnPrintListener(new OnPrintListener() {
@@ -158,12 +153,12 @@ public class TicketFormatActivity extends AppCompatActivity {
             public void onFinish() {
                 isCanPrint = true;
                 storeTicketInRealm();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        btnPrintMix.setVisibility(View.VISIBLE);
-                    }
-                });
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        btnPrintMix.setVisibility(View.VISIBLE);
+//                    }
+//                });
                 finish();
                 DataSenderAsync dataSenderAsync = new DataSenderAsync(TicketFormatActivity.this);
                 dataSenderAsync.execute();
@@ -352,7 +347,7 @@ public class TicketFormatActivity extends AppCompatActivity {
             sb.append("\n");
             sb.append("for any loss");
             sb.append("\n");
-            sb.append("Help Line  :    " + "042-35116657");
+            sb.append("Help Line  :    " + "042-35189657");
             sb.append("\n");
             sb.append("----POWERED BY OUTSTART TECH----");
             sb.append("\n");
@@ -388,9 +383,15 @@ public class TicketFormatActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         openDevice();
+        printMix();
     }
 
     @Override

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/showallnav"
-            android:title="Show All" />
+        <!--<item-->
+            <!--android:id="@+id/showallnav"-->
+            <!--android:title="Show All" />-->
 
         <item
             android:id="@+id/summarynav"
@@ -13,9 +13,9 @@
             android:id="@+id/nav_refresh"
             android:title="Refresh" />
 
-        <item
-            android:id="@+id/nav_NfcActvity"
-            android:title="NFC Detection" />
+        <!--<item-->
+            <!--android:id="@+id/nav_NfcActvity"-->
+            <!--android:title="NFC Detection" />-->
         <!--<item-->
             <!--android:id="@+id/nav_BlockUser"-->
             <!--android:title="Block" />-->
