@@ -1,4 +1,4 @@
-package com.codextech.ibtisam.lepak_app.fragments;
+package com.codextech.ibtisam.lepak_app.activity;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -84,7 +84,7 @@ public class SummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.summaryclass);
+        setContentView(R.layout.activity_summary);
         btPrintSummary = (Button) findViewById(R.id.btPrintSummary);
         sessionManager = new SessionManager(this);
 
@@ -433,7 +433,7 @@ public class SummaryActivity extends AppCompatActivity {
             sb.append("Truck  "  +countTruck+ "       "+sessionManager.getKeyTruckAmount()+"     "+sumTruck);
             sb.append("\n");
             sb.append("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-            sb.append("Total  "+count+"              "+sum);
+            sb.append("Total  "+count+"             "+sum);
             sb.append("\n");
             sb.append("----POWERED BY OUTSTART TECH----");
             sb.append("                                                                                                   ");

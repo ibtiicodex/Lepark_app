@@ -13,41 +13,41 @@
         android:gravity="center"
         android:padding="10dp">
 
+        <!--<EditText-->
+            <!--android:id="@+id/enterAlpha"-->
+            <!--android:layout_width="80dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:background="#FFF"-->
+            <!--android:ems="10"-->
+            <!--android:nextFocusRight="@+id/enterYear"-->
+            <!--android:gravity="center"-->
+            <!--android:hint="LWZ"-->
+            <!--android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"-->
+            <!--android:textColorHint="#FFC9CACA"-->
+            <!--android:textSize="30dp" />-->
+        <!--<EditText-->
+            <!--android:id="@+id/enterYear"-->
+            <!--android:layout_width="60dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:background="#FFF"-->
+            <!--android:ems="10"-->
+            <!--android:inputType="text"-->
+            <!--android:nextFocusRight="@+id/enterNum"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:hint="17A"-->
+            <!--android:textColorHint="#FFC9CACA"-->
+            <!--android:textSize="30dp" />-->
         <EditText
-            android:id="@+id/enterAlpha"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:background="#FFF"
-            android:ems="10"
-            android:nextFocusRight="@+id/enterYear"
-            android:gravity="center"
-            android:hint="LWZ"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:textColorHint="#FFC9CACA"
-            android:textSize="30dp" />
-        <EditText
-            android:id="@+id/enterYear"
-            android:layout_width="60dp"
+            android:id="@+id/enterNum"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="#FFF"
             android:ems="10"
             android:inputType="text"
-            android:nextFocusRight="@+id/enterNum"
             android:gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:hint="17A"
-            android:textColorHint="#FFC9CACA"
-            android:textSize="30dp" />
-        <EditText
-            android:id="@+id/enterNum"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:background="#FFF"
-            android:ems="10"
-            android:inputType="number"
-            android:gravity="center"
-            android:hint="999"
+            android:hint="LHG999"
             android:textColorHint="#FFC9CACA"
             android:textSize="30dp" />
     </LinearLayout>

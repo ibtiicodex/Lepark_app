@@ -53,14 +53,14 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     public static final String LOGIN_EMAIL = "login_email";
     public static final String LOGIN_PASSWORD = "login_password";
-  //  private EditText emailEditText;
+    //  private EditText emailEditText;
     private EditText passEditText;
     private static String TAGA = "LoginActivity";
     Button btRegister;
     TextView tvsignup;
     ProgressDialog pdLoading;
     private Button btLogin;
-  //  private Button btok;
+    //  private Button btok;
     private SessionManager sessionManager;
     Realm realm;
     private String jsonResponse;
@@ -81,14 +81,9 @@ public class LoginActivity extends AppCompatActivity {
         macAddtress = SyncStatus.getMacAddr();
         spAllSites = (Spinner) findViewById(R.id.spAllSites);
         btLogin = (Button) findViewById(R.id.btLogin);
-      //  btok = (Button) findViewById(R.id.btok);
+        //  btok = (Button) findViewById(R.id.btok);
         //emailEditText = (EditText) findViewById(edSiteName);
         passEditText = (EditText) findViewById(R.id.password);
-
-        if (sessionManager.isSiteSignedIn()) {
-            startActivity(new Intent(getApplicationContext(), NavigationDrawerActivity.class));
-            finish();
-        }
 
         if (NetworkStateReceiver.isNetworkAvailable(getApplicationContext())) {
             // Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
@@ -190,6 +185,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.d(TAG, "onResponse: token  :" + token);
                                 Log.d(TAG, "onResponse: image_url  :" + image_url);
                                 areaName = location;
+
                                 Log.d(TAG, "onResponse: ///////////////////////////////////////////////////////////" + areaName);
                                 sessionManager.loginSite(site_id, site_name, token, Calendar.getInstance().getTimeInMillis(), car_fare, bike_fare, van_fare, truck_fare, areaName, macAddtress, image_url);
                                 Intent intent = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
@@ -203,8 +199,8 @@ public class LoginActivity extends AppCompatActivity {
                                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
                                 MixpanelAPI.People people = mixpanel.getPeople();
                                 people.identify(site_id);
-//                                people.initPushHandling("44843550731");
-//                                mixpanel.getPeople().identify(site_id);
+                                people.initPushHandling("44843550731");
+                                mixpanel.getPeople().identify(site_id);
 
                                 JSONObject props = new JSONObject();
 
@@ -214,7 +210,7 @@ public class LoginActivity extends AppCompatActivity {
                                 props.put("bike_fare", "" + bike_fare);
                                 props.put("van_fare", "" + van_fare);
                                 props.put("truck_fare", "" + truck_fare);
-//                                props.put("activated", "yes");
+                                props.put("activated", "yes");
 
                                 mixpanel.getPeople().set(props);
 
@@ -362,10 +358,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> arg0, View view, int arg2, long arg3) {
 
                 site_name = String.valueOf(spAllSites.getSelectedItem());
-               // emailEditText.setText(site_name);
+                // emailEditText.setText(site_name);
                 Toast.makeText(getApplicationContext(), site_name,
                         Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
                 // TODO Auto-generated method stub

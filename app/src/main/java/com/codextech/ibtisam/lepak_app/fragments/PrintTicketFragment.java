@@ -22,7 +22,7 @@ import com.codextech.ibtisam.lepak_app.realm.RealmController;
  */
 
 public class PrintTicketFragment extends Fragment {
-    public static final String TAG = "test";
+    public static final String TAG = "PrintTicketFragment";
     private Button bCar;
     private Button bBike;
     private Button bVan;
@@ -31,8 +31,8 @@ public class PrintTicketFragment extends Fragment {
     private EditText edenternumber;
     private String vehNumber;
     private SessionManager sessionManager;
-    private EditText enterAlpha;
-    private EditText enterYear;
+//    private EditText enterAlpha;
+//    private EditText enterYear;
 
 
     @Override
@@ -41,27 +41,33 @@ public class PrintTicketFragment extends Fragment {
         View view = inflater.inflate(R.layout.print_ticket_fragment, container, false);
 
         edenternumber = (EditText) view.findViewById(R.id.enterNum);
-        enterAlpha = (EditText) view.findViewById(R.id.enterAlpha);
-        enterYear = (EditText) view.findViewById(R.id.enterYear);
+//        enterAlpha = (EditText) view.findViewById(R.id.enterAlpha);
+//        enterYear = (EditText) view.findViewById(R.id.enterYear);
         bCar = (Button) view.findViewById(R.id.bCar);
         bBike = (Button) view.findViewById(R.id.bBike);
         bVan = (Button) view.findViewById(R.id.bVan);
         bTruck = (Button) view.findViewById(R.id.bTruck);
         sessionManager = new SessionManager(getActivity());
 
-        if (Integer.parseInt(sessionManager.getKeyCarAmount()) <= 0) {
-            // bCar.setVisibility(View.GONE);
+        Log.d(TAG, "onCreateView: getKeyCarAmount: " + sessionManager.getKeyCarAmount());
+        Log.d(TAG, "onCreateView: getKeyBikeAmount: " + sessionManager.getKeyBikeAmount());
+        Log.d(TAG, "onCreateView: getKeyVanAmount: " + sessionManager.getKeyVanAmount());
+        Log.d(TAG, "onCreateView: getKeyTruckAmount: " + sessionManager.getKeyTruckAmount());
+
+
+        if (sessionManager.getKeyCarAmount().equals("null")) {
+            bCar.setVisibility(View.GONE);
         }
-        if (Integer.parseInt(sessionManager.getKeyBikeAmount()) <= 0) {
-            // bBike.setVisibility(View.GONE);
+        if (sessionManager.getKeyBikeAmount().equals("null")) {
+            bBike.setVisibility(View.GONE);
         }
 
-        if (Integer.parseInt(sessionManager.getKeyVanAmount()) <= 0) {
-            //bVan.setVisibility(View.GONE);
+        if (sessionManager.getKeyVanAmount().equals("null")) {
+            bVan.setVisibility(View.GONE);
         }
 
-        if (Integer.parseInt(sessionManager.getKeyTruckAmount()) <= 0) {
-            //bTruck.setVisibility(View.GONE);
+        if (sessionManager.getKeyTruckAmount().equals("null")) {
+            bTruck.setVisibility(View.GONE);
         }
 
 
@@ -69,18 +75,11 @@ public class PrintTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-
                 // vehNumber = edenternumber.getText().toString();
-                if (enterYear.getText().toString().equals("") || enterYear.getText().toString().equals(" ")) {
 
-                    vehNumber = enterAlpha.getText().toString().toUpperCase() + " " + edenternumber.getText().toString();
-                } else {
+                vehNumber = edenternumber.getText().toString().toUpperCase();
 
-                    vehNumber = enterAlpha.getText().toString().toUpperCase() + "-" + enterYear.getText().toString().toUpperCase() + "-" + edenternumber.getText().toString();
-
-                }
-
-                if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
+                if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 10) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
                         Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
@@ -99,15 +98,8 @@ public class PrintTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //vehNumber = edenternumber.getText().toString();
-                if (enterYear.getText().toString().equals("") || enterYear.getText().toString().equals(" ")) {
-
-                    vehNumber = enterAlpha.getText().toString().toUpperCase() + " " + edenternumber.getText().toString();
-                } else {
-
-                    vehNumber = enterAlpha.getText().toString().toUpperCase() + "-" + enterYear.getText().toString().toUpperCase() + "-" + edenternumber.getText().toString();
-
-                }
-                if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
+                vehNumber = edenternumber.getText().toString().toUpperCase();
+                if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 10) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
                         Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
@@ -126,15 +118,8 @@ public class PrintTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // vehNumber = edenternumber.getText().toString();
-                if (enterYear.getText().toString().equals("") || enterYear.getText().toString().equals(" ")) {
-
-                    vehNumber = enterAlpha.getText().toString().toUpperCase() + " " + edenternumber.getText().toString();
-                } else {
-
-                    vehNumber = enterAlpha.getText().toString().toUpperCase() + "-" + enterYear.getText().toString().toUpperCase() + "-" + edenternumber.getText().toString();
-
-                }
-                if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
+                vehNumber = edenternumber.getText().toString().toUpperCase();
+                if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 10) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
                         Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
@@ -155,15 +140,8 @@ public class PrintTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // vehNumber = edenternumber.getText().toString();
-                if (enterYear.getText().toString().equals("") || enterYear.getText().toString().equals(" ")) {
-
-                    vehNumber = enterAlpha.getText().toString().toUpperCase() + " " + edenternumber.getText().toString();
-                } else {
-
-                    vehNumber = enterAlpha.getText().toString().toUpperCase() + "-" + enterYear.getText().toString().toUpperCase() + "-" + edenternumber.getText().toString();
-
-                }
-                if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 12) {
+                vehNumber = edenternumber.getText().toString().toUpperCase();
+                if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 10) {
                     LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
                     if (lpTicket == null) {
                         Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
@@ -180,6 +158,17 @@ public class PrintTicketFragment extends Fragment {
         });
 
         return view;
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//       enterAlpha.setText("");
+//        enterYear.setText("");
+        edenternumber.setText("");
+
 
     }
 

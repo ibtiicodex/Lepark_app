@@ -42,8 +42,8 @@ public class ReturnTicketFragment extends Fragment {
     long ticket_time_out;
     private Realm realm;
     private TextView tvTotallPrice;
-    private EditText edAlpha;
-    private EditText edYear;
+//    private EditText edAlpha;
+//    private EditText edYear;
 
     @Nullable
     @Override
@@ -52,8 +52,8 @@ public class ReturnTicketFragment extends Fragment {
         realm = Realm.getInstance(getContext());
         RealmController.with(this).refresh();
         etCarNumber = (EditText) view.findViewById(R.id.edNum);
-        edAlpha = (EditText) view.findViewById(R.id.edAlpha);
-        edYear = (EditText) view.findViewById(R.id.edYear);
+//        edAlpha = (EditText) view.findViewById(R.id.edAlpha);
+//        edYear = (EditText) view.findViewById(R.id.edYear);
         btnPrintMix = (Button) view.findViewById(R.id.btnPrintMix);
         tvAgentName = (TextView) view.findViewById(R.id.tvAgentName);
         tvTimeIn = (TextView) view.findViewById(R.id.tvTimeIn);
@@ -67,17 +67,9 @@ public class ReturnTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String carNum;
-                if (edYear.getText().toString().equals("")) {
 
-                    carNum = edAlpha.getText().toString().toUpperCase() + " " + etCarNumber.getText().toString();
+                    carNum =  etCarNumber.getText().toString().toUpperCase();
 
-
-
-                } else {
-
-
-                    carNum = edAlpha.getText().toString().toUpperCase() + "-" + edYear.getText().toString().toUpperCase() + "-" + etCarNumber.getText().toString();
-                }
                 if (isValidCarNumber(carNum)) {
                     RealmQuery<LPTicket> query = realm.where(LPTicket.class);
                     query.equalTo("number", carNum);

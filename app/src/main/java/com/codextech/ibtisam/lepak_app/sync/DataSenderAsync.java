@@ -59,38 +59,34 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
 
         } else {
 
-            Log.d(TAG, "doInBackground: "+"************************ NO INTERNET CONNECTIVITY****************************");
+            Log.d(TAG, "doInBackground: " + "************************ NO INTERNET CONNECTIVITY****************************");
         }
         return null;
     }
 
     private void addTicketToServer() {
         realm = Realm.getDefaultInstance();
-//        RealmConfiguration config = new RealmConfiguration.Builder(context).build();
-//
-//        realm = Realm.getInstance(config);
         Log.d(TAG, "Site Id For Check " + sessionManager.getKeySiteId());
         RealmQuery<LPTicket> query = realm.where(LPTicket.class);
         query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
         RealmResults<LPTicket> manyLPTicket = query.findAll();
-//        Log.d(TAG, "addTicketToServer: manyLPTicket: " + manyLPTicket.toString());
         Log.d(TAG, "addTicketToServer: count " + manyLPTicket.size());
         for (LPTicket oneLPTicket : manyLPTicket) {
             Log.d(TAG, "addTicketToServer: oneLPTicket " + oneLPTicket);
             Log.d(TAG, "addTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
-            addTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn(), DateAndTimeUtils.getDateTimeStringFromMiliseconds(oneLPTicket.getTimeOut(),"yyyy-MM-dd kk:mm:ss"));
+            addTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn(), oneLPTicket.getTimeOut());
         }
         realm.close();
     }
 
-    private void addTicketToServerSync(final String veh_num, final String veh_type, final String fee, final long time_in, final String time_out) {
+    private void addTicketToServerSync(final String veh_num, final String veh_type, final String fee, final long time_in, final long time_out) {
         queue = Volley.newRequestQueue(context, new HurlStack());
         StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.TICKET_SEND,
 
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.v(TAG, "onResponse: " + response);
+                        Log.v(TAG, "addTicketToServerSync onResponse(): " + response);
                         try {
                             JSONObject obj = new JSONObject(response);
                             int responseCode = obj.getInt("responseCode");
@@ -99,10 +95,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                                 //TODO  Save server_id of ticket in local db
                                 serverid = uniObject.getString("id");
                                 vehicle_no = uniObject.getString("vehicle_no");
-//                                String time_in = uniObject.getString("time_in");
                                 realm = Realm.getDefaultInstance();
-//                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
-//                                realm = Realm.getInstance(config);
                                 RealmQuery<LPTicket> query = realm.where(LPTicket.class);
                                 query.equalTo("timeIn", time_in);
                                 RealmResults<LPTicket> manyLPTicket = query.findAll();
@@ -128,16 +121,12 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                                     Toast.makeText(context, "Server Error", Toast.LENGTH_SHORT).show();
                                 } else if (error.networkResponse.statusCode == 409) {
                                     Log.d(TAG, "onErrorResponse: CHANGING TICKET STATUS " + veh_num);
-                                    // ticket already exists on server change its status to SYNCED
                                     realm = Realm.getDefaultInstance();
-//                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
-//                                realm = Realm.getInstance(config);
                                     RealmQuery<LPTicket> query = realm.where(LPTicket.class);
                                     query.equalTo("timeIn", time_in);
                                     RealmResults<LPTicket> manyLPTicket = query.findAll();
                                     realm.beginTransaction();
                                     manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED);
-//                            manyLPTicket.first().setServer_id(serverid);
                                     realm.commitTransaction();
                                     realm.close();
                                 }
@@ -159,7 +148,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                 params.put("vehicle_type", veh_type);
                 params.put("fee", fee);
                 params.put("time_in", DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_in, "yyyy-MM-dd kk:mm:ss"));
-                params.put("time_out", time_out);
+                params.put("time_out", DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_out, "yyyy-MM-dd kk:mm:ss"));
                 params.put("token", sessionManager.getLoginToken());
                 params.put("mac", sessionManager.getKeyMac());
                 return params;
@@ -178,18 +167,22 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
         for (LPTicket oneLPTicket : manyLPTicket) {
             Log.d(TAG, "editTicketToServer: oneLPTicket " + oneLPTicket);
             Log.d(TAG, "editTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
-            editTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), DateAndTimeUtils.getDateTimeStringFromMiliseconds(oneLPTicket.getTimeIn(), "yyyy-MM-dd kk:mm:ss"), DateAndTimeUtils.getDateTimeStringFromMiliseconds(oneLPTicket.getTimeOut(), "yyyy-MM-dd kk:mm:ss"), oneLPTicket.getServer_id());
+            editTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn(), oneLPTicket.getTimeOut(), oneLPTicket.getServer_id());
         }
     }
 
-    private void editTicketToServerSync(final String number, final String vehicleType, final String price, final String timeIn, final String timeOut, final String serverId) {
+    private void editTicketToServerSync(final String number, final String vehicleType, final String price, final long timeInLong, final long timeOutLong, final String serverId) {
 
+        final String timeInString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeInLong, "yyyy-MM-dd kk:mm:ss");
+        final String timeOutString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeOutLong, "yyyy-MM-dd kk:mm:ss");
+        Log.d(TAG, "editTicketToServerSync: timeInString" + timeInString);
+        Log.d(TAG, "editTicketToServerSync: timeOutString" + timeOutString);
         RequestQueue queue = Volley.newRequestQueue(context, new HurlStack());
         StringRequest putRequest = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/ticket/timeout/" + serverId,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d(TAG, "onResponse: " + response.toString());
+                        Log.d(TAG, "editTicketToServerSync onResponse(): " + response.toString());
                         try {
                             JSONObject obj = new JSONObject(response);
                             int responseCode = obj.getInt("responseCode");
@@ -209,18 +202,12 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                                 Log.d(TAG, "onResponse: time_in: " + time_in);
                                 Log.d(TAG, "onResponse: time_out: " + time_out);
                                 realm = Realm.getDefaultInstance();
-//                                RealmConfiguration config = new RealmConfiguration.Builder(context).build();
-//                                realm = Realm.getInstance(config);
-
                                 RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-                                query.equalTo("timeIn", timeIn);
+                                query.equalTo("timeIn", timeInLong);
                                 RealmResults<LPTicket> manyLPTicket = query.findAll();
                                 realm.beginTransaction();
                                 manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_SYNCED); //TODO crash here on exiting ticket which was synced on adding
-//                                manyLPTicket.first().setServer_id(serverid);
                                 realm.commitTransaction();
-                                //  realm.close();
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -235,7 +222,6 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                     public void onErrorResponse(VolleyError error) {
                         Log.d(TAG, "editTicketToServerSync onErrorResponse: " + error.toString());
                         Log.d(TAG, "editTicketToServerSync onErrorResponse:  statusCode: " + error.networkResponse.statusCode);
-                        // error
                         Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -248,11 +234,8 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                //                params.put("id", 5 + "");
-                params.put("time_out", timeOut);
+                params.put("time_out", timeOutString);
                 params.put("token", sessionManager.getLoginToken());
-                params.put("time_out", "2017-11-03 01:42:06");
-//
                 return params;
             }
         };

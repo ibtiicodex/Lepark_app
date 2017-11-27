@@ -1,76 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
     android:background="#377abc">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <EditText
+        android:id="@+id/linearLayout2"
+        android:layout_width="72dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:background="#FFF"
+        android:ems="10"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="80dp">
+        android:hint="LWZ"
+        android:inputType="textCapCharacters"
+        android:textColorHint="#FFC9CACA"
+        android:textSize="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
-        <EditText
-            android:id="@+id/edAlpha"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:background="#FFF"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="LWZ"
-            android:inputType="textCapCharacters"
-            android:textColorHint="#FFC9CACA"
-            android:textSize="30dp" />
+    <EditText
+        android:id="@+id/edYear"
+        android:layout_width="72dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:background="#FFF"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="17A"
+        android:inputType="text"
+        android:textColorHint="#FFC9CACA"
+        android:textSize="30dp"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1"
+        app:layout_constraintLeft_toRightOf="@+id/linearLayout2"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
 
-        <EditText
-            android:id="@+id/edYear"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:background="#FFF"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="17A"
-            android:inputType="text"
-            android:textColorHint="#FFC9CACA"
-            android:textSize="30dp" />
+    <EditText
+        android:id="@+id/edNum"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:background="#FFF"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="999"
+        android:inputType="number"
+        android:textColorHint="#FFC9CACA"
+        android:textSize="30dp"
+        tools:layout_conversion_absoluteHeight="50dp"
+        tools:layout_conversion_absoluteWidth="80dp"
+        tools:layout_conversion_absoluteX="195dp"
+        tools:layout_conversion_absoluteY="100dp"
+        app:layout_constraintLeft_toRightOf="@+id/edYear"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintTop_toTopOf="@+id/edYear"
+        android:layout_marginRight="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.453"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp" />
 
-        <EditText
-            android:id="@+id/edNum"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:background="#FFF"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="999"
-            android:inputType="number"
-            android:textColorHint="#FFC9CACA"
-            android:textSize="30dp" />
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:layout_margin="15dp">
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:id="@+id/btBlock"
-        android:text="Block"/>
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:id="@+id/btUnBlock"
-        android:text="UnBlock"/>
-    </LinearLayout>
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
+        android:text="Block"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btUnBlock"
+        tools:layout_conversion_absoluteHeight="48dp"
+        tools:layout_conversion_absoluteWidth="124dp"
+        tools:layout_conversion_absoluteX="35dp"
+        tools:layout_conversion_absoluteY="165dp" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/btUnBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="UnBlock"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/btBlock"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:layout_conversion_absoluteHeight="48dp"
+        tools:layout_conversion_absoluteWidth="125dp"
+        tools:layout_conversion_absoluteX="159dp"
+        tools:layout_conversion_absoluteY="165dp" />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -379,13 +379,16 @@
 
 
         <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/btPrintSummary"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="Print Summary"
+
+            android:textStyle="bold"
             android:gravity="center"
-            android:background="#ffee24"
+            android:background="#fff203"
             android:layout_gravity="center"
-            android:id="@+id/btPrintSummary"/>
+            />
     </LinearLayout>
 
     <!--<LinearLayout-->
@@ -395,6 +398,7 @@
     <!--android:orientation="vertical"-->
     <!--android:padding="50dp"-->
     <!--android:weightSum="9">-->
+
 
 
     <!--<LinearLayout-->
