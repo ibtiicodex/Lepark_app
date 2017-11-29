@@ -50,9 +50,9 @@ public class TicketsAdapter extends RealmRecyclerViewAdapter<LPTicket> {
         holder.tvSiteName.setText(LPTicket.getSiteName());
         holder.textVehicalType.setText(LPTicket.getVehicleType());
         holder.tvTimeIn.setText(DateAndTimeUtils.getDateTimeStringFromMiliseconds(LPTicket.getTimeIn(), "yyyy-MM-dd kk:mm:ss"));
-        if(LPTicket.getTimeOut() != 0L){
+        if (LPTicket.getTimeOut() != 0L) {
             holder.textTimeOut.setText(DateAndTimeUtils.getDateTimeStringFromMiliseconds(LPTicket.getTimeOut(), "yyyy-MM-dd kk:mm:ss"));
-        }else {
+        } else {
             holder.textTimeOut.setText("");
         }
 

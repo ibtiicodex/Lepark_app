@@ -75,7 +75,7 @@ public class PrintTicketFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                // vehNumber = edenternumber.getText().toString();
+                // vehNumber = edenternumber.getText().toString();6
 
                 vehNumber = edenternumber.getText().toString().toUpperCase();
 
@@ -92,6 +92,10 @@ public class PrintTicketFragment extends Fragment {
                 } else {
                     edenternumber.setError("Empty  or too long");
                 }
+                bCar.setVisibility(View.GONE);
+                bBike.setVisibility(View.GONE);
+                bVan.setVisibility(View.GONE);
+                bTruck.setVisibility(View.GONE);
             }
         });
         bBike.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +116,11 @@ public class PrintTicketFragment extends Fragment {
                 } else {
                     edenternumber.setError("Empty or too long");
                 }
+                bCar.setVisibility(View.GONE);
+                bBike.setVisibility(View.GONE);
+                bVan.setVisibility(View.GONE);
+                bTruck.setVisibility(View.GONE);
+
             }
         });
         bVan.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +141,11 @@ public class PrintTicketFragment extends Fragment {
                 } else {
                     edenternumber.setError("Empty or too long");
                 }
+                bCar.setVisibility(View.GONE);
+                bBike.setVisibility(View.GONE);
+                bVan.setVisibility(View.GONE);
+                bTruck.setVisibility(View.GONE);
+
             }
         });
         bTruck.setOnClickListener(new View.OnClickListener()
@@ -154,6 +168,11 @@ public class PrintTicketFragment extends Fragment {
                 } else {
                     edenternumber.setError("Empty or too long");
                 }
+                bCar.setVisibility(View.GONE);
+                bBike.setVisibility(View.GONE);
+                bVan.setVisibility(View.GONE);
+                bTruck.setVisibility(View.GONE);
+
             }
         });
 
@@ -164,11 +183,11 @@ public class PrintTicketFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-//       enterAlpha.setText("");
-//        enterYear.setText("");
         edenternumber.setText("");
-
+        bCar.setVisibility(View.VISIBLE);
+        bBike.setVisibility(View.VISIBLE);
+        bVan.setVisibility(View.VISIBLE);
+        bTruck.setVisibility(View.VISIBLE);
 
     }
 

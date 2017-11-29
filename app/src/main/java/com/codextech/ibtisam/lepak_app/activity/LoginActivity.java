@@ -194,7 +194,6 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                                 Toast.makeText(LoginActivity.this, "User Successfully Login ", Toast.LENGTH_SHORT).show();
                                 Toast.makeText(LoginActivity.this, sessionManager.getKeySiteId(), Toast.LENGTH_SHORT).show();
-
                                 String projectToken = MixpanelConfig.projectToken;
                                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
                                 MixpanelAPI.People people = mixpanel.getPeople();
