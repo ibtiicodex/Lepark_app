@@ -45,6 +45,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
+
 //import com.codextech.ibtisam.lepak_app.service.ScanService;
 public class NavigationDrawerActivity extends AppCompatActivity {
     private String TAG = "NavigationDrawerActivit";
@@ -76,6 +79,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         NavigationDrawerActivity.this.startService(newIntent);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mNavigationView = (NavigationView) findViewById(R.id.shitstuff);
+
 
         View header = mNavigationView.getHeaderView(0);
 /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
@@ -112,6 +116,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 //                    startActivity(intent);
 //                }
                 if (menuItem.getItemId() == R.id.nav_refresh) {
+                    Log.d(TAG, "Refresh: MAC from Function: " + SyncStatus.getMacAddr());
+                    Log.d(TAG, "Refresh: MAC from Session: " + sessionManager.getKeyMac());
+                    sessionManager.setKeyMac(SyncStatus.getMacAddr());
                     DataSenderAsync dataSenderAsync = new DataSenderAsync(NavigationDrawerActivity.this);
                     dataSenderAsync.execute();
                     String projectToken = MixpanelConfig.projectToken;

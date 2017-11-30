@@ -57,6 +57,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
 //        if (NetworkStateReceiver.isNetworkAvailable(context)) {
         Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
+        Log.d(TAG, "DataSenderAsync: doInBackground MAC: " + sessionManager.getKeyMac());
 
         addTicketToServer();
         editTicketToServer();
@@ -71,7 +72,8 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
 
     private void addTicketToServer() {
         realm = Realm.getDefaultInstance();
-        Log.d(TAG, "Site Id For Check " + sessionManager.getKeySiteId());
+        Log.d(TAG, "Site Id: " + sessionManager.getKeySiteId());
+
         RealmQuery<LPTicket> query = realm.where(LPTicket.class);
         query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
         RealmResults<LPTicket> manyLPTicket = query.findAll();
@@ -81,11 +83,14 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
             Log.d(TAG, "addTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
             addTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn(), oneLPTicket.getTimeOut());
         }
-        realm.close();
     }
 
     private void addTicketToServerSync(final String veh_num, final String veh_type, final String fee, final long time_in, final long time_out) {
-        queue = Volley.newRequestQueue(context, new HurlStack());
+        final String timeInString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_in, "yyyy-MM-dd kk:mm:ss");
+        final String timeOutString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_out, "yyyy-MM-dd kk:mm:ss");
+        Log.d(TAG, "addTicketToServerSync: timeInString: " + timeInString);
+        Log.d(TAG, "addTicketToServerSync: timeOutString: " + timeOutString);
+        queue = Volley.newRequestQueue(context, new HurlStack()); // TODO Caused by: java.lang.OutOfMemoryError: Could not allocate JNI Env
         StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.TICKET_SEND,
 
                 new Response.Listener<String>() {
@@ -167,8 +172,8 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                 params.put("vehicle_no", veh_num);
                 params.put("vehicle_type", veh_type);
                 params.put("fee", fee);
-                params.put("time_in", DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_in, "yyyy-MM-dd kk:mm:ss"));
-                params.put("time_out", DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_out, "yyyy-MM-dd kk:mm:ss"));
+                params.put("time_in", timeInString);
+                params.put("time_out", timeOutString);
                 params.put("token", sessionManager.getLoginToken());
                 params.put("mac", sessionManager.getKeyMac());
                 return params;
@@ -194,8 +199,8 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
     private void editTicketToServerSync(final String number, final String vehicleType, final String price, final long timeInLong, final long timeOutLong, final String serverId) {
         final String timeInString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeInLong, "yyyy-MM-dd kk:mm:ss");
         final String timeOutString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeOutLong, "yyyy-MM-dd kk:mm:ss");
-        Log.d(TAG, "editTicketToServerSync: timeInString" + timeInString);
-        Log.d(TAG, "editTicketToServerSync: timeOutString" + timeOutString);
+        Log.d(TAG, "editTicketToServerSync: timeInString: " + timeInString);
+        Log.d(TAG, "editTicketToServerSync: timeOutString: " + timeOutString);
         RequestQueue queue = Volley.newRequestQueue(context, new HurlStack());
         StringRequest putRequest = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/ticket/timeout/" + serverId,
                 new Response.Listener<String>() {
