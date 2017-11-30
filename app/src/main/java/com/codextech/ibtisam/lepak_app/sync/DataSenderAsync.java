@@ -19,9 +19,11 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.SessionManager;
+import com.codextech.ibtisam.lepak_app.activity.NavigationDrawerActivity;
 import com.codextech.ibtisam.lepak_app.model.LPNfc;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
+import com.google.android.gms.iid.InstanceID;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +60,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
 //        if (NetworkStateReceiver.isNetworkAvailable(context)) {
         Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
         Log.d(TAG, "DataSenderAsync: doInBackground MAC: " + sessionManager.getKeyMac());
-
+        Log.d(TAG, "DataSenderAsync: doInBackground Site_ID: " + sessionManager.getKeySiteId());
         addTicketToServer();
         editTicketToServer();
         editCoinsToServer();
@@ -72,8 +74,6 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
 
     private void addTicketToServer() {
         realm = Realm.getDefaultInstance();
-        Log.d(TAG, "Site Id: " + sessionManager.getKeySiteId());
-
         RealmQuery<LPTicket> query = realm.where(LPTicket.class);
         query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
         RealmResults<LPTicket> manyLPTicket = query.findAll();
@@ -86,6 +86,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
     }
 
     private void addTicketToServerSync(final String veh_num, final String veh_type, final String fee, final long time_in, final long time_out) {
+
         final String timeInString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_in, "yyyy-MM-dd kk:mm:ss");
         final String timeOutString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_out, "yyyy-MM-dd kk:mm:ss");
         Log.d(TAG, "addTicketToServerSync: timeInString: " + timeInString);

@@ -30,6 +30,7 @@ import com.codextech.ibtisam.lepak_app.model.AllSites;
 import com.codextech.ibtisam.lepak_app.receiver.NetworkStateReceiver;
 import com.codextech.ibtisam.lepak_app.sync.MyUrls;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
+import com.google.android.gms.iid.InstanceID;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONArray;
@@ -78,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         realm = Realm.getInstance(getApplicationContext());
         queue = Volley.newRequestQueue(LoginActivity.this, new HurlStack());
         all_location = new ArrayList<String>();
-        macAddtress = SyncStatus.getMacAddr();
+        macAddtress = InstanceID.getInstance(LoginActivity.this).getId();
         spAllSites = (Spinner) findViewById(R.id.spAllSites);
         btLogin = (Button) findViewById(R.id.btLogin);
         //  btok = (Button) findViewById(R.id.btok);
@@ -253,7 +254,7 @@ public class LoginActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", site);
                 params.put("password", password);
-                params.put("mac", SyncStatus.getMacAddr());
+                params.put("mac", sessionManager.getKeyMac());
                 return params;
             }
         };

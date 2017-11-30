@@ -37,6 +37,7 @@ import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
 import com.codextech.ibtisam.lepak_app.sync.MyUrls;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
+import com.google.android.gms.iid.InstanceID;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONException;
@@ -74,13 +75,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             startActivity(new Intent(NavigationDrawerActivity.this, LoginActivity.class));
             finish();
         }
+       // Toast.makeText(this, " "+sessionManager.getKeyMac(), Toast.LENGTH_SHORT).show();
         Intent newIntent = new Intent(NavigationDrawerActivity.this, ScanService.class);
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         NavigationDrawerActivity.this.startService(newIntent);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mNavigationView = (NavigationView) findViewById(R.id.shitstuff);
-
-
         View header = mNavigationView.getHeaderView(0);
 /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
         setOnProfile = (TextView) header.findViewById(R.id.tvSite);
@@ -116,14 +116,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 //                    startActivity(intent);
 //                }
                 if (menuItem.getItemId() == R.id.nav_refresh) {
-                    Log.d(TAG, "Refresh: MAC from Function: " + SyncStatus.getMacAddr());
-                    Log.d(TAG, "Refresh: MAC from Session: " + sessionManager.getKeyMac());
-                    sessionManager.setKeyMac(SyncStatus.getMacAddr());
                     DataSenderAsync dataSenderAsync = new DataSenderAsync(NavigationDrawerActivity.this);
                     dataSenderAsync.execute();
                     String projectToken = MixpanelConfig.projectToken;
                     MixpanelAPI mixpanel = MixpanelAPI.getInstance(NavigationDrawerActivity.this, projectToken);
                     mixpanel.track("Refreshed");
+
                     Toast.makeText(NavigationDrawerActivity.this, " Refreshed ", Toast.LENGTH_SHORT).show();
                 }
 
@@ -233,7 +231,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("site_id", siteId);
-                    params.put("mac", SyncStatus.getMacAddr());
+                    params.put("mac",sessionManager.getKeyMac());
                     return params;
                 }
             };

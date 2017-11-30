@@ -100,15 +100,10 @@ public class PrintTicketFragment extends Fragment {
                     if (validcar) {
 
                         if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 10) {
-                            LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
-                            if (lpTicket == null) {
                                 Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
                                 intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
                                 intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_CAR);
                                 startActivity(intent);
-                            } else {
-                                Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
-                            }
                         } else {
                             edenternumber.setError("Empty  or too long");
                         }
@@ -153,15 +148,11 @@ public class PrintTicketFragment extends Fragment {
 
                         //vehNumber = edenternumber.getText().toString();
                         if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 10) {
-                            LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
-                            if (lpTicket == null) {
                                 Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
                                 intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
                                 intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_BIKE);
                                 startActivity(intent);
-                            } else {
-                                Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
-                            }
+
                         } else {
                             edenternumber.setError("Empty or too long");
                         }
@@ -209,15 +200,10 @@ public class PrintTicketFragment extends Fragment {
                         // vehNumber = edenternumber.getText().toString();
 
                         if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 10) {
-                            LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
-                            if (lpTicket == null) {
                                 Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
                                 intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
                                 intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_VAN);
                                 startActivity(intent);
-                            } else {
-                                Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
-                            }
                         } else {
                             edenternumber.setError("Empty or too long");
                         }
@@ -266,15 +252,10 @@ public class PrintTicketFragment extends Fragment {
                     if (validcar) {
 
                         if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 10) {
-                            LPTicket lpTicket = RealmController.with(getActivity()).getTicketFromNumber(vehNumber);
-                            if (lpTicket == null) {
                                 Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
                                 intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
                                 intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_TRUCK);
                                 startActivity(intent);
-                            } else {
-                                Toast.makeText(getActivity(), "Vehi already exists", Toast.LENGTH_SHORT).show();
-                            }
                         } else {
                             edenternumber.setError("Empty or too long");
                         }
