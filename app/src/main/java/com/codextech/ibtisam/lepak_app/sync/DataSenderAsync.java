@@ -80,7 +80,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
     }
 
     private void addTicketToServerSync(final String veh_num, final String veh_type, final String fee, final long time_in, final long time_out) {
-        queue = Volley.newRequestQueue(context, new HurlStack());
+        queue = Volley.newRequestQueue(context, new HurlStack()); // TODO Caused by: java.lang.OutOfMemoryError: Could not allocate JNI Env
         StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.TICKET_SEND,
 
                 new Response.Listener<String>() {
