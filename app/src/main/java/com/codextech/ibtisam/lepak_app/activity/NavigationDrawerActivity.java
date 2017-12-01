@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,6 +37,7 @@ import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
 import com.codextech.ibtisam.lepak_app.sync.MyUrls;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
+import com.google.android.gms.iid.InstanceID;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONException;
@@ -44,18 +46,21 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
+
 //import com.codextech.ibtisam.lepak_app.service.ScanService;
 public class NavigationDrawerActivity extends AppCompatActivity {
+    private String TAG = "NavigationDrawerActivit";
+
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
+    TextView setOnProfile;
+
     FragmentTransaction mFragmentTransaction;
     FragmentManager mFragmentManager;
-    private ImageView ivProfileImgNavBar;
     SessionManager sessionManager;
-
     private RequestQueue queue;
-    TextView setOnProfile;
-    private String TAG = "NavigationDrawerActivity";
     private String siteId;
 
     @Override
@@ -70,12 +75,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             startActivity(new Intent(NavigationDrawerActivity.this, LoginActivity.class));
             finish();
         }
+       // Toast.makeText(this, " "+sessionManager.getKeyMac(), Toast.LENGTH_SHORT).show();
         Intent newIntent = new Intent(NavigationDrawerActivity.this, ScanService.class);
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         NavigationDrawerActivity.this.startService(newIntent);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mNavigationView = (NavigationView) findViewById(R.id.shitstuff);
-
         View header = mNavigationView.getHeaderView(0);
 /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
         setOnProfile = (TextView) header.findViewById(R.id.tvSite);
@@ -83,7 +88,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
 
         LinearLayout headerLayout = (LinearLayout) mNavigationView.getHeaderView(0);
-        ivProfileImgNavBar = (ImageView) headerLayout.findViewById(R.id.ivProfileImgNavBar);
+        ImageView ivProfileImgNavBar = (ImageView) headerLayout.findViewById(R.id.ivProfileImgNavBar);
         Glide.with(NavigationDrawerActivity.this)
                 .load(sessionManager.getKeyImage())
                 .into(ivProfileImgNavBar);
@@ -95,10 +100,10 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 mDrawerLayout.closeDrawers();
 
-//                if (menuItem.getItemId() == R.id.showallnav) {
-//                    Intent intent = new Intent(getApplicationContext(), AllTicketsActivity.class);
-//                    startActivity(intent);
-//                }
+                if (menuItem.getItemId() == R.id.showallnav) {
+                    Intent intent = new Intent(getApplicationContext(), AllTicketsActivity.class);
+                    startActivity(intent);
+                }
                 if (menuItem.getItemId() == R.id.summarynav) {
                     Intent intent = new Intent(getApplicationContext(), SummaryActivity.class);
                     startActivity(intent);
@@ -116,6 +121,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                     String projectToken = MixpanelConfig.projectToken;
                     MixpanelAPI mixpanel = MixpanelAPI.getInstance(NavigationDrawerActivity.this, projectToken);
                     mixpanel.track("Refreshed");
+
                     Toast.makeText(NavigationDrawerActivity.this, " Refreshed ", Toast.LENGTH_SHORT).show();
                 }
 
@@ -134,9 +140,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-
-
-
         TelephonyManager telMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         int simState = telMgr.getSimState();
 
@@ -154,7 +157,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                             }
                         });
                 alertDialog.show();
-                Toast.makeText(NavigationDrawerActivity.this, "Sim is absent insert sim", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(NavigationDrawerActivity.this, "Sim is absent insert sim", Toast.LENGTH_SHORT).show();
                 break;
             case TelephonyManager.SIM_STATE_NETWORK_LOCKED:
                 // do something
@@ -170,7 +173,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 break;
             case TelephonyManager.SIM_STATE_READY:
                 // do something
-                Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_READY", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_READY", Toast.LENGTH_SHORT).show();
                 break;
             case TelephonyManager.SIM_STATE_UNKNOWN:
                 // do something
@@ -183,27 +186,24 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
     private void logoutManager() {
         if (NetworkStateReceiver.isNetworkAvailable(getApplicationContext())) {
-            // Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
+             Log.d(TAG, "logoutManager: TOKEN: " + sessionManager.getLoginToken());
             StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.LOGOUT,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             try {
-                                //  Log.d(TAG, "****onResponse:" + response);
+                                  Log.d(TAG, "onResponse:" + response);
                                 JSONObject obj = new JSONObject(response);
                                 int responseCode = obj.getInt("responseCode");
                                 if (responseCode == 200) {
-
                                     sessionManager.logoutSite();
                                     finish();
                                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                     startActivity(intent);
-                                    Toast.makeText(NavigationDrawerActivity.this, "Okay Send Data ", Toast.LENGTH_SHORT).show();
-
+                                    Toast.makeText(NavigationDrawerActivity.this, "Data sent to server", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-
                             }
                         }
                     },
@@ -216,11 +216,10 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                                 if (error.networkResponse != null) {
                                     if (error.networkResponse.statusCode == 401) {
                                         JSONObject jObj = new JSONObject(new String(error.networkResponse.data));
-                                        int responseCode = jObj.getInt("responseCode");
-
+//                                        int responseCode = jObj.getInt("responseCode");
                                     }
                                 } else {
-
+                                    Log.e(TAG, "onErrorResponse: error.networkResponse == null");
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -232,7 +231,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("site_id", siteId);
-                    params.put("mac", SyncStatus.getMacAddr());
+                    params.put("mac",sessionManager.getKeyMac());
                     return params;
                 }
             };
@@ -241,9 +240,11 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
         } else {
             Toast.makeText(NavigationDrawerActivity.this, "No Internet", Toast.LENGTH_LONG).show();
-            //  Log.d(TAG, "doInBackground: " + "************************ NO INTERNET CONNECTIVITY****************************");
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Not allowed", Toast.LENGTH_SHORT).show();
+    }
 }

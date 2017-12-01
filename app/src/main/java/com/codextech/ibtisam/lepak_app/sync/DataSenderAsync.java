@@ -5,18 +5,25 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.codextech.ibtisam.lepak_app.SessionManager;
+import com.codextech.ibtisam.lepak_app.activity.NavigationDrawerActivity;
 import com.codextech.ibtisam.lepak_app.model.LPNfc;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
-import com.codextech.ibtisam.lepak_app.receiver.NetworkStateReceiver;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
+import com.google.android.gms.iid.InstanceID;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,7 +73,6 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
 
     private void addTicketToServer() {
         realm = Realm.getDefaultInstance();
-        Log.d(TAG, "Site Id For Check " + sessionManager.getKeySiteId());
         RealmQuery<LPTicket> query = realm.where(LPTicket.class);
         query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
         RealmResults<LPTicket> manyLPTicket = query.findAll();
@@ -76,10 +82,14 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
             Log.d(TAG, "addTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
             addTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn(), oneLPTicket.getTimeOut());
         }
-        realm.close();
     }
 
     private void addTicketToServerSync(final String veh_num, final String veh_type, final String fee, final long time_in, final long time_out) {
+
+        final String timeInString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_in, "yyyy-MM-dd kk:mm:ss");
+        final String timeOutString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_out, "yyyy-MM-dd kk:mm:ss");
+        Log.d(TAG, "addTicketToServerSync: timeInString: " + timeInString);
+        Log.d(TAG, "addTicketToServerSync: timeOutString: " + timeOutString);
         queue = Volley.newRequestQueue(context, new HurlStack()); // TODO Caused by: java.lang.OutOfMemoryError: Could not allocate JNI Env
         StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.TICKET_SEND,
 
@@ -114,6 +124,22 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
+                        if (error instanceof NetworkError) {
+                            Log.d(TAG, "onErrorResponse: NetworkError");
+                        } else if (error instanceof ServerError) {
+                            Log.d(TAG, "onErrorResponse: ServerError");
+                        } else if (error instanceof AuthFailureError) {
+                            Log.d(TAG, "onErrorResponse: AuthFailureError");
+                        } else if (error instanceof ParseError) {
+                            Log.d(TAG, "onErrorResponse: ParseError");
+                        } else if (error instanceof NoConnectionError) {
+                            Log.d(TAG, "onErrorResponse: NoConnectionError");
+                        } else if (error instanceof TimeoutError) {
+                            Log.d(TAG, "onErrorResponse: TimeoutError");
+                        }
+
+                        Log.e(TAG, "onErrorResponse: addTicketToServerSync" + error);
+                        Log.e(TAG, "onErrorResponse: Vehicle Number: " + veh_num);
                         if (error.networkResponse != null) {
                             if (error.networkResponse.statusCode != 0) {
                                 Log.e(TAG, "onErrorResponse:  " + error.networkResponse.statusCode);
@@ -129,26 +155,25 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                                     manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED);
                                     realm.commitTransaction();
                                     realm.close();
+                                } else if (error.networkResponse.statusCode == 401) {
+                                    Toast.makeText(context, "AuthFailureError", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         } else {
                             Toast.makeText(context, "check internet connection", Toast.LENGTH_SHORT).show();
                         }
-                        Log.e(TAG, "onErrorResponse: addTicketToServerSync" + error);
-                        Log.e(TAG, "onErrorResponse: Vehicle Number: " + veh_num);
                     }
                 }
         ) {
             @Override
             protected Map<String, String> getParams() {
-
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("site_id", sessionManager.getKeySiteId());
                 params.put("vehicle_no", veh_num);
                 params.put("vehicle_type", veh_type);
                 params.put("fee", fee);
-                params.put("time_in", DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_in, "yyyy-MM-dd kk:mm:ss"));
-                params.put("time_out", DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_out, "yyyy-MM-dd kk:mm:ss"));
+                params.put("time_in", timeInString);
+                params.put("time_out", timeOutString);
                 params.put("token", sessionManager.getLoginToken());
                 params.put("mac", sessionManager.getKeyMac());
                 return params;
@@ -172,11 +197,10 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
     }
 
     private void editTicketToServerSync(final String number, final String vehicleType, final String price, final long timeInLong, final long timeOutLong, final String serverId) {
-
         final String timeInString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeInLong, "yyyy-MM-dd kk:mm:ss");
         final String timeOutString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeOutLong, "yyyy-MM-dd kk:mm:ss");
-        Log.d(TAG, "editTicketToServerSync: timeInString" + timeInString);
-        Log.d(TAG, "editTicketToServerSync: timeOutString" + timeOutString);
+        Log.d(TAG, "editTicketToServerSync: timeInString: " + timeInString);
+        Log.d(TAG, "editTicketToServerSync: timeOutString: " + timeOutString);
         RequestQueue queue = Volley.newRequestQueue(context, new HurlStack());
         StringRequest putRequest = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/ticket/timeout/" + serverId,
                 new Response.Listener<String>() {
@@ -213,7 +237,6 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                             e.printStackTrace();
                             Log.d(TAG, "onResponse: JSONException: " + e);
                         }
-
                         Toast.makeText(context, "Successfully Edited to server", Toast.LENGTH_SHORT).show();
                     }
                 },

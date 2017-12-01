@@ -323,22 +323,22 @@ public class TicketFormatActivity extends Activity {
             sb.append("\n");
             sb.append("        PARKING TICKET     ");
             sb.append("\n");
-            sb.append("Site Name:  " + site_name);
+            sb.append("Site Name: " + site_name);
             sb.append("\n");
-            sb.append("Time:       " + DateAndTimeUtils.getDateTimeStringFromMiliseconds(ticket_time_in, "MMM dd,yyyy hh:mm a"));
-
-            sb.append("No. Plate:  " + veh_number);
+            sb.append("Time:   " + DateAndTimeUtils.getDateTimeStringFromMiliseconds(ticket_time_in, "MMM dd,yyyy hh:mm:ss a"));
             sb.append("\n");
-            sb.append("Type:       " + veh_type);
+            sb.append("No. Plate: " + veh_number);
+            sb.append("\n");
+            sb.append("Type:      " + veh_type);
             sb.append("\n");
             if (fee.equals("0")) {
-                sb.append("Fee:        " + "Free Parking");
+                sb.append("Fee:       " + "Free Parking");
             } else {
-                sb.append("Fee:        " + "Rs. " + fee);
+                sb.append("Fee:       " + "Rs. " + fee);
 
             }
             sb.append("\n");
-            sb.append("Zone:       " + sessionManager.getKeyAreanmae());
+            sb.append("Zone:      " + sessionManager.getKeyAreanmae());
             sb.append("\n");
             sb.append("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             sb.append("   Parking at your own risk");
@@ -347,7 +347,8 @@ public class TicketFormatActivity extends Activity {
             sb.append("\n");
             sb.append("for any loss");
             sb.append("\n");
-            sb.append("Help Line  :    " + "042-35189657");
+            sb.append("Help Line  :    " + "042-35782491");
+            sb.append("\n");
             sb.append("\n");
             sb.append("----POWERED BY OUTSTART TECH----");
             sb.append("\n");
@@ -361,9 +362,7 @@ public class TicketFormatActivity extends Activity {
             text = sb.toString().getBytes("GBK");
             addPrintTextWithSize(1, concentration, text);
             mPrintQueue.printStart();
-            //TODO if ticket is printed successfull then do this
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

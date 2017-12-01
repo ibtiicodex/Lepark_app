@@ -28,6 +28,7 @@ import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -80,6 +81,7 @@ public class SummaryActivity extends AppCompatActivity {
     private TextView tvCountTotal;
     private long loginTimeStampLong;
     private Button btPrintSummary;
+    private long summaryTimeTaken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +91,10 @@ public class SummaryActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
 
         loginTimeStampLong = (long) sessionManager.getLoginTimestamp();
+
+
+//                            ticket_time_out = dateFormat.format(cal.getTime());
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //  bPrintSummaryPa = (Button) this.findViewById(bPrintSummaryp);
@@ -405,30 +411,39 @@ public class SummaryActivity extends AppCompatActivity {
 
     private void printMix() {
         try {
+
+
+            summaryTimeTaken = Calendar.getInstance().getTimeInMillis();
+//                            ticket_time_out = dateFormat.format(cal.getTime());
+
             int concentration = 44;
             StringBuilder sb = new StringBuilder();
+            sb.append("    "+DateAndTimeUtils.getDateTimeStringFromMiliseconds(summaryTimeTaken, "MMM dd,yyyy hh:mm:ss a"));
+            sb.append("\n");
             sb.append("\n");
             sb.append("   LEPARK Lahore Parking Company ");
             sb.append("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-            sb.append("Zone:-      "+sessionManager.getKeyAreanmae());
+            sb.append("Zone:       "+sessionManager.getKeyAreanmae());
             sb.append("\n");
-            sb.append("Site Name:- "+sessionManager.getKeySiteName());
+            sb.append("Site Name:  "+sessionManager.getKeySiteName());
             sb.append("\n");
             sb.append("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             sb.append("\n");
             sb.append("   Summary of all tickets     ");
             sb.append("\n");
             sb.append("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-            sb.append( "     "+DateAndTimeUtils.getDateTimeStringFromMiliseconds(loginTimeStampLong, "MMM dd,yyyy hh:mm a")+"       ");
+            sb.append( "Login Time:");
+            sb.append("\n");
+            sb.append(DateAndTimeUtils.getDateTimeStringFromMiliseconds(loginTimeStampLong, "MMM dd,yyyy hh:mm:ss a"));
             sb.append("\n");
             sb.append("\n");
             sb.append("Veh   Count   Fare   Total");
             sb.append("\n");
-              sb.append("Car    "+countCar+ "       "+  sessionManager.getKeyCarAmount()+"     "+sumCar);
-             sb.append("\n");
-              sb.append("Bike   "+countBike+"       "+ sessionManager.getKeyBikeAmount()+"     "+sumBike);
+            sb.append("Car    "+countCar+ "       "+  sessionManager.getKeyCarAmount()+"     "+sumCar);
             sb.append("\n");
-              sb.append("Van    "+countVan+ "       "  +sessionManager.getKeyVanAmount()+"     "+sumVan);
+            sb.append("Bike   "+countBike+"       "+ sessionManager.getKeyBikeAmount()+"     "+sumBike);
+            sb.append("\n");
+            sb.append("Van    "+countVan+ "       "  +sessionManager.getKeyVanAmount()+"     "+sumVan);
             sb.append("\n");
             sb.append("Truck  "  +countTruck+ "       "+sessionManager.getKeyTruckAmount()+"     "+sumTruck);
             sb.append("\n");

@@ -21,7 +21,7 @@ public class TabFragment extends Fragment {
     public static final String TAG = "test";
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
-    public static int int_items = 2;
+    public static int int_items = 1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -45,9 +45,9 @@ public class TabFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
             switch (position) {
+//                case 0:
+//                    return new ReturnTicketFragment();
                 case 0:
-                    return new ReturnTicketFragment();
-                case 1:
                     return new PrintTicketFragment();
 
             }
@@ -60,9 +60,9 @@ public class TabFragment extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
+//                case 0:
+//                    return "Return Ticket";
                 case 0:
-                    return "Return Ticket";
-                case 1:
                     return "Print Ticket";
 
             }
