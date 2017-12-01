@@ -22,6 +22,7 @@ import com.codextech.ibtisam.lepak_app.SessionManager;
 import com.codextech.ibtisam.lepak_app.activity.NavigationDrawerActivity;
 import com.codextech.ibtisam.lepak_app.model.LPNfc;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
+import com.codextech.ibtisam.lepak_app.receiver.NetworkStateReceiver;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
 import com.google.android.gms.iid.InstanceID;
 
