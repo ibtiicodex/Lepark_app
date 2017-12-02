@@ -46,6 +46,7 @@
             android:background="#FFF"
             android:inputType="textVisiblePassword"
             android:gravity="center"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "
             android:hint="LHG999"
             android:textColorHint="#FFC9CACA"
             android:textSize="30dp" />

@@ -99,8 +99,8 @@ public class ReturnTicketFragment extends Fragment {
                             }
                             realm.commitTransaction();
                             timeDifference(DateAndTimeUtils.getDateTimeStringFromMiliseconds(manyLPTicket.first().getTimeIn(), "yyyy-MM-dd kk:mm:ss"), DateAndTimeUtils.getDateTimeStringFromMiliseconds(manyLPTicket.first().getTimeOut(), "yyyy-MM-dd kk:mm:ss"), manyLPTicket.first().getPrice());
-                            DataSenderAsync dataSenderAsync = new DataSenderAsync(getActivity());
-                            dataSenderAsync.execute();
+                            DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getActivity());
+                            dataSenderAsync.run();
                             etCarNumber.setText("");
                         } else {
                             Toast.makeText(getActivity(), "Already Exit ", Toast.LENGTH_SHORT).show();

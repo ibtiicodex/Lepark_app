@@ -85,16 +85,13 @@ public class LoginActivity extends AppCompatActivity {
         //  btok = (Button) findViewById(R.id.btok);
         //emailEditText = (EditText) findViewById(edSiteName);
         passEditText = (EditText) findViewById(R.id.password);
-
         if (NetworkStateReceiver.isNetworkAvailable(getApplicationContext())) {
             // Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
             getAllLocationsFromServer();
-
         } else {
-            Toast.makeText(this, "No InterNet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No Internet", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "doInBackground: " + "************************ NO INTERNET CONNECTIVITY****************************");
         }
-
         RegisterActivity obj = new RegisterActivity();
         String email = getIntent().getStringExtra(LoginActivity.LOGIN_EMAIL);
         String password = getIntent().getStringExtra(LoginActivity.LOGIN_PASSWORD);
@@ -124,29 +121,24 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final String site = site_name;
-
                 final String pass = passEditText.getText().toString();
                 if (!isValidPassword(pass)) {
                     //Set error message for password field
                     passEditText.setError("Password cannot be empty");
                 }
-
-
                 if (NetworkStateReceiver.isNetworkAvailable(getApplicationContext())) {
                     // Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
-
                     if (isValidPassword(pass)) {
                         loginRequest(site, pass);
                         pdLoading.show();
-
                     }
-
                 } else {
-                    Toast.makeText(LoginActivity.this, "No InterNet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "doInBackground: " + "************************ NO INTERNET CONNECTIVITY****************************");
                 }
-
-
+                String projectToken = MixpanelConfig.projectToken;
+                MixpanelAPI mixpanel = MixpanelAPI.getInstance(LoginActivity.this, projectToken);
+                mixpanel.track("Login");
             }
         });
     }
@@ -199,11 +191,13 @@ public class LoginActivity extends AppCompatActivity {
                                 MixpanelAPI mixpanel = MixpanelAPI.getInstance(getApplicationContext(), projectToken);
                                 MixpanelAPI.People people = mixpanel.getPeople();
                                 people.identify(site_id);
-                                people.initPushHandling("44843550731");
+                                people.initPushHandling("519673611120");
                                 mixpanel.getPeople().identify(site_id);
 
                                 JSONObject props = new JSONObject();
 
+                                props.put("$first_name", "" + site);
+                                props.put("$last_name", "" + areaName);
                                 props.put("$site_name", "" + site);
                                 props.put("$area_name", "" + areaName);
                                 props.put("car_fare", "" + car_fare);

@@ -158,8 +158,8 @@ public class NfcGetAllCoinsActivity extends AppCompatActivity {
                     tvAmountNfc.setText("Amount  : " + (make.first().getCoinAmount()));
                     tvVehicleNfc.setText("Vehicle  no : " + (make.first().getCoinVehicle()));
                     btDetecta.setVisibility(View.GONE);
-                    DataSenderAsync dataSenderAsync = new DataSenderAsync(NfcGetAllCoinsActivity.this);
-                    dataSenderAsync.execute();
+                    DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(NfcGetAllCoinsActivity.this);
+                    dataSenderAsync.run();
                 }
             });
         }

@@ -1,5 +1,7 @@
 package com.codextech.ibtisam.lepak_app.activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,8 +38,7 @@ import com.codextech.ibtisam.lepak_app.receiver.NetworkStateReceiver;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
 import com.codextech.ibtisam.lepak_app.sync.MyUrls;
-import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
-import com.google.android.gms.iid.InstanceID;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import org.json.JSONException;
@@ -46,17 +47,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-
-
-
-//import com.codextech.ibtisam.lepak_app.service.ScanService;
 public class NavigationDrawerActivity extends AppCompatActivity {
     private String TAG = "NavigationDrawerActivit";
 
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
     TextView setOnProfile;
-
+    private FirebaseAnalytics mFirebaseAnalytics;
     FragmentTransaction mFragmentTransaction;
     FragmentManager mFragmentManager;
     SessionManager sessionManager;
@@ -110,14 +107,19 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 }
                 if (menuItem.getItemId() == R.id.logoutnav) {
                     logoutManager();
+                    String projectToken = MixpanelConfig.projectToken;
+                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(NavigationDrawerActivity.this, projectToken);
+                    mixpanel.track("Logout");
                 }
 //                if (menuItem.getItemId() == R.id.nav_NfcActvity) {
 //                    Intent intent = new Intent(getApplicationContext(), NfcGetAllCoinsActivity.class);
 //                    startActivity(intent);
 //                }
                 if (menuItem.getItemId() == R.id.nav_refresh) {
-                    DataSenderAsync dataSenderAsync = new DataSenderAsync(NavigationDrawerActivity.this);
-                    dataSenderAsync.execute();
+
+                    DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getApplicationContext());
+                    dataSenderAsync.run();
+
                     String projectToken = MixpanelConfig.projectToken;
                     MixpanelAPI mixpanel = MixpanelAPI.getInstance(NavigationDrawerActivity.this, projectToken);
                     mixpanel.track("Refreshed");
@@ -181,7 +183,30 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 break;
         }
 
+        final Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            public void uncaughtException(Thread thread, Throwable ex) {
+                Log.d(TAG, "uncaughtException: ");
+                Intent launchIntent = new Intent(getIntent());
+                PendingIntent pending = PendingIntent.getActivity(NavigationDrawerActivity.this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                manager.set(AlarmManager.RTC, System.currentTimeMillis() + 10000, pending);
+                defaultHandler.uncaughtException(thread, ex);
+                System.exit(2);
+                Log.d(TAG, "uncaughtException: exit");
+            }
+        });
 
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        final Bundle bundle = new Bundle();
+        //The following code logs a SELECT_CONTENT Event when a user clicks on a specific element in your app.
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
+//        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
+
+        String projectToken = MixpanelConfig.projectToken;
+        MixpanelAPI mixpanel = MixpanelAPI.getInstance(NavigationDrawerActivity.this, projectToken);
+        mixpanel.track("Home Screen Opened");
     }
 
     private void logoutManager() {
@@ -197,9 +222,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                                 int responseCode = obj.getInt("responseCode");
                                 if (responseCode == 200) {
                                     sessionManager.logoutSite();
-                                    finish();
                                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                     startActivity(intent);
+                                    finish();
                                     Toast.makeText(NavigationDrawerActivity.this, "Data sent to server", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
@@ -220,6 +245,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                                     }
                                 } else {
                                     Log.e(TAG, "onErrorResponse: error.networkResponse == null");
+                                    Toast.makeText(NavigationDrawerActivity.this, "check internet connection", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -236,8 +262,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 }
             };
             queue.add(postRequest);
-
-
         } else {
             Toast.makeText(NavigationDrawerActivity.this, "No Internet", Toast.LENGTH_LONG).show();
         }

@@ -6,14 +6,10 @@ package com.codextech.ibtisam.lepak_app.app;
 
 public class MixpanelConfig {
 
-
-    // My Mixpanel
-//    public static final String projectToken = "";
-
     // Mixpanel Dev
-//    public static final String projectToken = "";
+    public static final String projectToken = "46570bb9cf4f0ab6d9c0675e158bd34f";
 
     // Mixpanel Production
-    public static final String projectToken = "66a12324dcd2604092706ecdca35eaef";
+//    public static final String projectToken = "76d4603c28bb671bc0eeb9d0d53de5bf";
 
 }

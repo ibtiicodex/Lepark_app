@@ -19,11 +19,13 @@ import android.widget.Toast;
 
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
+import com.codextech.ibtisam.lepak_app.app.MixpanelConfig;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.service.ScanService;
 import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
 import com.codextech.ibtisam.lepak_app.sync.SyncStatus;
 import com.codextech.ibtisam.lepak_app.util.DateAndTimeUtils;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
@@ -94,33 +96,40 @@ public class TicketFormatActivity extends Activity {
             if (veh_type != null) {
                 if (veh_type.equals(TicketFormatActivity.VEHICLE_TYPE_CAR)) {
                     veh_type = "Car";
-
                     fee = sessionManager.getKeyCarAmount();
                     if (fee.equals("0") || fee.equals("00")) {
                         fee = "0";
                     }
-
+                    String projectToken = MixpanelConfig.projectToken;
+                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(TicketFormatActivity.this, projectToken);
+                    mixpanel.track("Car Pressed");
                 } else if (veh_type.equals(TicketFormatActivity.VEHICLE_TYPE_BIKE)) {
                     veh_type = "Bike";
                     fee = sessionManager.getKeyBikeAmount();
                     if (fee.equals("0") || fee.equals("00")) {
                         fee = "0";
                     }
-
+                    String projectToken = MixpanelConfig.projectToken;
+                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(TicketFormatActivity.this, projectToken);
+                    mixpanel.track("Bike Pressed");
                 } else if (veh_type.equals(TicketFormatActivity.VEHICLE_TYPE_VAN)) {
                     veh_type = "Van";
                     fee = sessionManager.getKeyVanAmount();
                     if (fee.equals("0") || fee.equals("00")) {
                         fee = "0";
                     }
-
+                    String projectToken = MixpanelConfig.projectToken;
+                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(TicketFormatActivity.this, projectToken);
+                    mixpanel.track("Van Pressed");
                 } else if (veh_type.equals(TicketFormatActivity.VEHICLE_TYPE_TRUCK)) {
                     veh_type = "Truck";
                     fee = sessionManager.getKeyTruckAmount();
                     if (fee.equals("0") || fee.equals("00")) {
                         fee = "0";
                     }
-
+                    String projectToken = MixpanelConfig.projectToken;
+                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(TicketFormatActivity.this, projectToken);
+                    mixpanel.track("Truck Pressed");
                 }
             }
         }
@@ -160,9 +169,9 @@ public class TicketFormatActivity extends Activity {
 //                    }
 //                });
                 finish();
-                DataSenderAsync dataSenderAsync = new DataSenderAsync(TicketFormatActivity.this);
-                dataSenderAsync.execute();
-                Toast.makeText(getApplicationContext(), getString(R.string.print_complete), Toast.LENGTH_SHORT).show();
+//                DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(TicketFormatActivity.this);
+//                dataSenderAsync.run();
+//                Toast.makeText(getApplicationContext(), getString(R.string.print_complete), Toast.LENGTH_SHORT).show();
             }
 
             @Override

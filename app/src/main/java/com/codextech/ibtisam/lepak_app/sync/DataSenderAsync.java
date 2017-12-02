@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
@@ -41,35 +42,88 @@ import io.realm.RealmResults;
  * Created by ibtisam on 10/23/2017.
  */
 
-public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
+public class DataSenderAsync {
     public static final String TAG = "DataSenderAsync";
-    Context context;
+    private static DataSenderAsync instance = null;
+    private static int currentState = 1;
+    private static final int IDLE = 1;
+    private static final int PENDING = 2;
+    private static boolean firstThreadIsRunning = false;
+    private final int MY_MAX_RETRIES = 0;
+    Context mContext;
     SessionManager sessionManager;
     private Realm realm;
-    private String vehicle_no;
-    private String serverid;
     RequestQueue queue;
 
-    public DataSenderAsync(Context context) {
-        this.context = context;
-        sessionManager = new SessionManager(context);
-        Log.d(TAG, "DataSenderAsync: TOKEN: " + sessionManager.getLoginToken());
+    public static DataSenderAsync getInstance(Context applicationContext) {
+        final Context appContext = applicationContext.getApplicationContext();
+        if (instance == null) {
+//            synchronized ((Object) firstThreadIsRunning) { //TODO make it thread safe
+            if (!firstThreadIsRunning) {
+                firstThreadIsRunning = true;
+                instance = new DataSenderAsync(appContext);
+            }
+//            }
+        }
+        return instance;
     }
 
-    @Override
-    protected Void doInBackground(Void... voids) {
-        if (NetworkStateReceiver.isNetworkAvailable(context)) {
-            Log.d(TAG, "DataSenderAsync: doInBackground TOKEN: " + sessionManager.getLoginToken());
+    public DataSenderAsync(Context context) {
+        mContext = context;
+        queue = Volley.newRequestQueue(context, new HurlStack());
+        firstThreadIsRunning = false;
+    }
 
-            addTicketToServer();
-            editTicketToServer();
-            editCoinsToServer();
+    public void run() {
+        if (currentState == IDLE) {
+            currentState = PENDING;
+            Log.d(TAG, "run: InsideRUNING" + this.toString());
+            queue.setmAllFinishedListener(new RequestQueue.AllFinishedListener() {
+                @Override
+                public void onAllFinished() {
+                    currentState = IDLE;
+                    Log.d(TAG, "onRequestFinished: EVERYTHING COMPLETED");
+                }
+            });
+            new AsyncTask<Object, Void, Void>() {
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                    sessionManager = new SessionManager(mContext);
+                    Log.d(TAG, "DataSenderAsync ++++++++++++++onPreExecute:+++++++++++++ ");
+                }
 
-        } else {
+                @Override
+                protected Void doInBackground(Object... objects) {
+                    try {
+                        if (NetworkStateReceiver.isNetworkAvailable(mContext)) {
+                            Log.d(TAG, "DataSenderAsync: run TOKEN: " + sessionManager.getLoginToken());
+                            addTicketToServer();
+                            editTicketToServer();
+                            editCoinsToServer();
+//                            if (NetworkStateReceiver.isWifiConnected(mContext)) {
+//                                // Do big syncing on WIFI only.
+//                            }
+                        } else {
+                            Log.d(TAG, "run: " + "************************ NO INTERNET CONNECTIVITY****************************");
+                        }
+                    } catch (Exception e) {
+                        Log.d(TAG, "SyncingException: " + e.getMessage());
+                    }
+                    return null;
+                }
 
-            Log.d(TAG, "doInBackground: " + "************************ NO INTERNET CONNECTIVITY****************************");
+                @Override
+                protected void onPostExecute(Void result) {
+                    queue.isIdle();
+//                    if (currentState != PENDING) {
+//                        Log.d(TAG, "onPostExecuteListener: currentState: " + currentState);
+//                        currentState = IDLE;
+//                    }
+                    Log.d(TAG, "DataSenderAsync onPostExecute:");
+                }
+            }.execute();
         }
-        return null;
     }
 
     private void addTicketToServer() {
@@ -86,13 +140,13 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
     }
 
     private void addTicketToServerSync(final String veh_num, final String veh_type, final String fee, final long time_in, final long time_out) {
-
+        currentState = PENDING;
         final String timeInString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_in, "yyyy-MM-dd kk:mm:ss");
+        Log.d(TAG, "addTicketToServerSync: TimeOUT: " + time_out);
         final String timeOutString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(time_out, "yyyy-MM-dd kk:mm:ss");
         Log.d(TAG, "addTicketToServerSync: timeInString: " + timeInString);
         Log.d(TAG, "addTicketToServerSync: timeOutString: " + timeOutString);
-        queue = Volley.newRequestQueue(context, new HurlStack()); // TODO Caused by: java.lang.OutOfMemoryError: Could not allocate JNI Env
-        StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.TICKET_SEND,
+        StringRequest sr = new StringRequest(Request.Method.POST, MyUrls.TICKET_SEND,
 
                 new Response.Listener<String>() {
                     @Override
@@ -104,8 +158,8 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                             if (responseCode == 200) {
                                 JSONObject uniObject = obj.getJSONObject("response");
                                 //TODO  Save server_id of ticket in local db
-                                serverid = uniObject.getString("id");
-                                vehicle_no = uniObject.getString("vehicle_no");
+                                String serverid = uniObject.getString("id");
+                                String vehicle_no = uniObject.getString("vehicle_no");
                                 realm = Realm.getDefaultInstance();
                                 RealmQuery<LPTicket> query = realm.where(LPTicket.class);
                                 query.equalTo("timeIn", time_in);
@@ -126,17 +180,17 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
                         if (error instanceof NetworkError) {
-                            Log.d(TAG, "onErrorResponse: NetworkError");
+                            Log.e(TAG, "onErrorResponse: NetworkError + " + error);
                         } else if (error instanceof ServerError) {
-                            Log.d(TAG, "onErrorResponse: ServerError");
+                            Log.e(TAG, "onErrorResponse: ServerError + " + error);
                         } else if (error instanceof AuthFailureError) {
-                            Log.d(TAG, "onErrorResponse: AuthFailureError");
+                            Log.e(TAG, "onErrorResponse: AuthFailureError + " + error);
                         } else if (error instanceof ParseError) {
-                            Log.d(TAG, "onErrorResponse: ParseError");
+                            Log.e(TAG, "onErrorResponse: ParseError + " + error);
                         } else if (error instanceof NoConnectionError) {
-                            Log.d(TAG, "onErrorResponse: NoConnectionError");
+                            Log.e(TAG, "onErrorResponse: NoConnectionError + " + error);
                         } else if (error instanceof TimeoutError) {
-                            Log.d(TAG, "onErrorResponse: TimeoutError");
+                            Log.e(TAG, "onErrorResponse: TimeoutError + " + error);
                         }
 
                         Log.e(TAG, "onErrorResponse: addTicketToServerSync" + error);
@@ -145,7 +199,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                             if (error.networkResponse.statusCode != 0) {
                                 Log.e(TAG, "onErrorResponse:  " + error.networkResponse.statusCode);
                                 if (error.networkResponse.statusCode == 500) {
-                                    Toast.makeText(context, "Server Error", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, "Server Error", Toast.LENGTH_SHORT).show();
                                 } else if (error.networkResponse.statusCode == 409) {
                                     Log.d(TAG, "onErrorResponse: CHANGING TICKET STATUS " + veh_num);
                                     realm = Realm.getDefaultInstance();
@@ -157,11 +211,11 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                                     realm.commitTransaction();
                                     realm.close();
                                 } else if (error.networkResponse.statusCode == 401) {
-                                    Toast.makeText(context, "AuthFailureError", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, "AuthFailureError", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         } else {
-                            Toast.makeText(context, "check internet connection", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "check internet connection", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -180,11 +234,15 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                 return params;
             }
         };
-        queue.add(postRequest);
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
     }
 
     private void editTicketToServer() {
-        RealmConfiguration config = new RealmConfiguration.Builder(context).build();
+        RealmConfiguration config = new RealmConfiguration.Builder(mContext).build();
         realm = Realm.getInstance(config);
         RealmQuery<LPTicket> query = realm.where(LPTicket.class);
         query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED);
@@ -198,12 +256,12 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
     }
 
     private void editTicketToServerSync(final String number, final String vehicleType, final String price, final long timeInLong, final long timeOutLong, final String serverId) {
+        currentState = PENDING;
         final String timeInString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeInLong, "yyyy-MM-dd kk:mm:ss");
         final String timeOutString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeOutLong, "yyyy-MM-dd kk:mm:ss");
         Log.d(TAG, "editTicketToServerSync: timeInString: " + timeInString);
         Log.d(TAG, "editTicketToServerSync: timeOutString: " + timeOutString);
-        RequestQueue queue = Volley.newRequestQueue(context, new HurlStack());
-        StringRequest putRequest = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/ticket/timeout/" + serverId,
+        StringRequest sr = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/ticket/timeout/" + serverId,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -238,15 +296,28 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                             e.printStackTrace();
                             Log.d(TAG, "onResponse: JSONException: " + e);
                         }
-                        Toast.makeText(context, "Successfully Edited to server", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "Successfully Edited to server", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        if (error instanceof NetworkError) {
+                            Log.e(TAG, "onErrorResponse: NetworkError + " + error);
+                        } else if (error instanceof ServerError) {
+                            Log.e(TAG, "onErrorResponse: ServerError + " + error);
+                        } else if (error instanceof AuthFailureError) {
+                            Log.e(TAG, "onErrorResponse: AuthFailureError + " + error);
+                        } else if (error instanceof ParseError) {
+                            Log.e(TAG, "onErrorResponse: ParseError + " + error);
+                        } else if (error instanceof NoConnectionError) {
+                            Log.e(TAG, "onErrorResponse: NoConnectionError + " + error);
+                        } else if (error instanceof TimeoutError) {
+                            Log.e(TAG, "onErrorResponse: TimeoutError + " + error);
+                        }
                         Log.d(TAG, "editTicketToServerSync onErrorResponse: " + error.toString());
                         Log.d(TAG, "editTicketToServerSync onErrorResponse:  statusCode: " + error.networkResponse.statusCode);
-                        Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -263,13 +334,16 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                 return params;
             }
         };
-
-        queue.add(putRequest);
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
     }
 
     //////////////////////////////////////////////////////////////////////////////coinsupdate
     private void editCoinsToServer() {
-        RealmConfiguration config = new RealmConfiguration.Builder(context).build();
+        RealmConfiguration config = new RealmConfiguration.Builder(mContext).build();
         realm = Realm.getInstance(config);
         LPNfc lpNfc = new LPNfc();
         RealmQuery<LPNfc> query = realm.where(LPNfc.class);
@@ -284,9 +358,8 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
     }
 
     private void editCoinToServerSync(String coinId, String coinvehicle, final String coinAmount) {
-
-        RequestQueue queue = Volley.newRequestQueue(context, new HurlStack());
-        StringRequest putRequest = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/coin/" + coinId,
+        currentState = PENDING;
+        StringRequest sr = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/coin/" + coinId,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -295,14 +368,14 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                             JSONObject obj = new JSONObject(response);
                             int responseCode = obj.getInt("responseCode");
                             if (responseCode == 200) {
-                                Toast.makeText(context, "Coin Synced", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, "Coin Synced", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d(TAG, "onResponse: JSONException: " + e);
                         }
 
-                        Toast.makeText(context, "Successfully Edited to server", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "Successfully Edited to server", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -311,7 +384,7 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                         Log.d(TAG, "editCoinToServerSync onErrorResponse: " + error.toString());
                         Log.d(TAG, "editCoinToServerSync onErrorResponse:  statusCode: " + error.networkResponse.statusCode);
                         // error
-                        Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -327,6 +400,11 @@ public class DataSenderAsync extends AsyncTask<Void, Void, Void> {
                 return params;
             }
         };
-        queue.add(putRequest);
+        sr.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                MY_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(sr);
     }
+
 }

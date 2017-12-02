@@ -13,9 +13,13 @@ import android.widget.Toast;
 
 import com.codextech.ibtisam.lepak_app.R;
 import com.codextech.ibtisam.lepak_app.SessionManager;
+import com.codextech.ibtisam.lepak_app.activity.NavigationDrawerActivity;
 import com.codextech.ibtisam.lepak_app.activity.TicketFormatActivity;
+import com.codextech.ibtisam.lepak_app.app.MixpanelConfig;
 import com.codextech.ibtisam.lepak_app.model.LPTicket;
 import com.codextech.ibtisam.lepak_app.realm.RealmController;
+import com.codextech.ibtisam.lepak_app.sync.DataSenderAsync;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 /**
  * Created by HP on 10/18/2017.
@@ -77,33 +81,27 @@ public class PrintTicketFragment extends Fragment {
             public void onClick(View view) {
                 boolean validcar = false;
                 int check = 0;
-                // vehNumber = edenternumber.getText().toString();6
-
                 vehNumber = edenternumber.getText().toString().toUpperCase();
 
                 char charArray[] = vehNumber.toCharArray();
                 for (int k = 0; k < charArray.length; k++) {
                     if ((charArray[k] >= 33 && charArray[k] <= 47) || (charArray[k] >= 91 && charArray[k] <= 96)) {
-
                         check++;
                     } else {
-
                         if ((charArray[k] >= 97 && charArray[k] <= 122) || (charArray[k] >= 65 && charArray[k] <= 90) || charArray[k] == 32 || (charArray[k] >= 48 && charArray[k] <= 57)) {
                             if (charArray[k] >= 48 && charArray[k] <= 57) {
                                 validcar = true;
                             }
                         }
-
                     }
                 }
                 if (check == 0) {
                     if (validcar) {
-
                         if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 10) {
-                                Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
-                                intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
-                                intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_CAR);
-                                startActivity(intent);
+                            Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
+                            intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
+                            intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_CAR);
+                            startActivity(intent);
                         } else {
                             edenternumber.setError("Empty  or too long");
                         }
@@ -112,7 +110,6 @@ public class PrintTicketFragment extends Fragment {
                         bVan.setVisibility(View.GONE);
                         bTruck.setVisibility(View.GONE);
                     } else {
-
                         edenternumber.setError("Wrong input");
                     }
                 } else {
@@ -123,36 +120,31 @@ public class PrintTicketFragment extends Fragment {
         bBike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean validcar = false;
+                boolean validBike = false;
                 int check = 0;
                 vehNumber = edenternumber.getText().toString().toUpperCase();
 
                 char charArray[] = vehNumber.toCharArray();
                 for (int k = 0; k < charArray.length; k++) {
                     if ((charArray[k] >= 33 && charArray[k] <= 47) || (charArray[k] >= 91 && charArray[k] <= 96)) {
-
                         check++;
                     } else {
-
                         if ((charArray[k] >= 97 && charArray[k] <= 122) || (charArray[k] >= 65 && charArray[k] <= 90) || charArray[k] == 32 || (charArray[k] >= 48 && charArray[k] <= 57)) {
                             if (charArray[k] >= 48 && charArray[k] <= 57) {
-                                validcar = true;
+                                validBike = true;
                             }
                         }
-
                     }
                 }
 
                 if (check == 0) {
-                    if (validcar) {
-
+                    if (validBike) {
                         //vehNumber = edenternumber.getText().toString();
                         if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 10) {
-                                Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
-                                intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
-                                intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_BIKE);
-                                startActivity(intent);
-
+                            Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
+                            intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
+                            intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_BIKE);
+                            startActivity(intent);
                         } else {
                             edenternumber.setError("Empty or too long");
                         }
@@ -160,9 +152,7 @@ public class PrintTicketFragment extends Fragment {
                         bBike.setVisibility(View.GONE);
                         bVan.setVisibility(View.GONE);
                         bTruck.setVisibility(View.GONE);
-
                     } else {
-
                         edenternumber.setError("Wrong input");
                     }
                 } else {
@@ -174,36 +164,30 @@ public class PrintTicketFragment extends Fragment {
         bVan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                boolean validcar = false;
+                boolean validVan = false;
                 int check = 0;
-
                 vehNumber = edenternumber.getText().toString().toUpperCase();
                 char charArray[] = vehNumber.toCharArray();
                 for (int k = 0; k < charArray.length; k++) {
                     if ((charArray[k] >= 33 && charArray[k] <= 47) || (charArray[k] >= 91 && charArray[k] <= 96)) {
-
                         check++;
                     } else {
-
                         if ((charArray[k] >= 97 && charArray[k] <= 122) || (charArray[k] >= 65 && charArray[k] <= 90) || charArray[k] == 32 || (charArray[k] >= 48 && charArray[k] <= 57)) {
                             if (charArray[k] >= 48 && charArray[k] <= 57) {
-                                validcar = true;
+                                validVan = true;
                             }
                         }
-
                     }
                 }
 
                 if (check == 0) {
-                    if (validcar) {
+                    if (validVan) {
                         // vehNumber = edenternumber.getText().toString();
-
                         if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 10) {
-                                Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
-                                intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
-                                intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_VAN);
-                                startActivity(intent);
+                            Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
+                            intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
+                            intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_VAN);
+                            startActivity(intent);
                         } else {
                             edenternumber.setError("Empty or too long");
                         }
@@ -211,8 +195,6 @@ public class PrintTicketFragment extends Fragment {
                         bBike.setVisibility(View.GONE);
                         bVan.setVisibility(View.GONE);
                         bTruck.setVisibility(View.GONE);
-
-
                     } else {
 
                         edenternumber.setError("Wrong input");
@@ -220,7 +202,6 @@ public class PrintTicketFragment extends Fragment {
                 } else {
                     edenternumber.setError("Wrong input");
                 }
-
             }
         });
         bTruck.setOnClickListener(new View.OnClickListener()
@@ -228,34 +209,30 @@ public class PrintTicketFragment extends Fragment {
         {
             @Override
             public void onClick(View view) {
-                boolean validcar = false;
+                boolean validTruck = false;
                 int check = 0;
                 // vehNumber = edenternumber.getText().toString();
                 vehNumber = edenternumber.getText().toString().toUpperCase();
                 char charArray[] = vehNumber.toCharArray();
                 for (int k = 0; k < charArray.length; k++) {
                     if ((charArray[k] >= 33 && charArray[k] <= 47) || (charArray[k] >= 91 && charArray[k] <= 96)) {
-
                         check++;
                     } else {
-
                         if ((charArray[k] >= 97 && charArray[k] <= 122) || (charArray[k] >= 65 && charArray[k] <= 90) || charArray[k] == 32 || (charArray[k] >= 48 && charArray[k] <= 57)) {
                             if (charArray[k] >= 48 && charArray[k] <= 57) {
-                                validcar = true;
+                                validTruck = true;
                             }
                         }
-
                     }
                 }
 
                 if (check == 0) {
-                    if (validcar) {
-
+                    if (validTruck) {
                         if (vehNumber.trim().length() >= 1 && vehNumber != null && vehNumber.trim().length() <= 10) {
-                                Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
-                                intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
-                                intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_TRUCK);
-                                startActivity(intent);
+                            Intent intent = new Intent(getActivity(), TicketFormatActivity.class);
+                            intent.putExtra(TicketFormatActivity.KEY_VEHICLE_NUMBER, vehNumber);
+                            intent.putExtra(TicketFormatActivity.KEY_VEHICLE_TYPE, TicketFormatActivity.VEHICLE_TYPE_TRUCK);
+                            startActivity(intent);
                         } else {
                             edenternumber.setError("Empty or too long");
                         }
@@ -264,33 +241,31 @@ public class PrintTicketFragment extends Fragment {
                         bVan.setVisibility(View.GONE);
                         bTruck.setVisibility(View.GONE);
                     } else {
-
                         edenternumber.setError("Wrong input");
                     }
                 } else {
                     edenternumber.setError("Wrong input");
                 }
-
-
             }
         });
-
         return view;
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume: ");
         edenternumber.setText("");
         bCar.setVisibility(View.VISIBLE);
         bBike.setVisibility(View.VISIBLE);
         bVan.setVisibility(View.VISIBLE);
         bTruck.setVisibility(View.VISIBLE);
-
+        String projectToken = MixpanelConfig.projectToken;
+        MixpanelAPI mixpanel = MixpanelAPI.getInstance(getActivity(), projectToken);
+        mixpanel.track("Car pressed");
+        DataSenderAsync dataSenderAsync = DataSenderAsync.getInstance(getActivity());
+        dataSenderAsync.run();
     }
-
-
 }
 
 
