@@ -52,7 +52,6 @@ public class DataSenderAsync {
     private final int MY_MAX_RETRIES = 0;
     Context mContext;
     SessionManager sessionManager;
-    private Realm realm;
     RequestQueue queue;
 
     public static DataSenderAsync getInstance(Context applicationContext) {
@@ -99,8 +98,8 @@ public class DataSenderAsync {
                         if (NetworkStateReceiver.isNetworkAvailable(mContext)) {
                             Log.d(TAG, "DataSenderAsync: run TOKEN: " + sessionManager.getLoginToken());
                             addTicketToServer();
-                            editTicketToServer();
-                            editCoinsToServer();
+//                            editTicketToServer();
+//                            editCoinsToServer();
 //                            if (NetworkStateReceiver.isWifiConnected(mContext)) {
 //                                // Do big syncing on WIFI only.
 //                            }
@@ -127,6 +126,7 @@ public class DataSenderAsync {
     }
 
     private void addTicketToServer() {
+        Realm realm;
         realm = Realm.getDefaultInstance();
         RealmQuery<LPTicket> query = realm.where(LPTicket.class);
         query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_TICKET_ADD_NOT_SYNCED);
@@ -137,6 +137,7 @@ public class DataSenderAsync {
             Log.d(TAG, "addTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
             addTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn(), oneLPTicket.getTimeOut());
         }
+        realm.close();
     }
 
     private void addTicketToServerSync(final String veh_num, final String veh_type, final String fee, final long time_in, final long time_out) {
@@ -151,7 +152,7 @@ public class DataSenderAsync {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.v(TAG, "addTicketToServerSync onResponse(): " + response);
+                        Log.v(TAG, "onResponse(): " + response);
                         try {
                             JSONObject obj = new JSONObject(response);
                             int responseCode = obj.getInt("responseCode");
@@ -160,15 +161,22 @@ public class DataSenderAsync {
                                 //TODO  Save server_id of ticket in local db
                                 String serverid = uniObject.getString("id");
                                 String vehicle_no = uniObject.getString("vehicle_no");
+                                Realm realm;
                                 realm = Realm.getDefaultInstance();
-                                RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-                                query.equalTo("timeIn", time_in);
-                                RealmResults<LPTicket> manyLPTicket = query.findAll();
-                                realm.beginTransaction();
-                                manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED);
-                                manyLPTicket.first().setServer_id(serverid);
-                                realm.commitTransaction();
-                                realm.close();
+                                try {
+                                    RealmQuery<LPTicket> query = realm.where(LPTicket.class);
+                                    query.equalTo("timeIn", time_in);
+                                    RealmResults<LPTicket> manyLPTicket = query.findAll();
+                                    realm.beginTransaction();
+                                    manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED);
+                                    manyLPTicket.first().setServer_id(serverid);
+                                    realm.commitTransaction();
+                                    Log.d(TAG, "onSuccessResponse: CHANGING TICKET STATUS " + veh_num);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    realm.close();
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -179,43 +187,53 @@ public class DataSenderAsync {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        if (error instanceof NetworkError) {
-                            Log.e(TAG, "onErrorResponse: NetworkError + " + error);
-                        } else if (error instanceof ServerError) {
-                            Log.e(TAG, "onErrorResponse: ServerError + " + error);
-                        } else if (error instanceof AuthFailureError) {
-                            Log.e(TAG, "onErrorResponse: AuthFailureError + " + error);
-                        } else if (error instanceof ParseError) {
-                            Log.e(TAG, "onErrorResponse: ParseError + " + error);
-                        } else if (error instanceof NoConnectionError) {
-                            Log.e(TAG, "onErrorResponse: NoConnectionError + " + error);
-                        } else if (error instanceof TimeoutError) {
-                            Log.e(TAG, "onErrorResponse: TimeoutError + " + error);
-                        }
+                        try {
+//                            if (error instanceof NetworkError) {
+//                                Log.e(TAG, "onErrorResponse: NetworkError + " + error);
+//                            } else if (error instanceof ServerError) {
+//                                Log.e(TAG, "onErrorResponse: ServerError + " + error);
+//                            } else if (error instanceof AuthFailureError) {
+//                                Log.e(TAG, "onErrorResponse: AuthFailureError + " + error);
+//                            } else if (error instanceof ParseError) {
+//                                Log.e(TAG, "onErrorResponse: ParseError + " + error);
+//                            } else if (error instanceof NoConnectionError) {
+//                                Log.e(TAG, "onErrorResponse: NoConnectionError + " + error);
+//                            } else if (error instanceof TimeoutError) {
+//                                Log.e(TAG, "onErrorResponse: TimeoutError + " + error);
+//                            }
 
-                        Log.e(TAG, "onErrorResponse: addTicketToServerSync" + error);
-                        Log.e(TAG, "onErrorResponse: Vehicle Number: " + veh_num);
-                        if (error.networkResponse != null) {
-                            if (error.networkResponse.statusCode != 0) {
-                                Log.e(TAG, "onErrorResponse:  " + error.networkResponse.statusCode);
-                                if (error.networkResponse.statusCode == 500) {
-                                    Toast.makeText(mContext, "Server Error", Toast.LENGTH_SHORT).show();
-                                } else if (error.networkResponse.statusCode == 409) {
-                                    Log.d(TAG, "onErrorResponse: CHANGING TICKET STATUS " + veh_num);
-                                    realm = Realm.getDefaultInstance();
-                                    RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-                                    query.equalTo("timeIn", time_in);
-                                    RealmResults<LPTicket> manyLPTicket = query.findAll();
-                                    realm.beginTransaction();
-                                    manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED);
-                                    realm.commitTransaction();
-                                    realm.close();
-                                } else if (error.networkResponse.statusCode == 401) {
-                                    Toast.makeText(mContext, "AuthFailureError", Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "onErrorResponse: addTicketToServerSync" + error);
+                            Log.e(TAG, "onErrorResponse: Vehicle Number: " + veh_num);
+                            if (error.networkResponse != null) {
+                                if (error.networkResponse.statusCode != 0) {
+                                    Log.e(TAG, "onErrorResponse:  " + error.networkResponse.statusCode);
+                                    if (error.networkResponse.statusCode == 500) {
+                                        Toast.makeText(mContext, "Server Error", Toast.LENGTH_SHORT).show();
+                                    } else if (error.networkResponse.statusCode == 409) {
+                                        Realm realm;
+                                        realm = Realm.getDefaultInstance();
+                                        try {
+                                            RealmQuery<LPTicket> query = realm.where(LPTicket.class);
+                                            query.equalTo("timeIn", time_in);
+                                            RealmResults<LPTicket> manyLPTicket = query.findAll();
+                                            realm.beginTransaction();
+                                            manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_ADD_SYNCED);
+                                            realm.commitTransaction();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        } finally {
+                                            realm.close();
+                                        }
+                                        Log.e(TAG, "onErrorResponse: CHANGING TICKET STATUS " + veh_num);
+                                    } else if (error.networkResponse.statusCode == 401) {
+                                        Toast.makeText(mContext, "AuthFailureError", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
+                            } else {
+                                Toast.makeText(mContext, "check internet connection", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(mContext, "check internet connection", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }
@@ -241,170 +259,169 @@ public class DataSenderAsync {
         queue.add(sr);
     }
 
-    private void editTicketToServer() {
-        RealmConfiguration config = new RealmConfiguration.Builder(mContext).build();
-        realm = Realm.getInstance(config);
-        RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-        query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED);
-        RealmResults<LPTicket> manyLPTicket = query.findAll();
-        Log.d(TAG, "editTicketToServer: count " + manyLPTicket.size());
-        for (LPTicket oneLPTicket : manyLPTicket) {
-            Log.d(TAG, "editTicketToServer: oneLPTicket " + oneLPTicket);
-            Log.d(TAG, "editTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
-            editTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn(), oneLPTicket.getTimeOut(), oneLPTicket.getServer_id());
-        }
-    }
-
-    private void editTicketToServerSync(final String number, final String vehicleType, final String price, final long timeInLong, final long timeOutLong, final String serverId) {
-        currentState = PENDING;
-        final String timeInString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeInLong, "yyyy-MM-dd kk:mm:ss");
-        final String timeOutString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeOutLong, "yyyy-MM-dd kk:mm:ss");
-        Log.d(TAG, "editTicketToServerSync: timeInString: " + timeInString);
-        Log.d(TAG, "editTicketToServerSync: timeOutString: " + timeOutString);
-        StringRequest sr = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/ticket/timeout/" + serverId,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d(TAG, "editTicketToServerSync onResponse(): " + response.toString());
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            int responseCode = obj.getInt("responseCode");
-                            if (responseCode == 200) {
-                                JSONObject uniObject = obj.getJSONObject("response");
-                                //TODO  Save server_id of ticket in local db
-                                String serverid = uniObject.getString("id");
-                                String vehicle_no = uniObject.getString("vehicle_no");
-                                String vehicle_type = uniObject.getString("vehicle_type");
-                                String fee = uniObject.getString("fee");
-                                String time_in = uniObject.getString("time_in");
-                                String time_out = uniObject.getString("time_out");
-                                Log.d(TAG, "onResponse: serverid: " + serverid);
-                                Log.d(TAG, "onResponse: vehicle_no: " + vehicle_no);
-                                Log.d(TAG, "onResponse: vehicle_type: " + vehicle_type);
-                                Log.d(TAG, "onResponse: fee: " + fee);
-                                Log.d(TAG, "onResponse: time_in: " + time_in);
-                                Log.d(TAG, "onResponse: time_out: " + time_out);
-                                realm = Realm.getDefaultInstance();
-                                RealmQuery<LPTicket> query = realm.where(LPTicket.class);
-                                query.equalTo("timeIn", timeInLong);
-                                RealmResults<LPTicket> manyLPTicket = query.findAll();
-                                realm.beginTransaction();
-                                manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_SYNCED); //TODO crash here on exiting ticket which was synced on adding
-                                realm.commitTransaction();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d(TAG, "onResponse: JSONException: " + e);
-                        }
-                        Toast.makeText(mContext, "Successfully Edited to server", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (error instanceof NetworkError) {
-                            Log.e(TAG, "onErrorResponse: NetworkError + " + error);
-                        } else if (error instanceof ServerError) {
-                            Log.e(TAG, "onErrorResponse: ServerError + " + error);
-                        } else if (error instanceof AuthFailureError) {
-                            Log.e(TAG, "onErrorResponse: AuthFailureError + " + error);
-                        } else if (error instanceof ParseError) {
-                            Log.e(TAG, "onErrorResponse: ParseError + " + error);
-                        } else if (error instanceof NoConnectionError) {
-                            Log.e(TAG, "onErrorResponse: NoConnectionError + " + error);
-                        } else if (error instanceof TimeoutError) {
-                            Log.e(TAG, "onErrorResponse: TimeoutError + " + error);
-                        }
-                        Log.d(TAG, "editTicketToServerSync onErrorResponse: " + error.toString());
-                        Log.d(TAG, "editTicketToServerSync onErrorResponse:  statusCode: " + error.networkResponse.statusCode);
-                        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ) {
-            @Override
-            public String getBodyContentType() {
-                return "application/x-www-form-urlencoded";
-            }
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("time_out", timeOutString);
-                params.put("token", sessionManager.getLoginToken());
-                return params;
-            }
-        };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                MY_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(sr);
-    }
+//    private void editTicketToServer() {
+//        RealmConfiguration config = new RealmConfiguration.Builder(mContext).build();
+//        realm = Realm.getInstance(config);
+//        RealmQuery<LPTicket> query = realm.where(LPTicket.class);
+//        query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_TICKET_EDIT_NOT_SYNCED);
+//        RealmResults<LPTicket> manyLPTicket = query.findAll();
+//        Log.d(TAG, "editTicketToServer: count " + manyLPTicket.size());
+//        for (LPTicket oneLPTicket : manyLPTicket) {
+//            Log.d(TAG, "editTicketToServer: oneLPTicket " + oneLPTicket);
+//            Log.d(TAG, "editTicketToServer: oneLPTicket Number " + oneLPTicket.getNumber());
+//            editTicketToServerSync(oneLPTicket.getNumber(), oneLPTicket.getVehicleType(), oneLPTicket.getPrice(), oneLPTicket.getTimeIn(), oneLPTicket.getTimeOut(), oneLPTicket.getServer_id());
+//        }
+//    }
+//
+//    private void editTicketToServerSync(final String number, final String vehicleType, final String price, final long timeInLong, final long timeOutLong, final String serverId) {
+//        currentState = PENDING;
+//        final String timeInString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeInLong, "yyyy-MM-dd kk:mm:ss");
+//        final String timeOutString = DateAndTimeUtils.getDateTimeStringFromMiliseconds(timeOutLong, "yyyy-MM-dd kk:mm:ss");
+//        Log.d(TAG, "editTicketToServerSync: timeInString: " + timeInString);
+//        Log.d(TAG, "editTicketToServerSync: timeOutString: " + timeOutString);
+//        StringRequest sr = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/ticket/timeout/" + serverId,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.d(TAG, "editTicketToServerSync onResponse(): " + response.toString());
+//                        try {
+//                            JSONObject obj = new JSONObject(response);
+//                            int responseCode = obj.getInt("responseCode");
+//                            if (responseCode == 200) {
+//                                JSONObject uniObject = obj.getJSONObject("response");
+//                                //TODO  Save server_id of ticket in local db
+//                                String serverid = uniObject.getString("id");
+//                                String vehicle_no = uniObject.getString("vehicle_no");
+//                                String vehicle_type = uniObject.getString("vehicle_type");
+//                                String fee = uniObject.getString("fee");
+//                                String time_in = uniObject.getString("time_in");
+//                                String time_out = uniObject.getString("time_out");
+//                                Log.d(TAG, "onResponse: serverid: " + serverid);
+//                                Log.d(TAG, "onResponse: vehicle_no: " + vehicle_no);
+//                                Log.d(TAG, "onResponse: vehicle_type: " + vehicle_type);
+//                                Log.d(TAG, "onResponse: fee: " + fee);
+//                                Log.d(TAG, "onResponse: time_in: " + time_in);
+//                                Log.d(TAG, "onResponse: time_out: " + time_out);
+//                                realm = Realm.getDefaultInstance();
+//                                RealmQuery<LPTicket> query = realm.where(LPTicket.class);
+//                                query.equalTo("timeIn", timeInLong);
+//                                RealmResults<LPTicket> manyLPTicket = query.findAll();
+//                                realm.beginTransaction();
+//                                manyLPTicket.first().setSyncStatus(SyncStatus.SYNC_STATUS_TICKET_EDIT_SYNCED); //TODO crash here on exiting ticket which was synced on adding
+//                                realm.commitTransaction();
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                            Log.d(TAG, "onResponse: JSONException: " + e);
+//                        }
+//                        Toast.makeText(mContext, "Successfully Edited to server", Toast.LENGTH_SHORT).show();
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        if (error instanceof NetworkError) {
+//                            Log.e(TAG, "onErrorResponse: NetworkError + " + error);
+//                        } else if (error instanceof ServerError) {
+//                            Log.e(TAG, "onErrorResponse: ServerError + " + error);
+//                        } else if (error instanceof AuthFailureError) {
+//                            Log.e(TAG, "onErrorResponse: AuthFailureError + " + error);
+//                        } else if (error instanceof ParseError) {
+//                            Log.e(TAG, "onErrorResponse: ParseError + " + error);
+//                        } else if (error instanceof NoConnectionError) {
+//                            Log.e(TAG, "onErrorResponse: NoConnectionError + " + error);
+//                        } else if (error instanceof TimeoutError) {
+//                            Log.e(TAG, "onErrorResponse: TimeoutError + " + error);
+//                        }
+//                        Log.d(TAG, "editTicketToServerSync onErrorResponse: " + error.toString());
+//                        Log.d(TAG, "editTicketToServerSync onErrorResponse:  statusCode: " + error.networkResponse.statusCode);
+//                        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//        ) {
+//            @Override
+//            public String getBodyContentType() {
+//                return "application/x-www-form-urlencoded";
+//            }
+//
+//            @Override
+//            protected Map<String, String> getParams() {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("time_out", timeOutString);
+//                params.put("token", sessionManager.getLoginToken());
+//                return params;
+//            }
+//        };
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+//                MY_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        queue.add(sr);
+//    }
 
     //////////////////////////////////////////////////////////////////////////////coinsupdate
-    private void editCoinsToServer() {
-        RealmConfiguration config = new RealmConfiguration.Builder(mContext).build();
-        realm = Realm.getInstance(config);
-        LPNfc lpNfc = new LPNfc();
-        RealmQuery<LPNfc> query = realm.where(LPNfc.class);
-        query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_COIN_EDIT_NOT_SYNCED);
-        RealmResults<LPNfc> manyLPCoin = query.findAll();
-        Log.d(TAG, "editCoinToServer: count " + manyLPCoin.size());
-        for (LPNfc oneLPCoin : manyLPCoin) {
-            Log.d(TAG, "editCoinToServer: oneLPCoin " + oneLPCoin);
-
-            editCoinToServerSync(oneLPCoin.getCoinId(), oneLPCoin.getCoinVehicle(), oneLPCoin.getCoinAmount());
-        }
-    }
-
-    private void editCoinToServerSync(String coinId, String coinvehicle, final String coinAmount) {
-        currentState = PENDING;
-        StringRequest sr = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/coin/" + coinId,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d(TAG, "onResponse: " + response.toString());
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            int responseCode = obj.getInt("responseCode");
-                            if (responseCode == 200) {
-                                Toast.makeText(mContext, "Coin Synced", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d(TAG, "onResponse: JSONException: " + e);
-                        }
-
-                        Toast.makeText(mContext, "Successfully Edited to server", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "editCoinToServerSync onErrorResponse: " + error.toString());
-                        Log.d(TAG, "editCoinToServerSync onErrorResponse:  statusCode: " + error.networkResponse.statusCode);
-                        // error
-                        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ) {
-            @Override
-            public String getBodyContentType() {
-                return "application/x-www-form-urlencoded";
-            }
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("coin_amount", coinAmount);
-                return params;
-            }
-        };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                MY_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(sr);
-    }
-
+//    private void editCoinsToServer() {
+//        RealmConfiguration config = new RealmConfiguration.Builder(mContext).build();
+//        realm = Realm.getInstance(config);
+//        LPNfc lpNfc = new LPNfc();
+//        RealmQuery<LPNfc> query = realm.where(LPNfc.class);
+//        query.equalTo("syncStatus", SyncStatus.SYNC_STATUS_COIN_EDIT_NOT_SYNCED);
+//        RealmResults<LPNfc> manyLPCoin = query.findAll();
+//        Log.d(TAG, "editCoinToServer: count " + manyLPCoin.size());
+//        for (LPNfc oneLPCoin : manyLPCoin) {
+//            Log.d(TAG, "editCoinToServer: oneLPCoin " + oneLPCoin);
+//
+//            editCoinToServerSync(oneLPCoin.getCoinId(), oneLPCoin.getCoinVehicle(), oneLPCoin.getCoinAmount());
+//        }
+//    }
+//
+//    private void editCoinToServerSync(String coinId, String coinvehicle, final String coinAmount) {
+//        currentState = PENDING;
+//        StringRequest sr = new StringRequest(Request.Method.PUT, "http://34.215.56.25/apiLepak/public/api/sites/coin/" + coinId,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.d(TAG, "onResponse: " + response.toString());
+//                        try {
+//                            JSONObject obj = new JSONObject(response);
+//                            int responseCode = obj.getInt("responseCode");
+//                            if (responseCode == 200) {
+//                                Toast.makeText(mContext, "Coin Synced", Toast.LENGTH_SHORT).show();
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                            Log.d(TAG, "onResponse: JSONException: " + e);
+//                        }
+//
+//                        Toast.makeText(mContext, "Successfully Edited to server", Toast.LENGTH_SHORT).show();
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.d(TAG, "editCoinToServerSync onErrorResponse: " + error.toString());
+//                        Log.d(TAG, "editCoinToServerSync onErrorResponse:  statusCode: " + error.networkResponse.statusCode);
+//                        // error
+//                        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//        ) {
+//            @Override
+//            public String getBodyContentType() {
+//                return "application/x-www-form-urlencoded";
+//            }
+//
+//            @Override
+//            protected Map<String, String> getParams() {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("coin_amount", coinAmount);
+//                return params;
+//            }
+//        };
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+//                MY_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        queue.add(sr);
+//    }
 }

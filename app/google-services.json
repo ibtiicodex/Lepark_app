@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "519673611120",
+    "firebase_url": "https://lepark-b73b5.firebaseio.com",
+    "project_id": "lepark-b73b5",
+    "storage_bucket": "lepark-b73b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519673611120:android:e897bd53d321bee6",
+        "android_client_info": {
+          "package_name": "com.codextech.ibtisam.lepak_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519673611120-t0qteh2ifbkai5p40u9b2l9m1kj7ave6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSWQB2YwKPwJd_Tx0BL00oFShC375mPXs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

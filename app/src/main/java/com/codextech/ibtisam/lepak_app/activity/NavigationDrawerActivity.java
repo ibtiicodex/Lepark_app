@@ -17,6 +17,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -72,7 +73,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             startActivity(new Intent(NavigationDrawerActivity.this, LoginActivity.class));
             finish();
         }
-       // Toast.makeText(this, " "+sessionManager.getKeyMac(), Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, " "+sessionManager.getKeyMac(), Toast.LENGTH_SHORT).show();
         Intent newIntent = new Intent(NavigationDrawerActivity.this, ScanService.class);
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         NavigationDrawerActivity.this.startService(newIntent);
@@ -106,10 +107,50 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 if (menuItem.getItemId() == R.id.logoutnav) {
-                    logoutManager();
+
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(NavigationDrawerActivity.this);
+                    alertDialog.setTitle("PASSWORD");
+                    alertDialog.setMessage("Enter Password");
+
+                    final EditText input = new EditText(NavigationDrawerActivity.this);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT);
+                    input.setLayoutParams(lp);
+                    alertDialog.setView(input);
+//                    alertDialog.setIcon(R.drawable.ic_key);
+
+                    alertDialog.setPositiveButton("YES",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String password = input.getText().toString();
+                                    if ("admin".equals(password)) {
+                                        logoutManager();
+                                        Toast.makeText(getApplicationContext(), "Password Matched", Toast.LENGTH_SHORT).show();
+                                        String projectToken = MixpanelConfig.projectToken;
+                                        MixpanelAPI mixpanel = MixpanelAPI.getInstance(NavigationDrawerActivity.this, projectToken);
+                                        mixpanel.track("Logout - Successful");
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Wrong Password!", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
+                    alertDialog.setNegativeButton("NO",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                    String projectToken = MixpanelConfig.projectToken;
+                                    MixpanelAPI mixpanel = MixpanelAPI.getInstance(NavigationDrawerActivity.this, projectToken);
+                                    mixpanel.track("Logout - Cancel");
+                                }
+                            });
+
+                    alertDialog.show();
+
                     String projectToken = MixpanelConfig.projectToken;
                     MixpanelAPI mixpanel = MixpanelAPI.getInstance(NavigationDrawerActivity.this, projectToken);
-                    mixpanel.track("Logout");
+                    mixpanel.track("Logout - Pressed");
                 }
 //                if (menuItem.getItemId() == R.id.nav_NfcActvity) {
 //                    Intent intent = new Intent(getApplicationContext(), NfcGetAllCoinsActivity.class);
@@ -175,7 +216,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 break;
             case TelephonyManager.SIM_STATE_READY:
                 // do something
-               // Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_READY", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(NavigationDrawerActivity.this, "SIM_STATE_READY", Toast.LENGTH_SHORT).show();
                 break;
             case TelephonyManager.SIM_STATE_UNKNOWN:
                 // do something
@@ -211,13 +252,13 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
     private void logoutManager() {
         if (NetworkStateReceiver.isNetworkAvailable(getApplicationContext())) {
-             Log.d(TAG, "logoutManager: TOKEN: " + sessionManager.getLoginToken());
+            Log.d(TAG, "logoutManager: TOKEN: " + sessionManager.getLoginToken());
             StringRequest postRequest = new StringRequest(Request.Method.POST, MyUrls.LOGOUT,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             try {
-                                  Log.d(TAG, "onResponse:" + response);
+                                Log.d(TAG, "onResponse:" + response);
                                 JSONObject obj = new JSONObject(response);
                                 int responseCode = obj.getInt("responseCode");
                                 if (responseCode == 200) {
@@ -257,7 +298,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("site_id", siteId);
-                    params.put("mac",sessionManager.getKeyMac());
+                    params.put("mac", sessionManager.getKeyMac());
                     return params;
                 }
             };
